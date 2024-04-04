@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>lmm</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#mixed-models" id="toc-mixed-models" class="nav-link active" data-scroll-target="#mixed-models">Mixed models</a>
+  <ul class="collapse">
+  <li><a href="#why-mixed" id="toc-why-mixed" class="nav-link" data-scroll-target="#why-mixed">Why “Mixed”?</a>
+  <ul class="collapse">
+  <li><a href="#fixed-effects" id="toc-fixed-effects" class="nav-link" data-scroll-target="#fixed-effects">Fixed Effects</a></li>
+  <li><a href="#random-effect" id="toc-random-effect" class="nav-link" data-scroll-target="#random-effect">Random effect</a></li>
+  </ul></li>
+  <li><a href="#ingredients" id="toc-ingredients" class="nav-link" data-scroll-target="#ingredients">Ingredients</a>
+  <ul class="collapse">
+  <li><a href="#grouping-structure-of-the-data" id="toc-grouping-structure-of-the-data" class="nav-link" data-scroll-target="#grouping-structure-of-the-data">Grouping Structure of the Data</a></li>
+  <li><a href="#design-for-fixed-and-random-effects" id="toc-design-for-fixed-and-random-effects" class="nav-link" data-scroll-target="#design-for-fixed-and-random-effects">Design for fixed and random effects</a></li>
+  </ul></li>
+  <li><a href="#examples-mixed-models-in-r" id="toc-examples-mixed-models-in-r" class="nav-link" data-scroll-target="#examples-mixed-models-in-r">Examples (Mixed models in R )</a>
+  <ul class="collapse">
+  <li><a href="#predicting-the-random-intercept" id="toc-predicting-the-random-intercept" class="nav-link" data-scroll-target="#predicting-the-random-intercept">Predicting the random intercept</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="mixed-models" class="level1 unnumbered">
+<h1 class="unnumbered">Mixed models</h1>
+<p>As briefly mentioned in the previous chapter, mixed-effects models (also known as multilevel or hierarchical models) are used introduce random effects to account for the cluster variations. This approach allows us to model the dependency structure due to clusters without having to estimate a separate parameter for each cluster effect. Mixed-effects models incorporate the clustering in the variance-covariance structure of the data, which provides a more parsimonious and interpretable model, especially when our primary interest lies in the fixed effects, such as the main effect of <code>Age</code> in the previous example.</p>
+<p>Correlated is more common in biology than one might think. For example:</p>
+<ul>
+<li><p><strong>Repeated Measurements:</strong> Suppose you’re measuring a patient’s blood pressure over time. Measurements from the same patient will naturally be more similar to each other than those from different patients. A mixed-effects model handles this by modeling the variation between patients.</p></li>
+<li><p><strong>Nested Designs:</strong> Imagine studying the effectiveness of a new drug on mice housed within different cages. Mice within the same cage might be more alike due to shared environments. A mixed-effects model accounts for both variation between mice and variation between cages.</p></li>
+<li><p><strong>Longitudinal Studies:</strong> When tracking the growth of trees over time, measurements from the same tree will be more correlated than those from different trees. Here, a mixed-effects model can account for the individual tree’s growth patterns.</p></li>
+<li><p><strong>Multi-omics Studies:</strong> Omics data (genomics, transcriptomics, proteomics, etc.) from the same individual will show correlations due to underlying biological pathways. A mixed-effects model can tease apart the effects of different omic layers while accounting for their relationships within a person.</p></li>
+<li><p><strong>Family-based Disease Studies:</strong> Genetic variations and environmental exposures tend to cluster within families. Mixed-effects models can effectively model these familial factors when investigating how they contribute to disease risk.</p></li>
+</ul>
+<p>Mixed-effects models are a powerful tool for analyzing complex biological datasets, offering improved accuracy and providing valuable insights into the sources of variability in disease studies.</p>
+<section id="why-mixed" class="level2">
+<h2 class="anchored" data-anchor-id="why-mixed">Why “Mixed”?</h2>
+<p>Mixed models get their name because they combine two types of effects: fixed effects and random effects. This combination is what makes them so valuable for analyzing complex data.</p>
+<section id="fixed-effects" class="level3">
+<h3 class="anchored" data-anchor-id="fixed-effects">Fixed Effects</h3>
+<p>The statistical models you might be familiar with, like linear regression or ANOVA, focus on “fixed effects.” These are the direct relationships between your chosen variables and the outcome you’re interested in. Fixed effects are the factors you control or are primarily interested in. If you’re studying the effect of age on protein expression, age is your fixed effect. A fixed effect will contain all possible levels of a factor in the experiment, measuring a few specific instances of interest. The key premise of the fixed-effect model is that there is one true effect size that is common to all the studies being analyzed. This model assumes that any observed variation among study results is solely due to sampling error within studies, and not due to actual differences in effect sizes across studies. Therefore, the goal of a fixed-effect analysis is to estimate this common true effect size.</p>
+<p>Let’s think about a research question asking if a specific vitamin supplement reduces the duration of common cold symptoms. Multiple clinical trials have been conducted to evaluate the effect of this vitamin supplement on the duration of common cold symptoms. Each trial uses the same dosage of the supplement and has similar participant demographics (e.g., age, health status). The researchers conducting the analysis believe that, given the standardized intervention and population, the supplement should have a consistent effect across all trials.</p>
+<p><strong>Studies Reviewed:</strong> - Study 1: 100 participants, average reduction in symptom duration of 1.5 days. - Study 2: 150 participants, average reduction in symptom duration of 1.4 days. - Study 3: 120 participants, average reduction in symptom duration of 1.6 days. - Study 4: 130 participants, average reduction in symptom duration of 1.3 days.</p>
+<p><strong>Fixed-Effect Model Assumptions in this Example:</strong></p>
+<ul>
+<li><strong>Single True Effect Size:</strong> The assumption here is that there is one true effect size reflecting the average reduction in the duration of common cold symptoms due to the vitamin supplement. This is based on the controlled administration of the supplement and the homogeneous nature of the participant groups across the trials.</li>
+<li><strong>Variation Due to Sampling Error:</strong> The slight differences in observed effects among the studies (e.g., some showing a 1.3-day reduction while others show a 1.6-day reduction) are attributed to sampling error—random variation due to the different samples of participants in each study.</li>
+<li><strong>Goal:</strong> To estimate the common true effect size of the vitamin supplement on reducing the duration of cold symptoms, a fixed-effect analysis is employed. This involves calculating a weighted average of the effect sizes from the individual trials, with greater weight given to larger trials since they are less prone to sampling error.</li>
+</ul>
+<p>Through the fixed-effect model analysis, it might be concluded that the specific vitamin supplement leads to an average reduction of approximately 1.4 days in the duration of common cold symptoms. This conclusion is based on the premise that the variation in results across the trials is solely due to sampling error, without accounting for potential underlying differences in participant response to the supplement, as such variability is assumed to be negligible given the standardized conditions of the trials.</p>
+<p>The primary limitation of using a fixed-effect model, lies in its underlying assumptions about the homogeneity of effect sizes across studies. This model assumes that there is one true effect size that applies to all studies, and any observed variability in outcomes is solely due to sampling error. However, this assumption can be overly simplistic and may not always hold true, especially in biological and medical research where variability is the norm rather than the exception.</p>
+</section>
+<section id="random-effect" class="level3">
+<h3 class="anchored" data-anchor-id="random-effect">Random effect</h3>
+<p>The random-effects offer a more flexible and realistic approach, especially in contexts where between-study variability is expected or observed. The defining feature of the random-effects model is the assumption that there is a distribution of true effect sizes across studies, and the goal is to estimate the mean of this distribution. This approach accounts for variation not only within studies (due to sampling error) but also between studies, recognizing that different studies may inherently have different true effect sizes due to various factors (e.g., differences in populations, interventions, outcomes measured).</p>
+<p>Returning to our scenario of evaluating the impact of a vitamin supplement on the duration of common cold symptoms, let’s consider that the clinical trials are conducted across various geographical locations, each with a distinct demographic and environmental profile. These location-based groups could inherently influence how participants respond to the supplement, independent of the supplement’s effect itself. We would introduce random intercepts for each geographical location. This means that while we are still interested in estimating the overall effect of the vitamin supplement on symptom duration, we also acknowledge that each location starts from a different baseline in terms of average symptom duration without the supplement. However, we actually don’t directly estimate these baselines but rather assume that these baselines are randomly samples from a distribution of baselines in the population with certain statistical properties. Therefore, we are not interested in each single baseline but we want to know statistical properties of the distribution of baselines.</p>
+<p>In summary, the fixed-effect model’s generalization is limited to the “levels” within the experiment, meaning it applies to populations or conditions that exactly match those of the included studies. It treats the effect as if it were a fixed property of the specific scenarios tested. In contrast, the random-effects model allows for generalization to “levels beyond those that took part in the study,” acknowledging that the effect sizes are part of a distribution across a wider population. This model treats the effect as a variable property reflecting a range of possible scenarios, including those not directly observed in the analysis.</p>
+<p>This might sounds too complicated or abstract. We are going to clarify this with a few examples.</p>
+</section>
+</section>
+<section id="ingredients" class="level2">
+<h2 class="anchored" data-anchor-id="ingredients">Ingredients</h2>
+<p>In this section, we will try to clarify what information do we need in order to fit a linear model.</p>
+<section id="grouping-structure-of-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="grouping-structure-of-the-data">Grouping Structure of the Data</h3>
+<p>The first and most important thing is to understand the data we are dealing with. Before we can make any attempt to use mixed models, we need to know what kind of grouping structure we want to capture. Mixed models are particularly useful when data is collected in groups or clusters, such as measurements from different subjects, schools, geographical locations, or time points within subjects. Identifying the hierarchy or nested structure where observations are grouped within higher-level units is crucial. This grouping structure can significantly influence the correlations among observations, as data points within the same group are likely to be more similar to each other than to data points in different groups. Understanding this structure allows us to correctly model the random effects, which account for the variability at different levels of the data hierarchy, thereby improving the accuracy and interpretability of our results. By incorporating these random effects, mixed models enable us to make inferences about both the fixed effects, which are consistent across groups, and the random effects, which vary across groups.</p>
+<p>Without having this information, we cannot use standard mixed models. This grouping must be categorical, not continuous, as mixed models rely on categorical variables to define the levels of the hierarchy or nested structure within the data. Categorical grouping allows us to classify observations into distinct categories or groups that share common characteristics.</p>
+<p>It is obvious but worth mentioning that these grouping should not be confused with random effects.Random effects are calculated based on the assumption that data points within the same group may share more similarities with each other than with data points from different categories, thus accounting for the within-group correlation. Therefore, the identification of categorical groupings is not just a step in the analysis but a prerequisite for accurately calculating and interpreting the random effects that are fundamental to the mixed model’s approach to data analysis.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You cannot use continuous data as grouping if it does not have levels. Without these discrete levels, it becomes impossible to define the clusters or hierarchies necessary for calculating random effects. To effectively employ mixed models, one must either use inherently categorical variables or discretize continuous variables into meaningful categories.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sometimes it is not clear what grouping of data exist. Or even what should be used as grouping. In often (but not always), the grouping is something different than what we are interested in. For example, let’s say, we have gathered data from patients with a disease and attempted to find a matched control based on certain characteristics such as age, BMI etc. The group of interest here is disease vs.&nbsp;healthy and a possible grouping variable for random effect would be a match ID for the a each disease and its matched control.</p>
+</div>
+</div>
+<p>The last thing i would like to mention is that, how many levels the random effect grouping should have in order to be included in the model. Although there is no golden consensus about it but most people tend to agree that the number levels of the group factor should be more than five to be accurately modeled by mixed models. Although some argue that with even two levels, mixed model will be like classical linear regression one should be extra cautious about it.</p>
+</section>
+<section id="design-for-fixed-and-random-effects" class="level3">
+<h3 class="anchored" data-anchor-id="design-for-fixed-and-random-effects">Design for fixed and random effects</h3>
+<p>Now that we have identified the grouping structure of the data, we need to decide what effects are fixed and what effects are random with respect to the grouping structure of the data. This is again might be confusing a bit but if we start asking ourselves a few questions, it might clarify the whole concept.</p>
+<p>It is important to stress that the main reason we have chosen to go with mixed models is that we believe there is a grouping in our data that somehow affects some of the effects in our study. And by saying effect we mean the influence or impact that a particular variable has on the outcome of interest.</p>
+<p>So here comes the first and a key question:</p>
+<ol type="1">
+<li><p><strong>Do we believe a particular effect varies across the grouping structure of the data?</strong> if we do not believe that a particular effect varies across the grouping structure of the data, then we may consider modeling this effect as a fixed effect <strong>without taking care of the grouping structure</strong>.</p>
+<p>If the answer to this question is yes. Then we ask ourselves another key question.</p></li>
+<li><p><strong>Are we interested in estimating the effect specific to the groups?</strong> Now that we have decided to take care of the grouping structure. We might be interested in estimating the effect of interest in each of groups or even compare them across the groups. You might want to even calculate p-values for these. If this is so then you might want to model these as fixed effect for example by including them as covariate (or blocking/control variable or even interaction) in the model. Doing so however, will force the model to estimate these effect thus spending degrees of freedom.</p>
+<p>If however, we are still interested in taking care of the grouping but instead of estimating the effect in each group, we are happy just to know how much variability is in the effect of interest across the groups, then we are going to consider modeling that effect as random. This will instruct the modeling application to instead of estimating effects for each group (could be hundred of groups), just come up with estimates of few parameters showing the variability. Please note that these effects can be anything from baseline, slopes, interaction etc.</p></li>
+<li><p><strong>Do we have a large number of groups, and are some of these groups potentially unobserved?</strong> Random effects models are particularly useful when dealing with a large number of groups, especially when some groups in the population might not be represented in the sample. Random effects assume that the observed groups are a random sample from a larger population of groups, allowing for generalization beyond the specific groups in the study.</p>
+<p>However, as said before, instead of estimating parameters for each group, then calculate variance across the groups. If the number of levels in each group is too few (like two or something like that), the estimated variance is not going to be accurate. So you might want to actually get back and consider using classical models.</p></li>
+</ol>
+<p>By asking these questions, we can better clarify the roles of fixed and random effects. These things are going to be further clarified when we start working on a few examples.</p>
+</section>
+</section>
+<section id="examples-mixed-models-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="examples-mixed-models-in-r">Examples (Mixed models in R )</h2>
+<p>We get back our simulated data in the previous chapter and try to model it using mixed models. Before proceeding make sure that you have installed <code>lme4</code> package as this is what we are going to use throughout this section.</p>
+<p>Just to remind you, the idea was to examine the relationship between Age and Protein expression.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>simulate_grouped_trend <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">group_count =</span> <span class="dv">5</span>, <span class="at">points_per_group =</span> <span class="dv">10</span>, <span class="at">global_slope =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">global_intercept =</span> <span class="dv">30</span>, <span class="at">group_slope =</span> <span class="dv">2</span>, <span class="at">noise_sd =</span> <span class="dv">50</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># Setting a seed for reproducibility</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initialize an empty data frame to store the simulated data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">numeric</span>(), <span class="at">y =</span> <span class="fu">numeric</span>())</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loop to create each group</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>group_count) {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    x_start <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="sc">+</span> (i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">10</span> <span class="sc">/</span> group_count) <span class="co"># Stagger the start of x for each group</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">runif</span>(points_per_group, <span class="at">min =</span> x_start, <span class="at">max =</span> x_start <span class="sc">+</span> (<span class="dv">10</span> <span class="sc">/</span> group_count))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Apply a local positive trend within the group, but maintain the global negative trend</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    local_intercept <span class="ot">&lt;-</span> global_intercept <span class="sc">+</span> global_slope <span class="sc">*</span> (x_start <span class="sc">+</span> (<span class="dv">10</span> <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> group_count))) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> noise_sd)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> local_intercept <span class="sc">+</span> group_slope <span class="sc">*</span> (x <span class="sc">-</span> x_start) <span class="sc">+</span> <span class="fu">rnorm</span>(points_per_group, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> noise_sd)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combine this group with the overall dataset</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    group_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y,<span class="at">group=</span>i)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(data, group_data)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># generate simulated data</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>data_int <span class="ot">&lt;-</span> <span class="fu">simulate_grouped_trend</span>(<span class="at">group_count =</span> <span class="dv">4</span>,<span class="at">points_per_group =</span> <span class="dv">10</span>,<span class="at">global_slope =</span> <span class="sc">-</span><span class="dv">2</span>,<span class="at">global_intercept =</span> <span class="dv">100</span>,<span class="at">group_slope =</span> <span class="dv">4</span>,<span class="at">noise_sd =</span> <span class="dv">5</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># set group to factor</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>data_int<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_int<span class="sc">$</span>group)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the data</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data_int<span class="sc">$</span>x,data_int<span class="sc">$</span>y,<span class="at">xlab=</span><span class="st">"Age"</span>,<span class="at">ylab=</span><span class="st">"Protein expression"</span>,<span class="at">col=</span>data_int<span class="sc">$</span>group,<span class="at">pch=</span><span class="fu">as.numeric</span>(data_int<span class="sc">$</span>group))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-scatter-plot" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lmm_files/figure-html/fig-scatter-plot-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A scatter plot of Age vs.&nbsp;Protein expression
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Because there are some grouping structure in data, we decide to take care of it. Let’s say that each group is a random clinic that we decided to get some sample from. So we now have identified the grouping structure in our data that might influence the effect of interest (Age).</p>
+<p>What we believe is that the effect of Age on the protein expression is constant in each of the groups. However, due to either technical issues with the instruments or even demographics, each group might have different baselines (starting point) for the protein expression. This gives us a hint that we might have to model <code>intercept</code> differently for each group. This decision gives us two choices, model this intercept as fixed or random effect.</p>
+<p>Me as a researcher tell you in addition to the effect of age, I would like to know how much differences exactly are between each of these clinics. Therefore i want to use fixed effect to exactly pinpoint the estimated baseline for each of the clinic and compare them against each other.</p>
+<p>You however, argue that there is no reason to do that. We just picked a few random clinics, there is no point in knowing by how much clinic 1 is different to clinic 2 because we could have selected and other random clinics in the world. So let’s model this as random effect to get the variance of the intercepts across clinics. By modeling the intercept as a random effect, we acknowledge that each clinic has its own baseline level of protein expression due to various unmeasured factors such as technical differences in equipment or demographic variations. This approach allows us to account for the inherent variability between clinics without focusing on the specific differences between any two clinics. Instead, we aim to understand the general variability of baseline protein expression levels across clinics.</p>
+<p>We start using the classical approach (as we saw in the previous chapter) using <code>lm</code> function with the following formula <code>y ~ 1+x+group</code>:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We have included 1 in the model just to stress that there is an intercept in the model. Obviously, <code>y ~ 1+x+group</code> is identical to <code>y ~ x+group</code></p>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a linear regression model</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span><span class="sc">+</span>x<span class="sc">+</span>group, <span class="at">data =</span> data_int)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ 1 + x + group, data = data_int)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.7577 -3.2657 -0.1872  1.4925 10.7686 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   58.798     15.341   3.833 0.000505 ***
+x              2.213      1.136   1.949 0.059406 .  
+group2       -23.072      3.133  -7.364 1.30e-08 ***
+group3       -31.187      6.159  -5.064 1.32e-05 ***
+group4       -34.509      8.716  -3.959 0.000351 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.625 on 35 degrees of freedom
+Multiple R-squared:  0.786, Adjusted R-squared:  0.7615 
+F-statistic: 32.13 on 4 and 35 DF,  p-value: 2.832e-11</code></pre>
+</div>
+</div>
+<p>We saw this result before. This model has four different intercepts, one for each group and a single slope that is identical for each group.</p>
+<p>Given this result, we have estimated the group coefficients and we can go ahead with comparing the groups or do whatever we wanted to do with these estimates. It is important that here we don’t have a global slope. We have four slopes, one for each group.</p>
+<p>Now it is time to do the same analysis using the mixed model approach. The model that we are going fit using <code>lmer</code> function from <code>lme4</code> is of form <code>y ~ 1+x+(1|group)</code>. This part of the model, <code>y ~ 1+x</code>, we already know what it is. However, what this part <code>(1|group)</code> is new. The right part of <code>|</code> shows what variable we want to use as grouping factor by which we are going to fit our random effect (That is the <code>group</code> in our case). The left part of <code>|</code> is the effect we want to consider random. The left part is like a formula, similar to classical regression. which in this case, we just used <code>1</code>. This means for our main model, <code>y ~ 1+x</code> which has an intercept (<code>1</code>) and a slope <code>x</code>, we would like to consider the intercept as random effect so we use <code>1</code>.</p>
+<p>Now that we know the structure of the model, let’s go ahead and do the modeling:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a mixed linear regression model</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>model_lmm <span class="ot">&lt;-</span> <span class="fu">lmer</span>(y <span class="sc">~</span> <span class="dv">1</span><span class="sc">+</span>x<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>group), <span class="at">data =</span> data_int)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_lmm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: y ~ 1 + x + (1 | group)
+   Data: data_int
+
+REML criterion at convergence: 244.6
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-1.73343 -0.61480 -0.00871  0.37734  2.22117 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ group    (Intercept) 184.10   13.568  
+ Residual              21.57    4.645  
+Number of obs: 40, groups:  group, 4
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   50.205     18.893   2.657
+x              1.418      1.030   1.377
+
+Correlation of Fixed Effects:
+  (Intr)
+x -0.932</code></pre>
+</div>
+</div>
+<p>This output has some key differences to the previous approach. The first thing is in the fixed effect part:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.list</span>(<span class="fu">summary</span>(model_lmm))[[<span class="st">'coefficients'</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error  t value
+(Intercept) 50.205206   18.89260 2.657401
+x            1.417913    1.02998 1.376642</code></pre>
+</div>
+</div>
+<p>Unlike <code>lm</code>, here there is no estimate for each group. There is a single intercept and a single slope. These are <code>global</code> trends in the data with their corresponding <code>Std. Error</code> and <code>t value</code>. But what happen with random effect and grouping of the data. This is what we can see in the <code>Random effects</code> part of the output:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.list</span>(<span class="fu">summary</span>(model_lmm))[[<span class="st">'varcor'</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name        Std.Dev.
+ group    (Intercept) 13.5684 
+ Residual              4.6447 </code></pre>
+</div>
+</div>
+<p>Depending of what type of random effect we have been fitting this table can have different headers. But generally, <code>Groups</code>, <code>Name</code>, <code>Variance</code>, <code>Std.Dev.</code> and <code>Corr</code> are part of it.</p>
+<p>Each row of this table correspond to a source of variation in our data that is random because of a certain reason. In our model, we decided to consider only <code>Intercept</code> as a random effect for <code>group</code>. Therefore, the first row of the table tells us that there is <strong>random</strong> variability in <code>Intercept</code> between different group. This variability is quantified by a variance of 184.101 and a standard deviation of 13.568. This means that the average effect (or intercept) across groups can deviate from the overall (<code>global</code>) intercept by about 13.568 units, indicating substantial between-group variability. This is important to note that, we have actually never estimated any intercept for each group directly. But we have estimated the variability of intercepts across different groups, which allows us to account for the fact that each group may have a different starting point or baseline level in the response variable, even though these specific baseline levels are not directly calculated. You can think about this as the variance of the distribution of intercepts across the groups. Essentially, we’re modeling the distribution from which each group’s intercept is drawn.</p>
+<p>The second row, labeled <code>Residual</code>, refers to the variability within each group that is not explained by the model predictors (because of random sampling). The variance here is 21.574, with a standard deviation of 4.645. This residual variance represents the individual differences or noise within groups after accounting for the modeled effects, including the random intercepts.</p>
+<p>So before moving on let’s summarize what get got so far.</p>
+<p>We used mixed models with a <strong>random intercept</strong> to model the effect of age on protein expression. We got an estimated global intercept (baseline) and slope (main effect of interest). We took care of the grouping structure of our data without directly estimating any additional parameters. In fact, what we estimated was <code>intercept</code>, <code>slope</code>, <code>variance of Intercept</code> and <code>variance of residuals</code>. One of the coolest thing here is that we would have estimated the exact same number of parameters if we our grouping structure had a lot more levels. But if we want to use grouping as covariate (in a classic model), we should modeled all of these levels!</p>
+<section id="predicting-the-random-intercept" class="level3">
+<h3 class="anchored" data-anchor-id="predicting-the-random-intercept">Predicting the random intercept</h3>
+<p>Despite that we have not estimated the intercept for each of the group, we can still predict what would the intercept be for each them. We are going to see in the math section how that can be done, but for now, we leave the details and directly use the function <code>ranef</code> from <code>lme4</code> package.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">ranef</span>(model_lmm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$group
+  (Intercept)
+1   19.059412
+2   -2.116552
+3   -7.752078
+4   -9.190783
+
+with conditional variances for "group" </code></pre>
+</div>
+</div>
+<p>In this particular case, it gave us the differences from the overall intercept estimated in the mixed effects model. By extracting the random effects using the <code>ranef</code> function, we obtain insights into the specific adjustments needed for each group. We can now use the global intercept and these adjustments to visualize the predicted intercept.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the initial scatter plot with points colored by group and shape determined by group</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data_int<span class="sc">$</span>x, data_int<span class="sc">$</span>y, <span class="at">xlab=</span><span class="st">"Age"</span>, <span class="at">ylab=</span><span class="st">"Protein expression"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>data_int<span class="sc">$</span>group, <span class="at">pch=</span><span class="fu">as.numeric</span>(data_int<span class="sc">$</span>group))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Looping through each unique group in the dataset</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (group <span class="cf">in</span> <span class="fu">unique</span>(data_int<span class="sc">$</span>group)) {</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Subset data for the current group</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  group_data <span class="ot">&lt;-</span> data_int[data_int<span class="sc">$</span>group <span class="sc">==</span> group,]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the intercept for the group by adding the fixed intercept to the group's random effect</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  intercept <span class="ot">&lt;-</span> <span class="fu">fixef</span>(model_lmm)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">ranef</span>(model_lmm)[[<span class="dv">1</span>]][group, <span class="dv">1</span>]</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the fixed effect slope from the model</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  slope <span class="ot">&lt;-</span> <span class="fu">fixef</span>(model_lmm)[<span class="dv">2</span>]</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Draw a line for the group using the calculated intercept and slope</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="at">y =</span> intercept <span class="sc">+</span> slope <span class="sc">*</span> group_data<span class="sc">$</span>x, <span class="at">x =</span> group_data<span class="sc">$</span>x, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Draw a global effect line using the fixed effect intercept and slope from the model</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">a =</span> <span class="fu">fixef</span>(model_lmm)[<span class="dv">1</span>], <span class="at">b =</span> <span class="fu">fixef</span>(model_lmm)[<span class="dv">2</span>], <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding a legend to the plot</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>legend_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Global Effect"</span>, <span class="st">"Random Intercept"</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> legend_labels, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>), <span class="at">lty =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-scatter-plot-grouped-lmm" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-plot-grouped-lmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lmm_files/figure-html/fig-scatter-plot-grouped-lmm-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-grouped-lmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Scatter plot of Age vs.&nbsp;Protein expression per group with random intercept
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Here we have plotted predicted best unbiased estimated trend per group and also the global trend. We can see that all the lines are parallel (as we still did not model slope per group) and there is a deviation of slope in each of the groups compared to the global trend.</p>
+<p>Looking at <a href="#fig-scatter-plot-grouped-lmm" class="quarto-xref">Figure&nbsp;2</a></p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

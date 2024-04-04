@@ -1,0 +1,28 @@
+project:
+  type: book
+
+book:
+  title: "Introduction to Mixed Models"
+  author: "Payam Emami"
+  chapters:
+    - index.qmd
+    - environment.qmd
+    - lm.qmd
+    - lmm.qmd
+    - math.qmd
+
+
+format:
+  html:
+    toc: true
+    theme:
+      light: cosmo
+    code-copy: true
+    code-overflow: wrap
+
+
+
+
+editor: visual
+
+
