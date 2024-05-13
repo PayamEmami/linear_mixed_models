@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Mixed Models - 1&nbsp; Introduction</title>
+<title>Introduction to Mixed Models - Mixed models (mathematical details)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -143,7 +143,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Mixed models (mathematical details)</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -195,7 +195,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./math.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text">Mixed models (mathematical details)</span></a>
   </div>
 </li>
     </ul>
@@ -208,29 +208,29 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#ordinary-least-squares-regression" id="toc-ordinary-least-squares-regression" class="nav-link active" data-scroll-target="#ordinary-least-squares-regression"><span class="header-section-number">2</span> Ordinary Least Squares regression</a>
+  <li><a href="#ordinary-least-squares-regression" id="toc-ordinary-least-squares-regression" class="nav-link active" data-scroll-target="#ordinary-least-squares-regression">Ordinary Least Squares regression</a>
   <ul class="collapse">
-  <li><a href="#mathematical-formulation" id="toc-mathematical-formulation" class="nav-link" data-scroll-target="#mathematical-formulation"><span class="header-section-number">2.1</span> Mathematical Formulation</a></li>
-  <li><a href="#correlated-residuals" id="toc-correlated-residuals" class="nav-link" data-scroll-target="#correlated-residuals"><span class="header-section-number">2.2</span> Correlated residuals</a></li>
+  <li><a href="#mathematical-formulation" id="toc-mathematical-formulation" class="nav-link" data-scroll-target="#mathematical-formulation">Mathematical Formulation</a></li>
+  <li><a href="#correlated-residuals" id="toc-correlated-residuals" class="nav-link" data-scroll-target="#correlated-residuals">Correlated residuals</a></li>
   </ul></li>
-  <li><a href="#generalized-least-squares-gls" id="toc-generalized-least-squares-gls" class="nav-link" data-scroll-target="#generalized-least-squares-gls"><span class="header-section-number">3</span> Generalized Least Squares (GLS)</a>
+  <li><a href="#generalized-least-squares-gls" id="toc-generalized-least-squares-gls" class="nav-link" data-scroll-target="#generalized-least-squares-gls">Generalized Least Squares (GLS)</a>
   <ul class="collapse">
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">3.1</span> Example</a></li>
-  <li><a href="#structure-of-v" id="toc-structure-of-v" class="nav-link" data-scroll-target="#structure-of-v"><span class="header-section-number">3.2</span> Structure of V</a>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#structure-of-v" id="toc-structure-of-v" class="nav-link" data-scroll-target="#structure-of-v">Structure of V</a>
   <ul class="collapse">
-  <li><a href="#design-matrix" id="toc-design-matrix" class="nav-link" data-scroll-target="#design-matrix"><span class="header-section-number">3.2.1</span> Design matrix</a></li>
+  <li><a href="#design-matrix" id="toc-design-matrix" class="nav-link" data-scroll-target="#design-matrix">Design matrix</a></li>
   </ul></li>
-  <li><a href="#structure-of-v-cont." id="toc-structure-of-v-cont." class="nav-link" data-scroll-target="#structure-of-v-cont."><span class="header-section-number">3.3</span> Structure of V (cont.)</a></li>
+  <li><a href="#structure-of-v-cont." id="toc-structure-of-v-cont." class="nav-link" data-scroll-target="#structure-of-v-cont.">Structure of V (cont.)</a></li>
   </ul></li>
-  <li><a href="#estimation-of-parameters" id="toc-estimation-of-parameters" class="nav-link" data-scroll-target="#estimation-of-parameters"><span class="header-section-number">4</span> Estimation of parameters</a>
+  <li><a href="#estimation-of-parameters" id="toc-estimation-of-parameters" class="nav-link" data-scroll-target="#estimation-of-parameters">Estimation of parameters</a>
   <ul class="collapse">
-  <li><a href="#bias-of-mle" id="toc-bias-of-mle" class="nav-link" data-scroll-target="#bias-of-mle"><span class="header-section-number">4.1</span> Bias of MLE</a></li>
-  <li><a href="#restricted-maximum-likelihood-reml" id="toc-restricted-maximum-likelihood-reml" class="nav-link" data-scroll-target="#restricted-maximum-likelihood-reml"><span class="header-section-number">4.2</span> Restricted Maximum Likelihood (REML)</a></li>
-  <li><a href="#other-methods-of-fitting" id="toc-other-methods-of-fitting" class="nav-link" data-scroll-target="#other-methods-of-fitting"><span class="header-section-number">4.3</span> Other methods of fitting</a></li>
+  <li><a href="#bias-of-mle" id="toc-bias-of-mle" class="nav-link" data-scroll-target="#bias-of-mle">Bias of MLE</a></li>
+  <li><a href="#restricted-maximum-likelihood-reml" id="toc-restricted-maximum-likelihood-reml" class="nav-link" data-scroll-target="#restricted-maximum-likelihood-reml">Restricted Maximum Likelihood (REML)</a></li>
+  <li><a href="#other-methods-of-fitting" id="toc-other-methods-of-fitting" class="nav-link" data-scroll-target="#other-methods-of-fitting">Other methods of fitting</a></li>
   </ul></li>
-  <li><a href="#best-linear-unbiased-estimators-blue" id="toc-best-linear-unbiased-estimators-blue" class="nav-link" data-scroll-target="#best-linear-unbiased-estimators-blue"><span class="header-section-number">5</span> Best Linear Unbiased Estimators (BLUE)</a></li>
-  <li><a href="#random-effects" id="toc-random-effects" class="nav-link" data-scroll-target="#random-effects"><span class="header-section-number">6</span> Random Effects</a></li>
-  <li><a href="#final-mixed-model-form" id="toc-final-mixed-model-form" class="nav-link" data-scroll-target="#final-mixed-model-form"><span class="header-section-number">7</span> Final mixed model form</a></li>
+  <li><a href="#best-linear-unbiased-estimators-blue" id="toc-best-linear-unbiased-estimators-blue" class="nav-link" data-scroll-target="#best-linear-unbiased-estimators-blue">Best Linear Unbiased Estimators (BLUE)</a></li>
+  <li><a href="#random-effects" id="toc-random-effects" class="nav-link" data-scroll-target="#random-effects">Random Effects</a></li>
+  <li><a href="#final-mixed-model-form" id="toc-final-mixed-model-form" class="nav-link" data-scroll-target="#final-mixed-model-form">Final mixed model form</a></li>
   </ul>
 </nav>
     </div>
@@ -239,7 +239,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
+<h1 class="title">Mixed models (mathematical details)</h1>
 </div>
 
 
@@ -257,11 +257,11 @@ window.Quarto = {
 
 
 <p>In this section we are going to explain some of the key mathematical properties of mixed model. Before we begin please note that as said before mixed models can become fairly complex, with a variety of parametrization techniques that go beyond the scope and time frame of this chapter. Here I assume that the reader has relatively a good understanding of Ordinary Least Squares regression (OLS) as we are going to use that to build mixed models.</p>
-<section id="ordinary-least-squares-regression" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Ordinary Least Squares regression</h1>
+<section id="ordinary-least-squares-regression" class="level1">
+<h1>Ordinary Least Squares regression</h1>
 <p>Ordinary Least Squares (OLS) is a fundamental method for linear regression analysis. It aims to find the line (or hyperplane) that best fits a set of data points by minimizing the sum of the squared differences (residuals) between observed values and the values predicted by the linear model.</p>
-<section id="mathematical-formulation" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="mathematical-formulation"><span class="header-section-number">2.1</span> Mathematical Formulation</h2>
+<section id="mathematical-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-formulation">Mathematical Formulation</h2>
 <p>Consider a dataset with <span class="math inline">\(n\)</span> observations and <span class="math inline">\(p\)</span> predictors. The model can be expressed as:</p>
 <p><span class="math display">\[
 y = X\beta + \epsilon
@@ -293,8 +293,8 @@ X^\top X \beta = X^\top y
 <li><strong>Consistency:</strong> As the sample size <span class="math inline">\(n\)</span> approaches infinity, the OLS estimator converges in probability to the true parameter value, assuming the predictors <span class="math inline">\(X\)</span> are non-stochastic.</li>
 </ul>
 </section>
-<section id="correlated-residuals" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="correlated-residuals"><span class="header-section-number">2.2</span> Correlated residuals</h2>
+<section id="correlated-residuals" class="level2">
+<h2 class="anchored" data-anchor-id="correlated-residuals">Correlated residuals</h2>
 <p>The classical OLS method is designed under the assumption that the residuals <span class="math inline">\(\epsilon\)</span> are uncorrelated and homoscedastic. However, when these assumptions are violated, particularly in the presence of correlated residuals, OLS estimates remain unbiased but lose efficiency, meaning they no longer have the smallest possible variance among all linear unbiased estimators.</p>
 <p>Consider the linear model: <span class="math display">\[
 y = X\beta + \epsilon, \quad \text{where} \quad \epsilon \sim N(0, \sigma^2 V)
@@ -360,11 +360,11 @@ X^\top V^{-1} X \beta = X^\top V^{-1} y
 \]</span> This is again the GLS estimator, confirming that it minimizes the quadratic form.</p>
 </section>
 </section>
-<section id="generalized-least-squares-gls" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Generalized Least Squares (GLS)</h1>
+<section id="generalized-least-squares-gls" class="level1">
+<h1>Generalized Least Squares (GLS)</h1>
 <p>Generalized Least Squares (GLS) is a statistical technique used to estimate the unknown parameters in a linear regression model when the error terms exhibit heteroscedasticity (varying variance) or are correlated. Unlike ordinary least squares (OLS) which assumes that the error terms are homoscedastic (constant variance) and uncorrelated, GLS adjusts for these irregularities by pre-multiplying the model by the inverse square root of the covariance matrix of the errors, <span class="math inline">\(V^{-1/2}\)</span>, or directly incorporating the inverse of the covariance matrix, <span class="math inline">\(V^{-1}\)</span>, into the estimation process. This transformation normalizes the errors, leading to more efficient and unbiased estimates even in the presence of non-ideal error structures. GLS is particularly useful in time series analysis, panel data models, and other contexts where observations are not independent.</p>
-<section id="example" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="example"><span class="header-section-number">3.1</span> Example</h2>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
 <p>Before going forward we want to try whether the equation we derived actually work on not.</p>
 <p>Let’s get back to our previous example:</p>
 <div class="cell">
@@ -409,7 +409,7 @@ X^\top V^{-1} X \beta = X^\top V^{-1} y
 <img src="math_files/figure-html/fig-scatter-plot-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.1: A scatter plot of Age vs.&nbsp;Protein expression
+Figure&nbsp;2.1: A scatter plot of Age vs.&nbsp;Protein expression
 </figcaption>
 </figure>
 </div>
@@ -554,7 +554,7 @@ X_transformed(Intercept)            X_transformedx
 <img src="math_files/figure-html/fig-scatter-plot-transformed-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-transformed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.2: A scatter plot of of transformed X and Y
+Figure&nbsp;2.2: A scatter plot of of transformed X and Y
 </figcaption>
 </figure>
 </div>
@@ -611,7 +611,7 @@ Figure&nbsp;3.2: A scatter plot of of transformed X and Y
 <img src="math_files/figure-html/fig-scatter-plot-transformed-animation1-1.gif" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-transformed-animation1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.3: A scatter plot of of transformed X and Y
+Figure&nbsp;2.3: A scatter plot of of transformed X and Y
 </figcaption>
 </figure>
 </div>
@@ -691,7 +691,7 @@ Figure&nbsp;3.3: A scatter plot of of transformed X and Y
 <img src="math_files/figure-html/fig-scatter-plot-transformed-animation2-1.gif" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-transformed-animation2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.4: A scatter plot of of transformed X and Y
+Figure&nbsp;2.4: A scatter plot of of transformed X and Y
 </figcaption>
 </figure>
 </div>
@@ -701,8 +701,8 @@ Figure&nbsp;3.4: A scatter plot of of transformed X and Y
 <p>The slope transformation basically draws the overall slope towards the global one and aligns different groups.</p>
 <p>So so summarize <span class="math inline">\(V\)</span> in GLS transforms the data into a form where the scale differences and correlations introduced by grouping structure (or any other known structure) are neutralized, making the transformed data suitable for analysis under standard assumptions of independence and uniform scale.</p>
 </section>
-<section id="structure-of-v" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="structure-of-v"><span class="header-section-number">3.2</span> Structure of V</h2>
+<section id="structure-of-v" class="level2">
+<h2 class="anchored" data-anchor-id="structure-of-v">Structure of V</h2>
 <p>I want to remind you here is that the purpose of matrix <span class="math inline">\(V\)</span> is to encode the correlation structure within each group in the data. Given this, as we said before, in an OLS model, it is typically assumed that the residuals are independently and identically distributed (i.i.d.) with a variance of <span class="math inline">\(\sigma^2\)</span>. This again implies that the covariance matrix of the residuals is: <span class="math display">\[
 \text{Cov}(\epsilon) =  \sigma^2 I
 \]</span> where <span class="math inline">\(\mathbf{I}\)</span> is the identity matrix, indicating no correlation between residuals of different observations.</p>
@@ -829,8 +829,8 @@ V_1 &amp; 0 &amp; 0\\
 0 &amp; 0 &amp; V_n
 \end{bmatrix}\
 \]</span> where <span class="math inline">\(n\)</span> is the number of groups. We practicaly just copy and paste <span class="math inline">\(\sigma^2 (\mathbf{I} + \frac{\sigma_d^2}{\sigma^2} \mathbf{11'})\)</span> in each diagonal entire. This however is not an elegant solution. If we have more complex grouping structure with many components, we will have a hard time doing that manually. Here we can use deign matrix. You should be fimilar with a deign matrix but i will try to give a very short overview.</p>
-<section id="design-matrix" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="design-matrix"><span class="header-section-number">3.2.1</span> Design matrix</h3>
+<section id="design-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="design-matrix">Design matrix</h3>
 <p>The design matrix, <span class="math inline">\(Z\)</span>, specifies how grouping and effects are associated with observations. Essentially, <span class="math inline">\(Z\)</span> allocates the influence of effects to the observational data.</p>
 <p>Each row of <span class="math inline">\(Z\)</span> corresponds to an observation in the dataset. Each column of <span class="math inline">\(Z\)</span> represents a an effect (like intercept or slope). The number of columns in <span class="math inline">\(Z\)</span> is equal to the number of effects in the model. The elements of <span class="math inline">\(Z\)</span> indicate the degree to which a given effect influences a particular observation. These elements can be binary (0 or 1) in simple cases or continuous values representing the strength or magnitude of the effect.</p>
 <p>To illustrate the use of <span class="math inline">\(Z\)</span> more concretely, let’s consider a couple of examples from typical applications:</p>
@@ -917,8 +917,8 @@ Z_3 = \begin{bmatrix}
 </ul>
 </section>
 </section>
-<section id="structure-of-v-cont." class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="structure-of-v-cont."><span class="header-section-number">3.3</span> Structure of V (cont.)</h2>
+<section id="structure-of-v-cont." class="level2">
+<h2 class="anchored" data-anchor-id="structure-of-v-cont.">Structure of V (cont.)</h2>
 <p>Given that we now know about the design matrix, we can go ahead and reformulate the stucture of <span class="math inline">\(V\)</span> base on the design matrix. Please again assume that we are only dealing with intercept here so our design matrix looks like</p>
 <p><span class="math display">\[
 Z = \begin{bmatrix}
@@ -1000,8 +1000,8 @@ V=\sigma^2 (\mathbf{I} + ZDZ^T)
 \]</span></p>
 </section>
 </section>
-<section id="estimation-of-parameters" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Estimation of parameters</h1>
+<section id="estimation-of-parameters" class="level1">
+<h1>Estimation of parameters</h1>
 <p>Given everything we have said so far, we now have complete ingredients to perform GLS. This includes our response variable <span class="math inline">\(y\)</span>, design matrix for the effect of interest <span class="math inline">\(X\)</span> (fixed effect), a design matrix for grouping structure in the data <span class="math inline">\(Z\)</span> and variance covariance matrix <span class="math inline">\(D\)</span> which encodes <span class="math inline">\(\sigma^2\)</span> (residual variance) and <span class="math inline">\(\sigma_d^2\)</span> (variance of the grouping structure) which gives us <span class="math inline">\(V=\sigma^2 (\mathbf{I} + ZDZ^T)\)</span>.</p>
 <p>What we have assumed so far is that we know <span class="math inline">\(V\)</span> but in reality <span class="math inline">\(V\)</span> is unknown. Since <span class="math inline">\(V\)</span> is from using <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(\frac{\sigma_d^2}{\sigma^2}\)</span>, we need to estimate these two which we are going to denote as <span class="math inline">\(\theta=[\sigma^2,\frac{\sigma_d^2}{\sigma^2}]=[\sigma^2,\lambda]\)</span>.</p>
 <p>To begin, in order to find the parameters for our model, we employ Maximum Likelihood Estimation (MLE). The goal is to estimate the <span class="math inline">\(\theta\)</span> that best fit our model to the observed data.</p>
@@ -1098,8 +1098,8 @@ L(\theta; y) = \frac{1}{(2\pi)^{n/2} |V|^{1/2}} \exp\left(-\frac{1}{2} (y - X\be
  Residual              2.4045 </code></pre>
 </div>
 </div>
-<section id="bias-of-mle" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="bias-of-mle"><span class="header-section-number">4.1</span> Bias of MLE</h2>
+<section id="bias-of-mle" class="level2">
+<h2 class="anchored" data-anchor-id="bias-of-mle">Bias of MLE</h2>
 <p>While Maximum Likelihood Estimators are efficient and consistent under many conditions, they can be biased, particularly in estimating the variance in a model.</p>
 <p>Consider a random sample <span class="math inline">\(y_1, y_2, \ldots, y_n\)</span> from a normal distribution <span class="math inline">\(N(0, \sigma^2)\)</span>. We want to estimate the variance <span class="math inline">\(\sigma^2\)</span> using MLE.</p>
 <p>The probability density function for a single observation <span class="math inline">\(y_i\)</span> given <span class="math inline">\(\sigma^2\)</span> is:</p>
@@ -1139,8 +1139,8 @@ E(\hat{\sigma}^2) = E\left(\frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2\right
 B(\hat{\sigma}^2) = E(\hat{\sigma}^2) - \sigma^2 = \frac{n-1}{n} \sigma^2 - \sigma^2 = \frac{n-1-n}{n} \sigma^2 = \frac{-1}{n} \sigma^2.
 \]</span></p>
 </section>
-<section id="restricted-maximum-likelihood-reml" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="restricted-maximum-likelihood-reml"><span class="header-section-number">4.2</span> Restricted Maximum Likelihood (REML)</h2>
+<section id="restricted-maximum-likelihood-reml" class="level2">
+<h2 class="anchored" data-anchor-id="restricted-maximum-likelihood-reml">Restricted Maximum Likelihood (REML)</h2>
 <p>As said before MLE has a significant limitation: it tends to underestimate variance components due to its non-adjustment for the degrees of freedom consumed by the fixed effects. This underestimation arises because MLE maximizes a likelihood function using all available data, which inadvertently causes an overfitting of fixed effects, leading to biased and sometimes misleading estimates of variance.</p>
 <p>This bias in MLE is known to result from too large a denominator in the variance formula, which does not account for the degrees of freedom used up by estimating the mean (fixed effects). Intuitively, this comes from how the sample mean is based on the same data, making the data points appear more clustered around the mean than they actually are, hence underestimating the true variability that a correct denominator would account for.</p>
 <p>To address this issue, Restricted Maximum Likelihood (REML) was developed. REML refines the approach used by MLE by first fitting the fixed effects and then adjusting the likelihood function used to estimate variance components, specifically compensating for the degrees of freedom used in estimating the fixed effects. This adjustment ensures that the estimation of variance components is based on the correct amount of independent information.</p>
@@ -1240,13 +1240,13 @@ e^{-\frac{1}{2} \mathbf{Y}^T (V^{-1} - V^{-1} \mathbf{X} \mathbf{A}) \mathbf{Y}}
 </div>
 </div>
 </section>
-<section id="other-methods-of-fitting" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="other-methods-of-fitting"><span class="header-section-number">4.3</span> Other methods of fitting</h2>
+<section id="other-methods-of-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="other-methods-of-fitting">Other methods of fitting</h2>
 <p>In practice, when dealing with this kind of models, we do not directly optimize the log-likelihood function due to its complexity, particularly when random effects are included. Instead, more tractable approaches such as the Expectation-Maximization (EM) algorithm, Newton-Raphson, and quasi-likelihood methods are commonly employed. These techniques facilitate the optimization process by breaking it down into simpler steps or by approximating the log-likelihood function. For instance, the EM algorithm efficiently handles missing data or latent variables by iteratively estimating expected values and maximizing the likelihood. Newton-Raphson and related methods, on the other hand, provide robust mechanisms for dealing with non-linear optimization through successive approximations. These methods are essential for ensuring convergence and computational feasibility in the analysis of mixed models.</p>
 </section>
 </section>
-<section id="best-linear-unbiased-estimators-blue" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Best Linear Unbiased Estimators (BLUE)</h1>
+<section id="best-linear-unbiased-estimators-blue" class="level1">
+<h1>Best Linear Unbiased Estimators (BLUE)</h1>
 <p>Now that we have estimated the components of <span class="math inline">\(V\)</span>, we can show that <span class="math inline">\(B\)</span> is in fact Best Linear Unbiased Estimators (BLUE). This involves proving that the GLS estimator is both unbiased and has the smallest variance among all linear unbiased estimators.</p>
 <p>Recall the GLS estimator is defined as: <span class="math display">\[
 \hat{\beta}_{GLS} = (X^T V^{-1} X)^{-1} X^T V^{-1} y
@@ -1310,8 +1310,8 @@ Var(\hat{\beta}_L) = \sigma^2 \left((X^TV^{-1}X)^{-1} + MVM^T\right)
 <p><span class="math inline">\(MVM^T\)</span> is a positive semi-definite matrix since <span class="math inline">\(V\)</span> is positive definite (or semi-definite if <span class="math inline">\(V\)</span> is not strictly positive). This implies <span class="math inline">\(\sigma^2 MVM^T \geq 0\)</span> which gives us <span class="math inline">\(Var(\hat{\beta}_L) \geq Var(\hat{\beta}_{GLS})\)</span>.</p>
 <p>This shows that any deviation from the GLS estimator in the form of an additional matrix <span class="math inline">\(M\)</span> results in an increase in variance. Therefore, the GLS estimator <span class="math inline">\(\hat{\beta}_{GLS}\)</span> is the Best Linear Unbiased Estimator (BLUE) for models where the errors have a covariance structure described by <span class="math inline">\(\sigma^2 V\)</span>.</p>
 </section>
-<section id="random-effects" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Random Effects</h1>
+<section id="random-effects" class="level1">
+<h1>Random Effects</h1>
 <p>I want to briefly review the components we’ve discussed so far before proceeding with random effects</p>
 <ol type="1">
 <li><p><strong>Design Matrix, <span class="math inline">\(Z\)</span></strong>: This matrix is called the design matrix for the random effect and encodes how each observation in our dataset is related to other observations within the same group or category. It effectively organizes our data according to predetermined groupings.</p></li>
@@ -1410,8 +1410,8 @@ with conditional variances for "group" </code></pre>
 </div>
 <p>We get identical results! These values are also called to be Best Linear Unbiased Prediction (BLUP) because Unbiasedness (<span class="math inline">\(E(E(u | y)) = E(u) = 0\)</span>) and minization of the variance of the prediction error <span class="math inline">\(E[(u - \hat{u})^2]\)</span> among all linear unbiased predictors. We are not going to prove them here as we did similar analysis up there fore BLUEs.</p>
 </section>
-<section id="final-mixed-model-form" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Final mixed model form</h1>
+<section id="final-mixed-model-form" class="level1">
+<h1>Final mixed model form</h1>
 <p>So all together, we now know that each observation in our data can be described by our fixed effects and predicted random effects plus some random noise.</p>
 <p>Putting all together we have</p>
 <p><span class="math display">\[y = X\beta + Zu + e\]</span></p>
