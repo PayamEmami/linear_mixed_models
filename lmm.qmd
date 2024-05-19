@@ -1209,10 +1209,11 @@ A residuals versus fitted values plot provides insights into several assumptions
 There are other types of diagnostics tools and plots that can be used in different scenarios. `performance` package provides an easy to use function to check the assumptions of linear models. You need to install `performance` package to run the following code:
 
 
-```{r,fig.width=10,fig.height=10}
+```{r,fig.width=10,fig.height=10,eval=FALSE}
 #| label: performance_check_model
 #| fig-cap: "Example of plots made using performance package"
 #| code-fold: true
+
 performance::check_model(model_lmm_treatment_int_rnd, panel = T,check = "all")
 ```
 

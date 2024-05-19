@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Mixed Models - 1&nbsp; Introduction</title>
+<title>Introduction to Mixed Models - Mixed models (mathematical details)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -143,7 +143,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./math.html">Mixed models (mathematical details)</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -195,7 +195,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./math.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text">Mixed models (mathematical details)</span></a>
   </div>
 </li>
     </ul>
@@ -208,29 +208,40 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#ordinary-least-squares-regression" id="toc-ordinary-least-squares-regression" class="nav-link active" data-scroll-target="#ordinary-least-squares-regression"><span class="header-section-number">2</span> Ordinary Least Squares regression</a>
+  <li><a href="#ordinary-least-squares-regression" id="toc-ordinary-least-squares-regression" class="nav-link active" data-scroll-target="#ordinary-least-squares-regression">Ordinary Least Squares regression</a>
   <ul class="collapse">
-  <li><a href="#mathematical-formulation" id="toc-mathematical-formulation" class="nav-link" data-scroll-target="#mathematical-formulation"><span class="header-section-number">2.1</span> Mathematical Formulation</a></li>
-  <li><a href="#correlated-residuals" id="toc-correlated-residuals" class="nav-link" data-scroll-target="#correlated-residuals"><span class="header-section-number">2.2</span> Correlated residuals</a></li>
+  <li><a href="#mathematical-formulation" id="toc-mathematical-formulation" class="nav-link" data-scroll-target="#mathematical-formulation">Mathematical Formulation</a></li>
+  <li><a href="#correlated-residuals" id="toc-correlated-residuals" class="nav-link" data-scroll-target="#correlated-residuals">Correlated residuals</a></li>
   </ul></li>
-  <li><a href="#generalized-least-squares-gls" id="toc-generalized-least-squares-gls" class="nav-link" data-scroll-target="#generalized-least-squares-gls"><span class="header-section-number">3</span> Generalized Least Squares (GLS)</a>
+  <li><a href="#generalized-least-squares-gls" id="toc-generalized-least-squares-gls" class="nav-link" data-scroll-target="#generalized-least-squares-gls">Generalized Least Squares (GLS)</a>
   <ul class="collapse">
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">3.1</span> Example</a></li>
-  <li><a href="#structure-of-v" id="toc-structure-of-v" class="nav-link" data-scroll-target="#structure-of-v"><span class="header-section-number">3.2</span> Structure of V</a>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#structure-of-v" id="toc-structure-of-v" class="nav-link" data-scroll-target="#structure-of-v">Structure of V</a>
   <ul class="collapse">
-  <li><a href="#design-matrix" id="toc-design-matrix" class="nav-link" data-scroll-target="#design-matrix"><span class="header-section-number">3.2.1</span> Design matrix</a></li>
+  <li><a href="#design-matrix" id="toc-design-matrix" class="nav-link" data-scroll-target="#design-matrix">Design matrix</a></li>
   </ul></li>
-  <li><a href="#structure-of-v-cont." id="toc-structure-of-v-cont." class="nav-link" data-scroll-target="#structure-of-v-cont."><span class="header-section-number">3.3</span> Structure of V (cont.)</a></li>
+  <li><a href="#structure-of-v-cont." id="toc-structure-of-v-cont." class="nav-link" data-scroll-target="#structure-of-v-cont.">Structure of V (cont.)</a></li>
   </ul></li>
-  <li><a href="#estimation-of-parameters" id="toc-estimation-of-parameters" class="nav-link" data-scroll-target="#estimation-of-parameters"><span class="header-section-number">4</span> Estimation of parameters</a>
+  <li><a href="#estimation-of-parameters" id="toc-estimation-of-parameters" class="nav-link" data-scroll-target="#estimation-of-parameters">Estimation of parameters</a>
   <ul class="collapse">
-  <li><a href="#bias-of-mle" id="toc-bias-of-mle" class="nav-link" data-scroll-target="#bias-of-mle"><span class="header-section-number">4.1</span> Bias of MLE</a></li>
-  <li><a href="#restricted-maximum-likelihood-reml" id="toc-restricted-maximum-likelihood-reml" class="nav-link" data-scroll-target="#restricted-maximum-likelihood-reml"><span class="header-section-number">4.2</span> Restricted Maximum Likelihood (REML)</a></li>
-  <li><a href="#other-methods-of-fitting" id="toc-other-methods-of-fitting" class="nav-link" data-scroll-target="#other-methods-of-fitting"><span class="header-section-number">4.3</span> Other methods of fitting</a></li>
+  <li><a href="#bias-of-mle" id="toc-bias-of-mle" class="nav-link" data-scroll-target="#bias-of-mle">Bias of MLE</a></li>
+  <li><a href="#restricted-maximum-likelihood-reml" id="toc-restricted-maximum-likelihood-reml" class="nav-link" data-scroll-target="#restricted-maximum-likelihood-reml">Restricted Maximum Likelihood (REML)</a></li>
+  <li><a href="#other-methods-of-fitting" id="toc-other-methods-of-fitting" class="nav-link" data-scroll-target="#other-methods-of-fitting">Other methods of fitting</a></li>
   </ul></li>
-  <li><a href="#best-linear-unbiased-estimators-blue" id="toc-best-linear-unbiased-estimators-blue" class="nav-link" data-scroll-target="#best-linear-unbiased-estimators-blue"><span class="header-section-number">5</span> Best Linear Unbiased Estimators (BLUE)</a></li>
-  <li><a href="#random-effects" id="toc-random-effects" class="nav-link" data-scroll-target="#random-effects"><span class="header-section-number">6</span> Random Effects</a></li>
-  <li><a href="#final-mixed-model-form" id="toc-final-mixed-model-form" class="nav-link" data-scroll-target="#final-mixed-model-form"><span class="header-section-number">7</span> Final mixed model form</a></li>
+  <li><a href="#best-linear-unbiased-estimators-blue" id="toc-best-linear-unbiased-estimators-blue" class="nav-link" data-scroll-target="#best-linear-unbiased-estimators-blue">Best Linear Unbiased Estimators (BLUE)</a></li>
+  <li><a href="#random-effects" id="toc-random-effects" class="nav-link" data-scroll-target="#random-effects">Random Effects</a></li>
+  <li><a href="#final-mixed-model-form" id="toc-final-mixed-model-form" class="nav-link" data-scroll-target="#final-mixed-model-form">Final mixed model form</a></li>
+  <li><a href="#p-value-for-mixed-models-satterthwaite-approximation" id="toc-p-value-for-mixed-models-satterthwaite-approximation" class="nav-link" data-scroll-target="#p-value-for-mixed-models-satterthwaite-approximation">p-value for mixed models (Satterthwaite approximation)</a>
+  <ul class="collapse">
+  <li><a href="#how-rare-is-this-value" id="toc-how-rare-is-this-value" class="nav-link" data-scroll-target="#how-rare-is-this-value">How rare is this value?!</a></li>
+  <li><a href="#standard-normal-distribution" id="toc-standard-normal-distribution" class="nav-link" data-scroll-target="#standard-normal-distribution">Standard normal distribution</a></li>
+  <li><a href="#putting-it-all-together-t" id="toc-putting-it-all-together-t" class="nav-link" data-scroll-target="#putting-it-all-together-t">Putting it all together (T)</a></li>
+  <li><a href="#t-statistics-for-ols" id="toc-t-statistics-for-ols" class="nav-link" data-scroll-target="#t-statistics-for-ols">t-statistics for OLS</a>
+  <ul class="collapse">
+  <li><a href="#degrees-of-freedom-of-gls" id="toc-degrees-of-freedom-of-gls" class="nav-link" data-scroll-target="#degrees-of-freedom-of-gls">degrees of freedom of GLS</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
     </div>
@@ -239,7 +250,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
+<h1 class="title">Mixed models (mathematical details)</h1>
 </div>
 
 
@@ -257,11 +268,11 @@ window.Quarto = {
 
 
 <p>In this section we are going to explain some of the key mathematical properties of mixed model. Before we begin please note that as said before mixed models can become fairly complex, with a variety of parametrization techniques that go beyond the scope and time frame of this chapter. Here I assume that the reader has relatively a good understanding of Ordinary Least Squares regression (OLS) as we are going to use that to build mixed models.</p>
-<section id="ordinary-least-squares-regression" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Ordinary Least Squares regression</h1>
+<section id="ordinary-least-squares-regression" class="level1">
+<h1>Ordinary Least Squares regression</h1>
 <p>Ordinary Least Squares (OLS) is a fundamental method for linear regression analysis. It aims to find the line (or hyperplane) that best fits a set of data points by minimizing the sum of the squared differences (residuals) between observed values and the values predicted by the linear model.</p>
-<section id="mathematical-formulation" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="mathematical-formulation"><span class="header-section-number">2.1</span> Mathematical Formulation</h2>
+<section id="mathematical-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-formulation">Mathematical Formulation</h2>
 <p>Consider a dataset with <span class="math inline">\(n\)</span> observations and <span class="math inline">\(p\)</span> predictors. The model can be expressed as:</p>
 <p><span class="math display">\[
 y = X\beta + \epsilon
@@ -293,8 +304,8 @@ X^\top X \beta = X^\top y
 <li><strong>Consistency:</strong> As the sample size <span class="math inline">\(n\)</span> approaches infinity, the OLS estimator converges in probability to the true parameter value, assuming the predictors <span class="math inline">\(X\)</span> are non-stochastic.</li>
 </ul>
 </section>
-<section id="correlated-residuals" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="correlated-residuals"><span class="header-section-number">2.2</span> Correlated residuals</h2>
+<section id="correlated-residuals" class="level2">
+<h2 class="anchored" data-anchor-id="correlated-residuals">Correlated residuals</h2>
 <p>The classical OLS method is designed under the assumption that the residuals <span class="math inline">\(\epsilon\)</span> are uncorrelated and homoscedastic. However, when these assumptions are violated, particularly in the presence of correlated residuals, OLS estimates remain unbiased but lose efficiency, meaning they no longer have the smallest possible variance among all linear unbiased estimators.</p>
 <p>Consider the linear model: <span class="math display">\[
 y = X\beta + \epsilon, \quad \text{where} \quad \epsilon \sim N(0, \sigma^2 V)
@@ -360,11 +371,11 @@ X^\top V^{-1} X \beta = X^\top V^{-1} y
 \]</span> This is again the GLS estimator, confirming that it minimizes the quadratic form.</p>
 </section>
 </section>
-<section id="generalized-least-squares-gls" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Generalized Least Squares (GLS)</h1>
+<section id="generalized-least-squares-gls" class="level1">
+<h1>Generalized Least Squares (GLS)</h1>
 <p>Generalized Least Squares (GLS) is a statistical technique used to estimate the unknown parameters in a linear regression model when the error terms exhibit heteroscedasticity (varying variance) or are correlated. Unlike ordinary least squares (OLS) which assumes that the error terms are homoscedastic (constant variance) and uncorrelated, GLS adjusts for these irregularities by pre-multiplying the model by the inverse square root of the covariance matrix of the errors, <span class="math inline">\(V^{-1/2}\)</span>, or directly incorporating the inverse of the covariance matrix, <span class="math inline">\(V^{-1}\)</span>, into the estimation process. This transformation normalizes the errors, leading to more efficient and unbiased estimates even in the presence of non-ideal error structures. GLS is particularly useful in time series analysis, panel data models, and other contexts where observations are not independent.</p>
-<section id="example" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="example"><span class="header-section-number">3.1</span> Example</h2>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
 <p>Before going forward we want to try whether the equation we derived actually work on not.</p>
 <p>Let’s get back to our previous example:</p>
 <div class="cell">
@@ -409,7 +420,7 @@ X^\top V^{-1} X \beta = X^\top V^{-1} y
 <img src="math_files/figure-html/fig-scatter-plot-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.1: A scatter plot of Age vs.&nbsp;Protein expression
+Figure&nbsp;2.1: A scatter plot of Age vs.&nbsp;Protein expression
 </figcaption>
 </figure>
 </div>
@@ -554,7 +565,7 @@ X_transformed(Intercept)            X_transformedx
 <img src="math_files/figure-html/fig-scatter-plot-transformed-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-transformed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.2: A scatter plot of of transformed X and Y
+Figure&nbsp;2.2: A scatter plot of of transformed X and Y
 </figcaption>
 </figure>
 </div>
@@ -611,14 +622,14 @@ Figure&nbsp;3.2: A scatter plot of of transformed X and Y
 <img src="math_files/figure-html/fig-scatter-plot-transformed-animation1-1.gif" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-transformed-animation1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.3: A scatter plot of of transformed X and Y
+Figure&nbsp;2.3: A scatter plot of of transformed X and Y
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>By now it should be clear that as the variance across the group is low that transformation does basically nothing (because there is nothing to correct for) but as we increase this variance we keep rescaling and streching the data so that they are aligned and therefore the differences between the groups are minimized.</p>
-<p>So this transformation ensures that each dimension (principal component) of the space now has equal variance (specifically, variance of 1), removing the effect of the original variances encoded by <span class="math inline">\(V\)</span>. If the components of the data were correlated (as indicated by the off-diagonal elements of <span class="math inline">\(V\)</span>), the transformation effectively decorrelates these components. In the new space, the covariance between any pair of different components of $ V^{-1/2} data$ is zero. Thus, geometrically, <span class="math inline">\(V^{-1/2} data\)</span> transforms the data into a form where the scale differences and correlations introduced by <span class="math inline">\(V\)</span> are neutralized, making the transformed data suitable for analysis under standard assumptions of independence and uniform scale.</p>
+<p>So this transformation ensures that each dimension (principal component) of the space now has equal variance (specifically, variance of 1), removing the effect of the original variances encoded by <span class="math inline">\(V\)</span>. If the components of the data were correlated (as indicated by the off-diagonal elements of <span class="math inline">\(V\)</span>), the transformation effectively decorrelates these components. In the new space, the covariance between any pair of different components of <span class="math inline">\(V^{-1/2} data\)</span> is zero. Thus, geometrically, <span class="math inline">\(V^{-1/2} data\)</span> transforms the data into a form where the scale differences and correlations introduced by <span class="math inline">\(V\)</span> are neutralized, making the transformed data suitable for analysis under standard assumptions of independence and uniform scale.</p>
 <p>The last thing to note here is that here we are dealing with a random intercept model, the covariance matrix <span class="math inline">\(V\)</span> used for the transformation typically involves scaling and centering the group data without any rotation. This is because the model structure we are using doesn’t incorporate random slopes or other types of covariance structures that might induce rotation. Instead, it predominantly influences the scaling and translation of the groups in our dataset.</p>
 <p>In a random intercept model, each group has its own intercept but shares the slope (if any), leading to vertical shifts in the data but maintaining the same orientation (no rotation) regarding the predictor axis. So geometrically:</p>
 <ol type="1">
@@ -691,7 +702,7 @@ Figure&nbsp;3.3: A scatter plot of of transformed X and Y
 <img src="math_files/figure-html/fig-scatter-plot-transformed-animation2-1.gif" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-plot-transformed-animation2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.4: A scatter plot of of transformed X and Y
+Figure&nbsp;2.4: A scatter plot of of transformed X and Y
 </figcaption>
 </figure>
 </div>
@@ -701,8 +712,8 @@ Figure&nbsp;3.4: A scatter plot of of transformed X and Y
 <p>The slope transformation basically draws the overall slope towards the global one and aligns different groups.</p>
 <p>So so summarize <span class="math inline">\(V\)</span> in GLS transforms the data into a form where the scale differences and correlations introduced by grouping structure (or any other known structure) are neutralized, making the transformed data suitable for analysis under standard assumptions of independence and uniform scale.</p>
 </section>
-<section id="structure-of-v" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="structure-of-v"><span class="header-section-number">3.2</span> Structure of V</h2>
+<section id="structure-of-v" class="level2">
+<h2 class="anchored" data-anchor-id="structure-of-v">Structure of V</h2>
 <p>I want to remind you here is that the purpose of matrix <span class="math inline">\(V\)</span> is to encode the correlation structure within each group in the data. Given this, as we said before, in an OLS model, it is typically assumed that the residuals are independently and identically distributed (i.i.d.) with a variance of <span class="math inline">\(\sigma^2\)</span>. This again implies that the covariance matrix of the residuals is: <span class="math display">\[
 \text{Cov}(\epsilon) =  \sigma^2 I
 \]</span> where <span class="math inline">\(\mathbf{I}\)</span> is the identity matrix, indicating no correlation between residuals of different observations.</p>
@@ -724,50 +735,51 @@ Figure&nbsp;3.4: A scatter plot of of transformed X and Y
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-scatter-plot-ICC</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "A scatter plot of of X and Y showing the effect of ICC"</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the model</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>simulate_data <span class="ot">&lt;-</span> <span class="cf">function</span>(n_groups, n_per_group, slope, icc, sigma_within) {</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Parameters</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> <span class="dv">0</span>  <span class="co"># Overall intercept (can be set to other values as needed)</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute the variance components</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  sigma_between <span class="ot">&lt;-</span> icc <span class="sc">*</span> sigma_within <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> icc)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simulate random effects for each group (intercepts)</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  group_effects <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n_groups, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="fu">sqrt</span>(sigma_between))</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Prepare data frame</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n_groups, <span class="at">each =</span> n_per_group),</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">runif</span>(<span class="at">n =</span> n_per_group, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>), <span class="at">times =</span> n_groups)</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add the fixed effect (slope) and random effects</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>y <span class="ot">&lt;-</span> slope <span class="sc">*</span> data<span class="sc">$</span>x <span class="sc">+</span> <span class="fu">rep</span>(group_effects, <span class="at">each =</span> n_per_group) <span class="sc">+</span> </span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">rnorm</span>(<span class="at">n =</span> n_groups <span class="sc">*</span> n_per_group, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(sigma_within))</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>results<span class="ot">&lt;-</span><span class="fu">list</span>()</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>data_int <span class="ot">&lt;-</span> <span class="fu">simulate_data</span>(<span class="dv">4</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="fl">0.1</span>,<span class="dv">100</span>)</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>ICCs<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">length.out =</span> <span class="dv">20</span>)</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ICC <span class="cf">in</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">length.out =</span> <span class="dv">20</span>)) {</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a> data_int <span class="ot">&lt;-</span> <span class="fu">simulate_data</span>(<span class="dv">4</span>,<span class="dv">10</span>,<span class="dv">10</span>,ICC,<span class="dv">100</span>)</span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>  transformed_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_int,<span class="at">ICC=</span>ICC)</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  results[[<span class="fu">length</span>(results) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> transformed_data</span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>simulate_data <span class="ot">&lt;-</span> <span class="cf">function</span>(n_groups, n_per_group, slope, icc, sigma_within) {</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Parameters</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> <span class="dv">0</span>  <span class="co"># Overall intercept (can be set to other values as needed)</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute the variance components</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  sigma_between <span class="ot">&lt;-</span> icc <span class="sc">*</span> sigma_within <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> icc)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simulate random effects for each group (intercepts)</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  group_effects <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n_groups, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="fu">sqrt</span>(sigma_between))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Prepare data frame</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n_groups, <span class="at">each =</span> n_per_group),</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">runif</span>(<span class="at">n =</span> n_per_group, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>), <span class="at">times =</span> n_groups)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add the fixed effect (slope) and random effects</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>y <span class="ot">&lt;-</span> slope <span class="sc">*</span> data<span class="sc">$</span>x <span class="sc">+</span> <span class="fu">rep</span>(group_effects, <span class="at">each =</span> n_per_group) <span class="sc">+</span> </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>            <span class="fu">rnorm</span>(<span class="at">n =</span> n_groups <span class="sc">*</span> n_per_group, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(sigma_within))</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>results<span class="ot">&lt;-</span><span class="fu">list</span>()</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>data_int <span class="ot">&lt;-</span> <span class="fu">simulate_data</span>(<span class="dv">4</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="fl">0.1</span>,<span class="dv">100</span>)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>ICCs<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">length.out =</span> <span class="dv">20</span>)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ICC <span class="cf">in</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">length.out =</span> <span class="dv">20</span>)) {</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a> data_int <span class="ot">&lt;-</span> <span class="fu">simulate_data</span>(<span class="dv">4</span>,<span class="dv">10</span>,<span class="dv">10</span>,ICC,<span class="dv">100</span>)</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  transformed_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_int,<span class="at">ICC=</span>ICC)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>  results[[<span class="fu">length</span>(results) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> transformed_data</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>animation_data <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, results)</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>animation_data<span class="sc">$</span>group<span class="ot">&lt;-</span><span class="fu">as.factor</span>(animation_data<span class="sc">$</span>group)</span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(animation_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> group)) <span class="sc">+</span></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="fu">stat_ellipse</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y,<span class="at">color=</span>group),<span class="at">type =</span> <span class="st">"norm"</span>)<span class="sc">+</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"ICC: {closest_state}"</span>, <span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Y"</span>) <span class="sc">+</span></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_states</span>(ICC, <span class="at">transition_length =</span> <span class="dv">1</span>, <span class="at">state_length =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ease_aes</span>(<span class="st">'linear'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>animation_data <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, results)</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>animation_data<span class="sc">$</span>group<span class="ot">&lt;-</span><span class="fu">as.factor</span>(animation_data<span class="sc">$</span>group)</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(animation_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span> <span class="fu">stat_ellipse</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y,<span class="at">color=</span>group),<span class="at">type =</span> <span class="st">"norm"</span>)<span class="sc">+</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"ICC: {closest_state}"</span>, <span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Y"</span>) <span class="sc">+</span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_states</span>(ICC, <span class="at">transition_length =</span> <span class="dv">1</span>, <span class="at">state_length =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ease_aes</span>(<span class="st">'linear'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -829,8 +841,8 @@ V_1 &amp; 0 &amp; 0\\
 0 &amp; 0 &amp; V_n
 \end{bmatrix}\
 \]</span> where <span class="math inline">\(n\)</span> is the number of groups. We practicaly just copy and paste <span class="math inline">\(\sigma^2 (\mathbf{I} + \frac{\sigma_d^2}{\sigma^2} \mathbf{11'})\)</span> in each diagonal entire. This however is not an elegant solution. If we have more complex grouping structure with many components, we will have a hard time doing that manually. Here we can use deign matrix. You should be fimilar with a deign matrix but i will try to give a very short overview.</p>
-<section id="design-matrix" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="design-matrix"><span class="header-section-number">3.2.1</span> Design matrix</h3>
+<section id="design-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="design-matrix">Design matrix</h3>
 <p>The design matrix, <span class="math inline">\(Z\)</span>, specifies how grouping and effects are associated with observations. Essentially, <span class="math inline">\(Z\)</span> allocates the influence of effects to the observational data.</p>
 <p>Each row of <span class="math inline">\(Z\)</span> corresponds to an observation in the dataset. Each column of <span class="math inline">\(Z\)</span> represents a an effect (like intercept or slope). The number of columns in <span class="math inline">\(Z\)</span> is equal to the number of effects in the model. The elements of <span class="math inline">\(Z\)</span> indicate the degree to which a given effect influences a particular observation. These elements can be binary (0 or 1) in simple cases or continuous values representing the strength or magnitude of the effect.</p>
 <p>To illustrate the use of <span class="math inline">\(Z\)</span> more concretely, let’s consider a couple of examples from typical applications:</p>
@@ -917,8 +929,8 @@ Z_3 = \begin{bmatrix}
 </ul>
 </section>
 </section>
-<section id="structure-of-v-cont." class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="structure-of-v-cont."><span class="header-section-number">3.3</span> Structure of V (cont.)</h2>
+<section id="structure-of-v-cont." class="level2">
+<h2 class="anchored" data-anchor-id="structure-of-v-cont.">Structure of V (cont.)</h2>
 <p>Given that we now know about the design matrix, we can go ahead and reformulate the stucture of <span class="math inline">\(V\)</span> base on the design matrix. Please again assume that we are only dealing with intercept here so our design matrix looks like</p>
 <p><span class="math display">\[
 Z = \begin{bmatrix}
@@ -1000,8 +1012,8 @@ V=\sigma^2 (\mathbf{I} + ZDZ^T)
 \]</span></p>
 </section>
 </section>
-<section id="estimation-of-parameters" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Estimation of parameters</h1>
+<section id="estimation-of-parameters" class="level1">
+<h1>Estimation of parameters</h1>
 <p>Given everything we have said so far, we now have complete ingredients to perform GLS. This includes our response variable <span class="math inline">\(y\)</span>, design matrix for the effect of interest <span class="math inline">\(X\)</span> (fixed effect), a design matrix for grouping structure in the data <span class="math inline">\(Z\)</span> and variance covariance matrix <span class="math inline">\(D\)</span> which encodes <span class="math inline">\(\sigma^2\)</span> (residual variance) and <span class="math inline">\(\sigma_d^2\)</span> (variance of the grouping structure) which gives us <span class="math inline">\(V=\sigma^2 (\mathbf{I} + ZDZ^T)\)</span>.</p>
 <p>What we have assumed so far is that we know <span class="math inline">\(V\)</span> but in reality <span class="math inline">\(V\)</span> is unknown. Since <span class="math inline">\(V\)</span> is from using <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(\frac{\sigma_d^2}{\sigma^2}\)</span>, we need to estimate these two which we are going to denote as <span class="math inline">\(\theta=[\sigma^2,\frac{\sigma_d^2}{\sigma^2}]=[\sigma^2,\lambda]\)</span>.</p>
 <p>To begin, in order to find the parameters for our model, we employ Maximum Likelihood Estimation (MLE). The goal is to estimate the <span class="math inline">\(\theta\)</span> that best fit our model to the observed data.</p>
@@ -1098,49 +1110,75 @@ L(\theta; y) = \frac{1}{(2\pi)^{n/2} |V|^{1/2}} \exp\left(-\frac{1}{2} (y - X\be
  Residual              2.4045 </code></pre>
 </div>
 </div>
-<section id="bias-of-mle" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="bias-of-mle"><span class="header-section-number">4.1</span> Bias of MLE</h2>
+<section id="bias-of-mle" class="level2">
+<h2 class="anchored" data-anchor-id="bias-of-mle">Bias of MLE</h2>
 <p>While Maximum Likelihood Estimators are efficient and consistent under many conditions, they can be biased, particularly in estimating the variance in a model.</p>
-<p>Consider a random sample <span class="math inline">\(y_1, y_2, \ldots, y_n\)</span> from a normal distribution <span class="math inline">\(N(0, \sigma^2)\)</span>. We want to estimate the variance <span class="math inline">\(\sigma^2\)</span> using MLE.</p>
+<p>Consider a random sample <span class="math inline">\(y_1, y_2, \ldots, y_n\)</span> from a normal distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span>. We want to estimate the variance <span class="math inline">\(\sigma^2\)</span> using MLE.</p>
 <p>The probability density function for a single observation <span class="math inline">\(y_i\)</span> given <span class="math inline">\(\sigma^2\)</span> is:</p>
 <p><span class="math display">\[
-f(y_i | \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{y_i^2}{2\sigma^2}\right).
+f(y_i | \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right).
 \]</span></p>
-<p>The likelihood function for all observations <span class="math inline">\(y_1, \ldots, y_n\)</span>, assuming independence, is the product of individual densities: <span class="math display">\[
-L(\sigma^2 | y_1, \ldots, y_n) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{y_i^2}{2\sigma^2}\right).
+<p>The likelihood function for all observations <span class="math inline">\(y_1, \ldots, y_n\)</span>, assuming independence, is the product of individual densities:</p>
+<p><span class="math display">\[
+L(\sigma^2 | y_1, \ldots, y_n) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right).
 \]</span></p>
-<p>The log-likelihood function <span class="math inline">\(\ell(\sigma^2)\)</span> is the natural logarithm of the likelihood function: <span class="math display">\[
-\ell(\sigma^2) = \sum_{i=1}^n \log\left(\frac{1}{\sqrt{2\pi \sigma^2}}\right) - \sum_{i=1}^n \frac{y_i^2}{2\sigma^2}
-= -\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n y_i^2.
+<p>The log-likelihood function, <span class="math inline">\(\ell(\sigma^2)\)</span>, is the natural logarithm of the likelihood function:</p>
+<p><span class="math display">\[
+\ell(\sigma^2) = \sum_{i=1}^n \log\left(\frac{1}{\sqrt{2\pi \sigma^2}}\right) - \sum_{i=1}^n \frac{(y_i - \mu)^2}{2\sigma^2}
+= -\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \mu)^2.
 \]</span></p>
-<p>To find the MLE, differentiate <span class="math inline">\(\ell(\sigma^2)\)</span> with respect to <span class="math inline">\(\sigma^2\)</span> and set this derivative to zero: <span class="math display">\[
-\frac{d\ell(\sigma^2)}{d\sigma^2} = -\frac{n}{2\sigma^2} + \frac{\sum_{i=1}^n y_i^2}{2(\sigma^2)^2} = 0.
+<p>To find the maximum likelihood estimator (MLE) for <span class="math inline">\(\sigma^2\)</span>, differentiate <span class="math inline">\(\ell(\sigma^2)\)</span> with respect to <span class="math inline">\(\sigma^2\)</span> and set this derivative to zero:</p>
+<p><span class="math display">\[
+\frac{d\ell(\sigma^2)}{d\sigma^2} = -\frac{n}{2\sigma^2} + \frac{\sum_{i=1}^n (y_i - \mu)^2}{2(\sigma^2)^2} = 0.
 \]</span></p>
-<p>Solving for <span class="math inline">\(\sigma^2\)</span>, we rearrange and simplify: <span class="math display">\[
-\frac{n}{2\sigma^2} = \frac{\sum_{i=1}^n y_i^2}{2(\sigma^2)^2}
-\Rightarrow \sigma^2 = \frac{1}{n} \sum_{i=1}^n y_i^2.
+<p>Solving for <span class="math inline">\(\sigma^2\)</span>, we rearrange and simplify:</p>
+<p><span class="math display">\[
+\frac{n}{2\sigma^2} = \frac{\sum_{i=1}^n (y_i - \mu)^2}{2(\sigma^2)^2}
+\Rightarrow \sigma^2 = \frac{1}{n} \sum_{i=1}^n (y_i - \mu)^2.
 \]</span></p>
-<p>When <span class="math inline">\(\mu\)</span> is estimated from the data, the sample mean <span class="math inline">\(\overline{y}\)</span> is: <span class="math display">\[
+<p>When <span class="math inline">\(\mu\)</span> is estimated from the data, the sample mean <span class="math inline">\(\overline{y}\)</span> is:</p>
+<p><span class="math display">\[
 \overline{y} = \frac{1}{n} \sum_{i=1}^n y_i.
 \]</span></p>
-<p>The MLE for <span class="math inline">\(\sigma^2\)</span> when the mean is estimated is: <span class="math display">\[
-\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2.
+<p>The MLE for <span class="math inline">\(\sigma^2\)</span> when the mean is estimated from the data becomes:</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2,
 \]</span></p>
-<p>Recall that the variance of the sample mean <span class="math inline">\(\overline{y}\)</span> is <span class="math inline">\(\sigma^2/n\)</span>, and the sum of squared deviations about the true mean is: <span class="math display">\[
-\sum_{i=1}^n (y_i - \mu)^2 \sim \sigma^2 \chi^2_{n}.
+<p>We now need to take the expectation of To find the expectation of <span class="math inline">\(\hat{\sigma}^2\)</span>. To do that we express it in terms of <span class="math inline">\(y_i - \mu\)</span> and <span class="math inline">\(\overline{y} - \mu\)</span>**</p>
+<p>First, rewrite the squared term using the identity <span class="math inline">\(a - b = (a - c) + (c - b)\)</span> where <span class="math inline">\(a = y_i\)</span>, <span class="math inline">\(b = \overline{y}\)</span>, and <span class="math inline">\(c = \mu\)</span>: <span class="math display">\[
+y_i - \overline{y} = (y_i - \mu) - (\overline{y} - \mu).
+\]</span> Thus, the squared term becomes:</p>
+<p><span class="math display">\[
+(y_i - \overline{y})^2 = [(y_i - \mu) - (\overline{y} - \mu)]^2.
+\]</span> Expanding this, we get:</p>
+<p><span class="math display">\[
+(y_i - \overline{y})^2 = (y_i - \mu)^2 - 2(y_i - \mu)(\overline{y} - \mu) + (\overline{y} - \mu)^2.
 \]</span></p>
-<p>Since <span class="math inline">\(\sum_{i=1}^n (y_i - \overline{y})^2\)</span> is the sum of squared deviations about the sample mean, it has a different distribution: <span class="math display">\[
-\sum_{i=1}^n (y_i - \overline{y})^2 \sim \sigma^2 \chi^2_{n-1},
-\]</span> because estimating <span class="math inline">\(\mu\)</span> uses up one degree of freedom.</p>
-<p>The expectation of <span class="math inline">\(\hat{\sigma}^2\)</span> is then: <span class="math display">\[
-E(\hat{\sigma}^2) = E\left(\frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2\right) = \frac{1}{n} E\left(\sigma^2 \chi^2_{n-1}\right) = \frac{1}{n} \cdot \sigma^2 (n-1) = \frac{n-1}{n} \sigma^2.
+<p>Summing over all <span class="math inline">\(i\)</span> from 1 to <span class="math inline">\(n\)</span>, we obtain: <span class="math display">\[
+\sum_{i=1}^n (y_i - \overline{y})^2 = \sum_{i=1}^n (y_i - \mu)^2 - 2 \sum_{i=1}^n (y_i - \mu)(\overline{y} - \mu) + \sum_{i=1}^n (\overline{y} - \mu)^2.
+\]</span> Since <span class="math inline">\(\overline{y} - \mu\)</span> does not depend on <span class="math inline">\(i\)</span>, it can be factored out of the sums:</p>
+<p><span class="math display">\[
+\sum_{i=1}^n (y_i - \overline{y})^2 = \sum_{i=1}^n (y_i - \mu)^2 - 2(\overline{y} - \mu) \sum_{i=1}^n (y_i - \mu) + n(\overline{y} - \mu)^2.
+\]</span> Given that <span class="math inline">\(\sum_{i=1}^n (y_i - \mu) = n(\overline{y} - \mu)\)</span>, the middle term simplifies to:</p>
+<p><span class="math display">\[
+-2n(\overline{y} - \mu)^2,
+\]</span> and the equation becomes:</p>
+<p><span class="math display">\[
+\sum_{i=1}^n (y_i - \overline{y})^2 = \sum_{i=1}^n (y_i - \mu)^2 - n(\overline{y} - \mu)^2.
 \]</span></p>
-<p>Thus, the bias <span class="math inline">\(B(\hat{\sigma}^2)\)</span> is: <span class="math display">\[
+<p>We take the expectation: <span class="math display">\[
+E\left[\hat{\sigma}^2\right] = E\left[\frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2\right] = \frac{1}{n} E\left[\sum_{i=1}^n (y_i - \mu)^2 - n(\overline{y} - \mu)^2\right].
+\]</span> Since <span class="math inline">\(E[\sum_{i=1}^n (y_i - \mu)^2] = n\sigma^2\)</span> and <span class="math inline">\(E[n(\overline{y} - \mu)^2] = \sigma^2\)</span> (by the properties of variance), we get:</p>
+<p><span class="math display">\[
+E[\hat{\sigma}^2] = \frac{1}{n} [n\sigma^2 - \sigma^2] = \frac{n-1}{n} \sigma^2.
+\]</span></p>
+<p>Thus, the bias <span class="math inline">\(B(\hat{\sigma}^2)\)</span> is:</p>
+<p><span class="math display">\[
 B(\hat{\sigma}^2) = E(\hat{\sigma}^2) - \sigma^2 = \frac{n-1}{n} \sigma^2 - \sigma^2 = \frac{n-1-n}{n} \sigma^2 = \frac{-1}{n} \sigma^2.
 \]</span></p>
 </section>
-<section id="restricted-maximum-likelihood-reml" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="restricted-maximum-likelihood-reml"><span class="header-section-number">4.2</span> Restricted Maximum Likelihood (REML)</h2>
+<section id="restricted-maximum-likelihood-reml" class="level2">
+<h2 class="anchored" data-anchor-id="restricted-maximum-likelihood-reml">Restricted Maximum Likelihood (REML)</h2>
 <p>As said before MLE has a significant limitation: it tends to underestimate variance components due to its non-adjustment for the degrees of freedom consumed by the fixed effects. This underestimation arises because MLE maximizes a likelihood function using all available data, which inadvertently causes an overfitting of fixed effects, leading to biased and sometimes misleading estimates of variance.</p>
 <p>This bias in MLE is known to result from too large a denominator in the variance formula, which does not account for the degrees of freedom used up by estimating the mean (fixed effects). Intuitively, this comes from how the sample mean is based on the same data, making the data points appear more clustered around the mean than they actually are, hence underestimating the true variability that a correct denominator would account for.</p>
 <p>To address this issue, Restricted Maximum Likelihood (REML) was developed. REML refines the approach used by MLE by first fitting the fixed effects and then adjusting the likelihood function used to estimate variance components, specifically compensating for the degrees of freedom used in estimating the fixed effects. This adjustment ensures that the estimation of variance components is based on the correct amount of independent information.</p>
@@ -1240,13 +1278,13 @@ e^{-\frac{1}{2} \mathbf{Y}^T (V^{-1} - V^{-1} \mathbf{X} \mathbf{A}) \mathbf{Y}}
 </div>
 </div>
 </section>
-<section id="other-methods-of-fitting" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="other-methods-of-fitting"><span class="header-section-number">4.3</span> Other methods of fitting</h2>
+<section id="other-methods-of-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="other-methods-of-fitting">Other methods of fitting</h2>
 <p>In practice, when dealing with this kind of models, we do not directly optimize the log-likelihood function due to its complexity, particularly when random effects are included. Instead, more tractable approaches such as the Expectation-Maximization (EM) algorithm, Newton-Raphson, and quasi-likelihood methods are commonly employed. These techniques facilitate the optimization process by breaking it down into simpler steps or by approximating the log-likelihood function. For instance, the EM algorithm efficiently handles missing data or latent variables by iteratively estimating expected values and maximizing the likelihood. Newton-Raphson and related methods, on the other hand, provide robust mechanisms for dealing with non-linear optimization through successive approximations. These methods are essential for ensuring convergence and computational feasibility in the analysis of mixed models.</p>
 </section>
 </section>
-<section id="best-linear-unbiased-estimators-blue" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Best Linear Unbiased Estimators (BLUE)</h1>
+<section id="best-linear-unbiased-estimators-blue" class="level1">
+<h1>Best Linear Unbiased Estimators (BLUE)</h1>
 <p>Now that we have estimated the components of <span class="math inline">\(V\)</span>, we can show that <span class="math inline">\(B\)</span> is in fact Best Linear Unbiased Estimators (BLUE). This involves proving that the GLS estimator is both unbiased and has the smallest variance among all linear unbiased estimators.</p>
 <p>Recall the GLS estimator is defined as: <span class="math display">\[
 \hat{\beta}_{GLS} = (X^T V^{-1} X)^{-1} X^T V^{-1} y
@@ -1310,8 +1348,8 @@ Var(\hat{\beta}_L) = \sigma^2 \left((X^TV^{-1}X)^{-1} + MVM^T\right)
 <p><span class="math inline">\(MVM^T\)</span> is a positive semi-definite matrix since <span class="math inline">\(V\)</span> is positive definite (or semi-definite if <span class="math inline">\(V\)</span> is not strictly positive). This implies <span class="math inline">\(\sigma^2 MVM^T \geq 0\)</span> which gives us <span class="math inline">\(Var(\hat{\beta}_L) \geq Var(\hat{\beta}_{GLS})\)</span>.</p>
 <p>This shows that any deviation from the GLS estimator in the form of an additional matrix <span class="math inline">\(M\)</span> results in an increase in variance. Therefore, the GLS estimator <span class="math inline">\(\hat{\beta}_{GLS}\)</span> is the Best Linear Unbiased Estimator (BLUE) for models where the errors have a covariance structure described by <span class="math inline">\(\sigma^2 V\)</span>.</p>
 </section>
-<section id="random-effects" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Random Effects</h1>
+<section id="random-effects" class="level1">
+<h1>Random Effects</h1>
 <p>I want to briefly review the components we’ve discussed so far before proceeding with random effects</p>
 <ol type="1">
 <li><p><strong>Design Matrix, <span class="math inline">\(Z\)</span></strong>: This matrix is called the design matrix for the random effect and encodes how each observation in our dataset is related to other observations within the same group or category. It effectively organizes our data according to predetermined groupings.</p></li>
@@ -1408,16 +1446,511 @@ E(u | y) = E(u) + Cov(u, y)Var(y)^{-1}(y - E(y))
 with conditional variances for "group" </code></pre>
 </div>
 </div>
-<p>We get identical results! These values are also called to be Best Linear Unbiased Prediction (BLUP) because Unbiasedness ($ E(E(u | y)) = E(u) = 0$) and minization of the variance of the prediction error <span class="math inline">\(E[(u - \hat{u})^2]\)</span> among all linear unbiased predictors. We are not going to prove them here as we did similar analysis up there fore BLUEs.</p>
+<p>We get identical results! These values are also called to be Best Linear Unbiased Prediction (BLUP) because Unbiasedness (<span class="math inline">\(E(E(u | y)) = E(u) = 0\)</span>) and minization of the variance of the prediction error <span class="math inline">\(E[(u - \hat{u})^2]\)</span> among all linear unbiased predictors. We are not going to prove them here as we did similar analysis up there fore BLUEs.</p>
 </section>
-<section id="final-mixed-model-form" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Final mixed model form</h1>
+<section id="final-mixed-model-form" class="level1">
+<h1>Final mixed model form</h1>
 <p>So all together, we now know that each observation in our data can be described by our fixed effects and predicted random effects plus some random noise.</p>
 <p>Putting all together we have</p>
 <p><span class="math display">\[y = X\beta + Zu + e\]</span></p>
-<p>This describes our data model, where: - <span class="math inline">\(y\)</span> is the vector of observed data. - <span class="math inline">\(\beta\)</span> represents fixed effects, which may or may not be of interest for the derivation. - <span class="math inline">\(u\)</span> represents the random effects we wish to predict. - <span class="math inline">\(e\)</span> is the error term. - <span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span> are known design matrices.</p>
+<p>This describes our data model, where:</p>
+<ul>
+<li><span class="math inline">\(y\)</span> is the vector of observed data.</li>
+<li><span class="math inline">\(\beta\)</span> represents fixed effects, which may or may not be of interest for the derivation.</li>
+<li><span class="math inline">\(u\)</span> represents the random effects we wish to predict.</li>
+<li><span class="math inline">\(e\)</span> is the error term.</li>
+<li><span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span> are known design matrices.</li>
+</ul>
 <p>We also assume: - <span class="math inline">\(u \sim N(0, \sigma^2D)\)</span>, where <span class="math inline">\(D\)</span> is the covariance matrix of the random effects. - <span class="math inline">\(e \sim N(0, \sigma^2)\)</span>, where <span class="math inline">\(\sigma^2\)</span> is the covariance matrix of the residuals. - <span class="math inline">\(u\)</span> and <span class="math inline">\(e\)</span> are independent.</p>
 <p>This is the final form of the mixed model which we derived starting from OLS.</p>
+</section>
+<section id="p-value-for-mixed-models-satterthwaite-approximation" class="level1">
+<h1>p-value for mixed models (Satterthwaite approximation)</h1>
+<p>This should be clear by now that mixed models are inherently more complex than OLS. This complexity goes also to statistical testing. In this section, I want to write a bit about statistical testing both from the classical perspective but also from linear models and mixed models. Again we are not going to go through all details but just demonstrate some of the key concepts.</p>
+<section id="how-rare-is-this-value" class="level2">
+<h2 class="anchored" data-anchor-id="how-rare-is-this-value">How rare is this value?!</h2>
+<p>Let’s assume we have a specific value from our dataset that we’re curious about its rarity. The only way to accurately assess how rare this value is involves understanding where it falls within an overall distribution of data. This compares the value against a bunch of expected values. Ff it deviates significantly from what’s typical, then we can consider it rare. To do this, we first need to define the distribution that best describes our dataset. A common assumption to make about a dataset is that it follows a normal distribution. Many natural phenomena and human-made processes tend to distribute their values in a way that can be symmetrically modeled around a central value, with fewer occurrences appearing as one moves further away from this central point.</p>
+<p>If we assume that our data follows a normal distribution, we can use its mathematical properties to check the rarity of specific observations within our dataset.</p>
+<p>In probability, the “density” of a value in a continuous distribution refers to the relative likelihood of this value occurring. For a normal distribution values closer to the mean are more densely packed and so more likely to occur. As we move away from the mean, the density decreases, indicating that these values are less likely and rarer.</p>
+<p>The density function doesn’t give the probability of the event occurring at exactly a specific point (which in continuous distributions is technically zero), but rather it helps us understand how dense the distribution is around that point, which is indicative of the probability of observing values in a small interval around that point.</p>
+<p>The probability density function for a normal distribution is given by:</p>
+<p><span class="math display">\[
+f(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]</span></p>
+<p>Here: - <span class="math inline">\(x\)</span> is the value for which we are calculating the probability density. - <span class="math inline">\(\mu\)</span> is the mean of the distribution. - <span class="math inline">\(\sigma\)</span> is the standard deviation, which measures the dispersion of the data around the mean. - <span class="math inline">\(\sigma^2\)</span> is the variance.</p>
+<p>To determine how rare or unusual a particular value <span class="math inline">\(x\)</span> is within a normal distribution, we need to calculate the probability of observing <span class="math inline">\(x\)</span> or a value more extreme (larger or smaller, depending on the context). This is typically done using the cumulative distribution function (CDF), which gives the probability that a normally distributed random variable is less than or equal to a certain value.</p>
+<p>CDF is represented by the integral of the probability density function from negative infinity to $ x $. Mathematically, it’s expressed as:</p>
+<p><span class="math display">\[
+F(x | \mu, \sigma^2) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{(t-\mu)^2}{2\sigma^2}} dt
+\]</span></p>
+<p>For instance, if we want to calculate the probability of observing a value less than or equal to 60 from a normal distribution with a mean of 50 and a standard deviation of 10:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Value to calculate the cumulative probability for</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the probability</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>probability <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(x, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(probability)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8413447</code></pre>
+</div>
+</div>
+<p>I guess you realized that we have an infinite number of normal distributions defined by particular parameters (<span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>). However, it is often nice to have a standard one from which we can derive a table of probabilities. This distribution is called the <strong>standard normal distribution</strong>.</p>
+</section>
+<section id="standard-normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="standard-normal-distribution">Standard normal distribution</h2>
+<p>The standard normal distribution is a specific instance of the normal distribution where the mean (<span class="math inline">\(\mu\)</span>) is 0 and the standard deviation (<span class="math inline">\(\sigma\)</span>) is 1. This standardization simplifies many statistical methods and allows us to use a single, universally applicable table (commonly called the Z-table) for finding probabilities</p>
+<p>To convert any normal distribution to the standard normal distribution, values are transformed into what are known as Z-scores. This transformation process is called <strong>standardization</strong>. A Z-score tells us how many standard deviations away a point is from the mean of the distribution.</p>
+<p>The formula to calculate the Z-score of a value <span class="math inline">\(x\)</span> is:</p>
+<p><span class="math display">\[Z = \frac{(x - \mu)}{\sigma}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(x\)</span> is the value from the original distribution.</li>
+<li><span class="math inline">\(\mu\)</span> is the mean of the original distribution.</li>
+<li><span class="math inline">\(\sigma\)</span> is the standard deviation of the original distribution.</li>
+</ul>
+<p>Let’s consider an example where we calculate the Z-scores:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data values</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>data_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">55</span>, <span class="dv">60</span>, <span class="dv">45</span>, <span class="dv">70</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean and standard deviation of the dataset</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Z-scores</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>z_scores <span class="ot">&lt;-</span> (data_values <span class="sc">-</span> mu) <span class="sc">/</span> sigma</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Output Z-scores</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(z_scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1.0  0.5  1.0 -0.5  2.0</code></pre>
+</div>
+</div>
+<p>We can now use a standard normal distribution for finding probabilities.</p>
+<p>For any random variable we can write the transformation as</p>
+<p><span class="math display">\[Z = \frac{(X - \mu)}{\sigma}\]</span></p>
+<p>Now suppose that we went and collected a few samples and measured its mean <span class="math inline">\(\bar{X}\)</span> and we want to check how likely is that to get a value larger or smaller than <span class="math inline">\(\bar{X}\)</span>. We can do a <span class="math inline">\(z\)</span> transformation but with a small difference.</p>
+<p>There is however a small difference here. Eventhough the sample can be used to calculate unbiased estimates of the population property, the sample estimate will not be perfect. The standard deviation of the sampling distribution is called the standard error or <span class="math inline">\(SE\)</span>. If each <span class="math inline">\(X_i\)</span> is normally distributed with mean <span class="math inline">\(\mu\)</span> (mean of population) and standard deviation <span class="math inline">\(\sigma\)</span>, then:</p>
+<ul>
+<li><strong>Expected Value</strong>: <span class="math inline">\(E[\overline{X}] = \mu\)</span></li>
+<li><strong>Variance</strong>: Since <span class="math inline">\(X_i\)</span> are independent, the variance of the sum is the sum of the variances: <span class="math inline">\(Var(\overline{X}) = Var\left(\frac{1}{n} \sum_{i=1}^n X_i\right) = \frac{1}{n^2} \sum_{i=1}^n Var(X_i) = \frac{1}{n^2} \cdot n \sigma^2 = \frac{\sigma^2}{n}\)</span></li>
+</ul>
+<p>The standard error of the mean is:</p>
+<p><span class="math inline">\(SEM = \frac{\sigma}{\sqrt{n}}\)</span></p>
+<p>So we change the definiton of <span class="math inline">\(Z\)</span> for sample mean to</p>
+<p><span class="math display">\[Z = \frac{(\bar{X} - \mu)}{\frac{\sigma}{\sqrt{n}}}\]</span> Which can be used to derive the probability. However, there is a challenge! So far, we have assumed that we know the variance of the population. In many practical situations <span class="math inline">\(\sigma\)</span> is not known and must be estimated from the sample data we call it <span class="math inline">\(SE\)</span>.</p>
+<p><span class="math display">\[
+SE = \frac{s}{\sqrt{n}}
+\]</span></p>
+<p>Here, <span class="math inline">\(s\)</span> is the sample standard deviation, and <span class="math inline">\(n\)</span> is the sample size. The standard error provides a measure of how much error is expected in the estimate of the mean. As the sample size increases, the standard error decreases, indicating a more accurate estimate of the population mean.</p>
+<p>Our standarized value now becomes</p>
+<p><span class="math display">\[
+\frac{\bar{X} - \mu}{SE}
+\]</span></p>
+<p>There is again a small little question here: Is this actually normal distribution?</p>
+<p>Let’s see if we can write <span class="math inline">\(\frac{\bar{X} - \mu}{SE}\)</span> in terms of distributions that we already know such as <span class="math inline">\(Z\)</span>.</p>
+<p>We know that</p>
+<p><span class="math display">\[
+\frac{\bar{X} - \mu}{SE}=\frac{\overline{X} - \mu}{S / \sqrt{n}}
+\]</span> Where <span class="math inline">\(S\)</span> is the standard deviation of samples.</p>
+<p>Recall that <span class="math inline">\(Z = \frac{\overline{X} - \mu}{\sigma/\sqrt{n}}\)</span>.</p>
+<p>So we can write</p>
+<p><span class="math display">\[
+\overline{X} - \mu = Z \cdot \frac{\sigma}{\sqrt{n}}
+\]</span></p>
+<p>Plugging this into the expression <span class="math inline">\(\frac{\overline{X} - \mu}{S / \sqrt{n}}\)</span>, we have:</p>
+<p><span class="math display">\[
+\frac{\overline{X} - \mu}{S / \sqrt{n}} = \frac{Z \cdot \frac{\sigma}{\sqrt{n}}}{S / \sqrt{n}} = Z \cdot \frac{\sigma}{S}
+\]</span></p>
+<p>Now we should work our way around <span class="math inline">\(\frac{\sigma}{S}\)</span> and write it in a form that has know distribution.</p>
+<p>Remember that sample mean <span class="math inline">\(\overline{X}\)</span> and sample variance <span class="math inline">\(S^2\)</span> are defined as follows: <span class="math display">\[
+\overline{X} = \frac{1}{n} \sum_{i=1}^1 X_i
+\]</span> <span class="math display">\[
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \overline{X})^2
+\]</span></p>
+<p>First, let’s express <span class="math inline">\(X_i - \overline{X}\)</span>: <span class="math display">\[
+X_i - \overline{X} = \left( X_i - \mu \right) - \left( \overline{X} - \mu \right)
+\]</span> <span class="math display">\[
+= (X_i - \mu) - \left( \frac{1}{n} \sum_{j=1}^n (X_j - \mu) \right)
+\]</span></p>
+<p>Now consider the sum of squared deviations from the mean: <span class="math display">\[
+\sum_{i=1}^n (X_i - \overline{X})^2 = \sum_{i=1}^n \left[ (X_i - \mu) - (\overline{X} - \mu) \right]^2
+\]</span> Using the property of variance and the independence of <span class="math inline">\(X_i\)</span>, we know: <span class="math display">\[
+\sum_{i=1}^n (X_i - \overline{X})^2 = \sum_{i=1}^n (X_i - \mu)^2 - n(\overline{X} - \mu)^2
+\]</span></p>
+<p>Since <span class="math inline">\(X_i\)</span> are i.i.d. <span class="math inline">\(N(\mu, \sigma^2)\)</span>, <span class="math inline">\((X_i - \mu)/\sigma\)</span> are i.i.d. <span class="math inline">\(N(0, 1)\)</span>, we know that: <span class="math display">\[
+\sum_{i=1}^n \left( \frac{X_i - \mu}{\sigma} \right)^2 \sim \chi^2_n
+\]</span></p>
+<p>However, we are interested in <span class="math inline">\(\sum_{i=1}^n (X_i - \overline{X})^2\)</span>. Note that <span class="math inline">\(\overline{X}\)</span> itself is <span class="math inline">\(N(\mu, \sigma^2/n)\)</span>.</p>
+<p>By Cochran’s theorem, the sum of squared deviations can be split into independent parts: <span class="math display">\[
+\sum_{i=1}^n (X_i - \mu)^2 = \sum_{i=1}^n (X_i - \overline{X})^2 + n(\overline{X} - \mu)^2
+\]</span> where <span class="math inline">\(\sum_{i=1}^n (X_i - \overline{X})^2\)</span> and <span class="math inline">\(n(\overline{X} - \mu)^2\)</span> are independent.</p>
+<p>Now, <span class="math inline">\(\sum_{i=1}^n (X_i - \overline{X})^2\)</span> follows a chi-squared distribution with <span class="math inline">\(n-1\)</span> degrees of freedom: <span class="math display">\[
+\sum_{i=1}^n (X_i - \overline{X})^2 \sim \sigma^2 \chi^2_{n-1}
+\]</span></p>
+<p>We have: <span class="math display">\[
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \overline{X})^2
+\]</span> So, we can write: <span class="math display">\[
+(n-1)S^2 = \sum_{i=1}^n (X_i - \overline{X})^2
+\]</span></p>
+<p>So: <span class="math display">\[
+\frac{(n-1)S^2}{\sigma^2} = \frac{\sum_{i=1}^n (X_i - \overline{X})^2}{\sigma^2} \sim \chi^2_{n-1}
+\]</span></p>
+<p>Thus, we have shown that: <span class="math display">\[
+\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}
+\]</span> Let’s call this <span class="math inline">\(U = \frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1}\)</span>.</p>
+<p>We can express <span class="math inline">\(\sigma\)</span> in terms of <span class="math inline">\(S\)</span> and <span class="math inline">\(U\)</span> using the relation <span class="math inline">\(\sigma^2 = \frac{(n-1)S^2}{U}\)</span>, then:</p>
+<p><span class="math display">\[
+\sigma = S \sqrt{\frac{n-1}{U}}
+\]</span> Substituting back into the equation, we get:</p>
+<p><span class="math display">\[
+Z \cdot \frac{S \sqrt{\frac{n-1}{U}}}{S} = Z \cdot \sqrt{\frac{n-1}{U}} = \frac{Z}{\sqrt{\frac{U}{n-1}}}
+\]</span> Therefore:</p>
+<p><span class="math display">\[\frac{\overline{X} - \mu}{S / \sqrt{n}} = \frac{Z}{\sqrt{\frac{U}{n-1}}}\]</span></p>
+</section>
+<section id="putting-it-all-together-t" class="level2">
+<h2 class="anchored" data-anchor-id="putting-it-all-together-t">Putting it all together (T)</h2>
+<p>Based on</p>
+<p><span class="math display">\[
+\frac{\overline{X} - \mu}{S / \sqrt{n}} = \frac{Z}{\sqrt{\frac{U}{n-1}}}
+\]</span></p>
+<p>Let’s just assume we call <span class="math inline">\(n-1=d\)</span> (degrees of freedom) so</p>
+<p><span class="math display">\[
+\frac{Z}{\sqrt{\frac{U}{n-1}}}=\frac{Z}{\sqrt{\frac{U}{d}}}\sim \chi^2_{n}
+\]</span></p>
+<p>We know that a random variable <span class="math inline">\(Z\)</span>) that is standard normally distributed, denoted <span class="math inline">\(Z \sim N(0, 1)\)</span>, has a probability density function (PDF): <span class="math display">\[
+  f_Z(z) = \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}}
+  \]</span></p>
+<p>Also a chi-squared distribution with <span class="math inline">\(d\)</span> degrees of freedom, denoted <span class="math inline">\(U \sim \chi^2_d\)</span>, can be expressed as the sum of squares of <span class="math inline">\(d\)</span> independent standard normal variables. Its PDF is given by:</p>
+<p><span class="math display">\[
+  f_U(u) = \frac{u^{(d/2)-1} e^{-u/2}}{2^{d/2} \Gamma(d/2)}
+\]</span></p>
+<p>Let’s make things a bit tidy here by defining:</p>
+<p><span class="math display">\[
+   T = \frac{Z}{\sqrt{\frac{U}{d}}} = \frac{Z}{\sqrt{V}}
+\]</span></p>
+<p>where <span class="math inline">\(V = \frac{U}{d}\)</span>.</p>
+<p>We now have to find PDF of <span class="math inline">\(T\)</span> which a joint PDF if weassume that <span class="math inline">\(Z\)</span> and <span class="math inline">\(V\)</span> are independent. The joint PDF of <span class="math inline">\(Z\)</span> and <span class="math inline">\(V\)</span>, <span class="math inline">\(f_{Z,V}(z,v)\)</span>, is the product of their marginal PDFs:</p>
+<p><span class="math display">\[
+f_{Z,V}(z,v) = f_Z(z) f_V(v) = \left( \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}} \right) \left( \frac{d^{d/2} v^{d/2 - 1} e^{-dv/2}}{2^{d/2} \Gamma(d/2)} \right)
+\]</span></p>
+<p>Directly working with <span class="math inline">\(f_{Z,V}(z, v)\)</span> to find the PDF of <span class="math inline">\(T\)</span> involves solving an integral where <span class="math inline">\(T\)</span> is a function of both <span class="math inline">\(Z\)</span> and <span class="math inline">\(V\)</span>. Instead we are going to write things in terms of <span class="math inline">\(T\)</span> using change variables method.</p>
+<p>Let’s start with</p>
+<p><span class="math display">\[
+Z = T\sqrt{W}, \quad V = W
+\]</span></p>
+<p>where <span class="math inline">\(W\)</span> is just a placeholder to help in calculation. This is an easier form to work with but the problem is when working with transformation of random variables, the volume that the probability density covers can change. In order to conserve the total probability between the orignal and the transformed space we need to derive how much we have to strech or compress the transformed space. determinant of Jacobian gives us a way to calculate this scaling factor.</p>
+<p>Given:</p>
+<p><span class="math display">\[
+Z = T\sqrt{W}, \quad V = W
+\]</span></p>
+<p>To find the Jacobian determinant, we compute the partial derivatives:</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{\partial Z}{\partial T} &amp;= \sqrt{W} \\
+\frac{\partial Z}{\partial W} &amp;= \frac{T}{2\sqrt{W}} \\
+\frac{\partial V}{\partial T} &amp;= 0 \\
+\frac{\partial V}{\partial W} &amp;= 1
+\end{align*}
+\]</span></p>
+<p>These partial derivatives form the Jacobian matrix:</p>
+<p><span class="math display">\[
+J = \begin{bmatrix}
+\sqrt{W} &amp; \frac{T}{2\sqrt{W}} \\
+0 &amp; 1
+\end{bmatrix}
+\]</span></p>
+<p>The determinant of this matrix is:</p>
+<p><span class="math display">\[
+\text{det}(J) = \sqrt{W} \times 1 - 0 \times \frac{T}{2\sqrt{W}} = \sqrt{W}
+\]</span></p>
+<p>Using the Jacobian, we can transform the joint PDF of <span class="math inline">\(Z\)</span> and <span class="math inline">\(V\)</span> into the joint PDF of $T ) and <span class="math inline">\(W\)</span>:</p>
+<p><span class="math display">\[
+f_{T,W}(t, w) = f_{Z,V}(t\sqrt{w}, w) \times |\text{det}(J)|
+\]</span></p>
+<p>Given <span class="math inline">\(f_{Z,V}(z, v) = f_Z(z) f_V(v)\)</span>, we substitute <span class="math inline">\(z = t\sqrt{w}\)</span> and <span class="math inline">\(v = w\)</span>, and include the Jacobian:</p>
+<p><span class="math display">\[
+f_{T,W}(t, w) = f_Z(t\sqrt{w}) f_V(w) \sqrt{w}
+\]</span></p>
+<p>which becomes</p>
+<p><span class="math display">\[
+f_{T,W}(t, w)  = \left( \frac{1}{\sqrt{2\pi}} e^{-\frac{t^2 w}{2}} \right) \left( \frac{d^{d/2} w^{d/2 - 1} e^{-dw/2}}{2^{d/2} \Gamma(d/2)} \right) \cdot \sqrt{w}
+\]</span></p>
+<p>Finally, to find <span class="math inline">\(f_T(t)\)</span>, the marginal PDF of <span class="math inline">\(T\)</span>, we integrate out <span class="math inline">\(W\)</span>:</p>
+<p><span class="math display">\[
+f_T(t) = \int_0^\infty f_{T,W}(t, w) \, dw
+\]</span></p>
+<p>I’m not going to solve this here but the results of this integration is</p>
+<p><span class="math display">\[
+f_T(t) = \frac{\Gamma\left(\frac{d+1}{2}\right)}{\sqrt{d\pi} \Gamma\left(\frac{d}{2}\right)} \left(1 + \frac{t^2}{d}\right)^{-\frac{d+1}{2}}
+\]</span></p>
+<p>This gives us the Student’s t-distribution, matching the formula for the <a href="https://en.wikipedia.org/wiki/Student%27s_t-distribution">PDF of the t-distribution</a>.</p>
+<p>We came all the way here to just to prove that</p>
+<p><span class="math display">\[
+   \frac{Z}{\sqrt{\frac{U}{d}}} \sim t_d
+\]</span> with <span class="math inline">\(d\)</span> degrees of freedom and <span class="math inline">\(Z \sim N(0,1)\)</span> and <span class="math inline">\(U \sim chi^2_d\)</span>.</p>
+</section>
+<section id="t-statistics-for-ols" class="level2">
+<h2 class="anchored" data-anchor-id="t-statistics-for-ols">t-statistics for OLS</h2>
+<p>Consider a linear model given by: <span class="math display">\[
+Y = X\beta + \epsilon
+\]</span> In order to do a t-statistics, we need to first create a hypothesis. To create such a hypothesis we need a <strong>linear contrast</strong> that is a specific linear combination of the estimated regression coefficients. It’s typically represented as <span class="math inline">\(c'\beta\)</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(c\)</span> is a known <span class="math inline">\(p \times 1\)</span> vector, specifying the coefficients for the linear combination.</li>
+<li><span class="math inline">\(\beta\)</span> is the <span class="math inline">\(p \times 1\)</span> vector of true regression coefficients.</li>
+</ul>
+<p>The purpose of <span class="math inline">\(c\)</span> is to focus on specific hypotheses about combinations of the parameters <span class="math inline">\(\beta\)</span>. For example, if we are interested in testing whether the sum of two coefficients is zero or some other value, <span class="math inline">\(c\)</span> would be constructed accordingly to weight these coefficients. Similarly, if we have a bunch coefficients and we want to test whether one of them is different from zero or not we can construct a <span class="math inline">\(p \times 1\)</span> vector which has all the elements zero except for the coefficient that we want to test.</p>
+<p><span class="math inline">\(c'\beta\)</span> in fact gives us the numerator of the t-statistics. So we have</p>
+<p><span class="math display">\[
+t=\frac{c'\beta}{SE}
+\]</span> We still need to figure out what <span class="math inline">\(SE\)</span> is.</p>
+<p>Recall that <span class="math inline">\(SE\)</span> is the standard error of <span class="math inline">\(c'\beta\)</span>. So we need to derive the variance of the estimated regression coefficients (<span class="math inline">\(\hat{\beta}\)</span>). Although we have done that before, let’s go through it one more time.</p>
+<p>The variance of a linear transformation <span class="math inline">\(A\)</span> of a random vector <span class="math inline">\(b\)</span> (where <span class="math inline">\(A\)</span> is a matrix and <span class="math inline">\(b\)</span> is a vector of random variables with variance-covariance matrix <span class="math inline">\(\Sigma\)</span>) is given by: <span class="math display">\[\text{Var}(Ab) = A \Sigma A'\]</span> Applying this to <span class="math inline">\(\hat{\beta}\)</span>: <span class="math display">\[\hat{\beta} = (X'X)^{-1}X'Y\]</span> <span class="math display">\[Y = X\beta + \epsilon\]</span> <span class="math display">\[\text{Var}(\hat{\beta}) = \text{Var}((X'X)^{-1}X'Y)\]</span> Since <span class="math inline">\(Y = X\beta + \epsilon\)</span> and <span class="math inline">\(X\beta\)</span> is non-random (deterministic), the variance part comes only from <span class="math inline">\(\epsilon\)</span>: <span class="math display">\[\text{Var}(\hat{\beta}) = \text{Var}((X'X)^{-1}X'(X\beta + \epsilon))\]</span> <span class="math display">\[\text{Var}(\hat{\beta}) = \text{Var}((X'X)^{-1}X'\epsilon)\]</span> Given <span class="math inline">\(\text{Var}(\epsilon) = \sigma^2 I\)</span>: <span class="math display">\[\text{Var}(\hat{\beta}) = (X'X)^{-1}X'(\sigma^2 I)X(X'X)^{-1}\]</span> <span class="math display">\[\text{Var}(\hat{\beta}) = \sigma^2 (X'X)^{-1}X'IX(X'X)^{-1}\]</span> <span class="math display">\[\text{Var}(\hat{\beta}) = \sigma^2 (X'X)^{-1}\]</span></p>
+<p>The unbiased estimator of <span class="math inline">\(\sigma^2\)</span> (variance of the errors) is given by the Residual Sum of Squares (RSS) divided by the degrees of freedom, which is typically the number of observations minus the number of parameters estimated (including intercept). If <span class="math inline">\(n\)</span> is the number of observations and <span class="math inline">\(p\)</span> is the number of parameters (including the intercept), the degrees of freedom are <span class="math inline">\(n - p\)</span>: <span class="math display">\[\hat{\sigma}^2 = \frac{\text{RSS}}{n - p}\]</span></p>
+<p><span class="math display">\[\text{RSS} = (Y - \hat{Y})'(Y - \hat{Y})\]</span> Given: <span class="math display">\[\hat{Y} = X\hat{\beta} = X(X'X)^{-1}X'Y\]</span> The RSS becomes: <span class="math display">\[\text{RSS} = (Y - X(X'X)^{-1}X'Y)'(Y - X(X'X)^{-1}X'Y)\]</span> <span class="math display">\[\text{RSS} = Y'Y - Y'X(X'X)^{-1}X'Y\]</span></p>
+<p>Given this the formula for t-statistics for testing coefficients of linear regression will be</p>
+<p><span class="math display">\[t=\frac{c'\beta}{\frac{ Y'Y - Y'X(X'X)^{-1}X'Y}{n-p}\sqrt{(X'X)^{-1}}}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>calculate_t_statistic <span class="ot">&lt;-</span> <span class="cf">function</span>(X, Y, c) {</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the OLS estimates for beta</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  beta_hat <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> Y</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate RSS</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  Y_hat <span class="ot">&lt;-</span> X <span class="sc">%*%</span> beta_hat</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  rss <span class="ot">&lt;-</span> <span class="fu">sum</span>((Y <span class="sc">-</span> Y_hat)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Degrees of freedom</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(X)  <span class="co"># Number of observations</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X)  <span class="co"># Number of parameters</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> n <span class="sc">-</span> p</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Variance estimate</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  sigma_squared_hat <span class="ot">&lt;-</span> rss <span class="sc">/</span> df</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculating c'beta</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  c_beta_hat <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(c <span class="sc">%*%</span> beta_hat)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculating the variance of c'beta_hat</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  var_c_beta_hat <span class="ot">&lt;-</span> sigma_squared_hat <span class="sc">*</span> (c <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> c)</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># t-statistic</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>  t_statistic <span class="ot">&lt;-</span> c_beta_hat <span class="sc">/</span> <span class="fu">sqrt</span>(var_c_beta_hat)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(t_statistic)</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct the model matrix 'X' for the fixed effect 'x' using data from 'data_int'.</span></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span>x, <span class="at">data=</span>data_int)</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span>data_int<span class="sc">$</span>y</span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">data.frame</span>(<span class="at">t=</span><span class="fu">calculate_t_statistic</span>(<span class="at">X =</span> X,<span class="at">Y =</span> y,<span class="at">c =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)),<span class="at">df=</span><span class="fu">nrow</span>(X)<span class="sc">-</span><span class="fu">ncol</span>(X),</span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">pvalue=</span><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="fu">abs</span>(<span class="fu">calculate_t_statistic</span>(<span class="at">X =</span> X,<span class="at">Y =</span> y,<span class="at">c =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))),<span class="at">df=</span><span class="fu">nrow</span>(X)<span class="sc">-</span><span class="fu">ncol</span>(X),<span class="at">lower.tail =</span> <span class="cn">FALSE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          t df       pvalue
+1 -6.932677 38 3.033548e-08</code></pre>
+</div>
+</div>
+<p>Compare to <code>lm</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(y<span class="sc">~</span><span class="dv">0</span><span class="sc">+</span>X)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ 0 + X)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.1384  -4.3018   0.0277   4.2264  17.5140 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+X(Intercept) 120.1292     6.8039  17.656  &lt; 2e-16 ***
+Xx            -2.7184     0.3921  -6.933 3.03e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.238 on 38 degrees of freedom
+Multiple R-squared:  0.991, Adjusted R-squared:  0.9905 
+F-statistic:  2094 on 2 and 38 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<section id="degrees-of-freedom-of-gls" class="level3">
+<h3 class="anchored" data-anchor-id="degrees-of-freedom-of-gls">degrees of freedom of GLS</h3>
+<p>In mixed models, determining the degrees of freedom (df) is complex due to the presence of both fixed and random effects. Unlike simple linear models where df is straightforward (number of observations minus number of parameters), mixed models must account for the hierarchical structure of the data and correlations within random effects. Methods like Satterthwaite and Kenward-Roger approximations are often used to estimate df. We are again going to just use the definition of GLS and not <span class="math inline">\(y = X\beta + Zb + \epsilon\)</span> and demonstrate how Satterthwaite approximation works.</p>
+<p>We know from the very first sections the estimated fixed effects <span class="math inline">\(\hat{\beta}\)</span> are given by:</p>
+<p><span class="math display">\[
+\hat{\beta} = (X'V^{-1}X)^{-1}X'V^{-1}y
+\]</span> where <span class="math inline">\(V = ZDZ' + \sigma^2\)</span> is the variance-covariance matrix of <span class="math inline">\(y\)</span>.</p>
+<p>If you remember we also proved that the variance of the <span class="math inline">\(\beta\)</span> is <span class="math inline">\((X'V^{-1}X)^{-1}\)</span>.</p>
+<p>But what we are interested is the test of coeffcient <span class="math inline">\(c'\hat{\beta}\)</span>. From the OLS part above we can show that</p>
+<p><span class="math display">\[
+\text{Var}(c'\hat{\beta}) = c' \text{Var}(\hat{\beta}) c = c' (X'V^{-1}X)^{-1} c
+\]</span></p>
+<p>The test statistic for testing <span class="math inline">\(c'\beta = 0\)</span> is constructed as: <span class="math display">\[
+T = \frac{c'\hat{\beta}}{\sqrt{\text{Var}(c'\hat{\beta})}}
+\]</span></p>
+<p>Substitute the variance expression:</p>
+<p><span class="math display">\[
+\text{Var}(c'\hat{\beta}) = c' (X'V^{-1}X)^{-1} c
+\]</span></p>
+<p>So, the test statistic becomes: <span class="math display">\[
+T = \frac{c'\hat{\beta}}{\sqrt{c' (X'V^{-1}X)^{-1} c}}
+\]</span></p>
+<p>This test statistic follows a t-distribution with degrees of freedom that can be approximated using the Satterthwaite approximation. However unlink OLS we don’t want to use <span class="math inline">\(n-p\)</span> as degrees of freedom. We need to estimate it.</p>
+<p>If you remember from the definition of T-stats we derived <span class="math inline">\(\sqrt{c' (X'V^{-1}X)^{-1} c} \sim ch^2_d\)</span> (we still don’t know <span class="math inline">\(d\)</span>).</p>
+<p>However, just earlier we proved that:</p>
+<p><span class="math display">\[
+\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}
+\]</span> Let’s call the DF here (<span class="math inline">\(n-1\)</span>) is <span class="math inline">\(d\)</span> so we have</p>
+<p><span class="math display">\[
+\frac{(d)S^2}{\sigma^2} \sim \chi^2_{d}
+\]</span> We know the definition <span class="math inline">\(S^2=c' (X'V^{-1}X)^{-1} c\)</span>. But <span class="math inline">\(\sigma^2\)</span> is true but unknow variance of the population. Let’s call this <span class="math inline">\(\sigma^2=c' (X'V_p^{-1}X)^{-1} c\)</span></p>
+<p>We can now say that <span class="math inline">\(S^2 \approx \frac{\sigma^2}{d} \chi^2_{d}\)</span>. Given this we are going to match the first two momnets of <span class="math inline">\(S^2\)</span> and <span class="math inline">\(\frac{\sigma^2}{d} \chi^2_{d}\)</span> to see if we can derive <span class="math inline">\(d\)</span></p>
+<p>Let’s start with expectation (first moment) <span class="math display">\[
+\mathbb{E}(S^2) = \mathbb{E}\left(\frac{\sigma^2}{d} \chi^2_{d}\right) = \frac{\sigma^2}{d} \mathbb{E}(\chi^2_{d}) = \frac{\sigma^2}{d} d = \sigma^2
+\]</span> Unfortunately <span class="math inline">\(d\)</span> did not stay in this moment. Let’s go to the second moment (variance).</p>
+<p><span class="math display">\[
+\text{Var}(S^2) = \text{Var}\left(\frac{\sigma^2}{d} \chi^2_{d}\right) = \left(\frac{\sigma^2}{d}\right)^2 \text{Var}(\chi^2_{d}) = \left(\frac{\sigma^2}{d}\right)^2 \cdot 2d = \frac{2\sigma^4}{d}
+\]</span></p>
+<p>This is much better. We have <span class="math inline">\(d\)</span> left in the formula. So we have</p>
+<p><span class="math display">\[
+\text{Var}(S^2) =  \frac{2\sigma^4}{d}
+\]</span></p>
+<p>We can write:</p>
+<p><span class="math display">\[
+d=\frac{2\sigma^4}{Var(S^2)}
+\]</span> We can estimate <span class="math inline">\(\sigma^2\)</span> as <span class="math inline">\(c' (X'V^{-1}X)^{-1} c\)</span> which is <span class="math inline">\(S^2\)</span>. so we can write</p>
+<p><span class="math display">\[
+d=\frac{2(c' (X'V^{-1}X)^{-1} c)^2}{Var(c' (X'V^{-1}X)^{-1} c)}
+\]</span> The numerator is simple to calculate but denominator is more complex.</p>
+<p>Remember that <span class="math inline">\(c' (X'V^{-1}X)^{-1} c\)</span> involes estimating <span class="math inline">\(V\)</span> which itself is a function of a parameter <span class="math inline">\(\theta\)</span>. To fix this we are going to use the delta method. The delta method can be used to approximate the variance of a function of a random variable.</p>
+<p>If <span class="math inline">\(g(\theta)\)</span> is a differentiable function of <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(\theta\)</span> has an approximate normal distribution <span class="math inline">\(N(\hat{\theta}, \Sigma)\)</span> where <span class="math inline">\(\Sigma\)</span> is the covariance matrix of <span class="math inline">\(\theta\)</span>), the variance of <span class="math inline">\(g(\theta)\)</span> can be approximated as:</p>
+<p><span class="math display">\[
+\text{Var}(g(\theta)) \approx \nabla g(\hat{\theta})' \Sigma \nabla g(\hat{\theta})
+\]</span> where <span class="math inline">\(\nabla g(\hat{\theta})\)</span> is the gradient (vector of first partial derivatives) of <span class="math inline">\(g\)</span> evaluated at $ $ and <span class="math inline">\(g(\theta) = c' (X'V^{-1}X)^{-1} c\)</span>.</p>
+<p>Therefore our final df becomes</p>
+<p><span class="math display">\[
+d=\frac{2g(\theta)}{g(\hat{\theta})' \Sigma \nabla g(\hat{\theta})}
+\]</span></p>
+<p>We need to compute <span class="math inline">\(\nabla g(\theta)\)</span>, the gradient of <span class="math inline">\(g\)</span> with respect to <span class="math inline">\(\theta\)</span>. This involves differentiating <span class="math inline">\(c' (X'V^{-1}X)^{-1} c\)</span> with respect to each element of <span class="math inline">\(\theta\)</span>. We are just going to estimate this here but in practice this can be found using Jacobian. and <span class="math inline">\(\Sigma\)</span> is going to be estimated using the Hessian of the log-likelihood. Let’s see how we can implement this</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(numDeriv)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>simulate_grouped_trend <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">group_count =</span> <span class="dv">5</span>, <span class="at">points_per_group =</span> <span class="dv">10</span>, <span class="at">global_slope =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">global_intercept =</span> <span class="dv">30</span>, <span class="at">group_slope =</span> <span class="dv">2</span>, <span class="at">noise_sd =</span> <span class="dv">50</span>,<span class="at">noise_sd2=</span><span class="dv">2</span>) {</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># Setting a seed for reproducibility</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initialize an empty data frame to store the simulated data</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">numeric</span>(), <span class="at">y =</span> <span class="fu">numeric</span>())</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loop to create each group</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>group_count) {</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    x_start <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="sc">+</span> (i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">10</span> <span class="sc">/</span> group_count) <span class="co"># Stagger the start of x for each group</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">runif</span>(points_per_group, <span class="at">min =</span> x_start, <span class="at">max =</span> x_start <span class="sc">+</span> (<span class="dv">10</span> <span class="sc">/</span> group_count))</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Apply a local positive trend within the group, but maintain the global negative trend</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    local_intercept <span class="ot">&lt;-</span> global_intercept <span class="sc">+</span> global_slope <span class="sc">*</span> (x_start <span class="sc">+</span> (<span class="dv">10</span> <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> group_count))) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> noise_sd)</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> local_intercept <span class="sc">+</span> group_slope[i] <span class="sc">*</span> (x <span class="sc">-</span> x_start) <span class="sc">+</span> <span class="fu">rnorm</span>(points_per_group, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> noise_sd2)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combine this group with the overall dataset</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    group_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y,<span class="at">group=</span>i)</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(data, group_data)</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data)</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="co"># generate simulated data</span></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>data_int <span class="ot">&lt;-</span> <span class="fu">simulate_grouped_trend</span>(<span class="at">group_count =</span> <span class="dv">4</span>,<span class="at">points_per_group =</span> <span class="dv">10</span>,<span class="at">global_slope =</span> <span class="sc">-</span><span class="dv">2</span>,<span class="at">global_intercept =</span> <span class="dv">100</span>,<span class="at">group_slope =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>),<span class="at">noise_sd =</span> <span class="dv">5</span>,<span class="at">noise_sd2=</span><span class="dv">2</span>)</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="co"># set group to factor</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>data_int<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_int<span class="sc">$</span>group)</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Design matrix of random effect</span></span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span><span class="dv">0</span><span class="sc">+</span>data_int<span class="sc">$</span>group)</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct the model matrix 'X' for the fixed effect 'x' using data from 'data_int'.</span></span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span>x, <span class="at">data=</span>data_int)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a><span class="co"># get groups (random effects)</span></span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">unique</span>(data_int<span class="sc">$</span>group)</span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span>data_int<span class="sc">$</span>y</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a>c<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the log-likelihood function (as negative log-likelihood)</span></span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a>log_reml <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a>  D <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="at">x =</span> theta[<span class="dv">2</span>], <span class="at">ncol =</span> <span class="fu">length</span>(groups), <span class="at">nrow =</span> <span class="fu">length</span>(groups))</span>
+<span id="cb33-50"><a href="#cb33-50" aria-hidden="true" tabindex="-1"></a>  I <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(X), <span class="at">ncol =</span> <span class="fu">nrow</span>(X))</span>
+<span id="cb33-51"><a href="#cb33-51" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> theta[<span class="dv">1</span>] <span class="sc">*</span> (I <span class="sc">+</span> Z <span class="sc">%*%</span> D <span class="sc">%*%</span> <span class="fu">t</span>(Z))</span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a>  Beta <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> y</span>
+<span id="cb33-53"><a href="#cb33-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="fu">log</span>(<span class="fu">det</span>(V)) <span class="sc">+</span> <span class="fu">log</span>(<span class="fu">det</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> X)) <span class="sc">+</span> <span class="fu">t</span>(y <span class="sc">-</span> X <span class="sc">%*%</span> Beta) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> (y <span class="sc">-</span> X <span class="sc">%*%</span> Beta)))</span>
+<span id="cb33-54"><a href="#cb33-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-55"><a href="#cb33-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-56"><a href="#cb33-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-57"><a href="#cb33-57" aria-hidden="true" tabindex="-1"></a>theta<span class="ot">&lt;-</span>optimization<span class="sc">::</span><span class="fu">optim_nm</span>(<span class="at">fun =</span> log_reml, <span class="at">k =</span> <span class="dv">2</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">maximum=</span> <span class="cn">FALSE</span>, <span class="at">tol =</span> <span class="fl">0.0000000000001</span>)<span class="sc">$</span>par</span>
+<span id="cb33-58"><a href="#cb33-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-59"><a href="#cb33-59" aria-hidden="true" tabindex="-1"></a>theta<span class="ot">&lt;-</span><span class="fu">matrix</span>(theta,<span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb33-60"><a href="#cb33-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the Hessian at the estimates</span></span>
+<span id="cb33-61"><a href="#cb33-61" aria-hidden="true" tabindex="-1"></a>hessian_matrix <span class="ot">&lt;-</span> <span class="fu">hessian</span>(log_reml, theta)</span>
+<span id="cb33-62"><a href="#cb33-62" aria-hidden="true" tabindex="-1"></a>Sigma <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">solve</span>(hessian_matrix)</span>
+<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-64"><a href="#cb33-64" aria-hidden="true" tabindex="-1"></a><span class="co"># define g matrix</span></span>
+<span id="cb33-65"><a href="#cb33-65" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
+<span id="cb33-66"><a href="#cb33-66" aria-hidden="true" tabindex="-1"></a>  D <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="at">x =</span> theta[<span class="dv">2</span>], <span class="at">ncol =</span> <span class="fu">length</span>(groups), <span class="at">nrow =</span> <span class="fu">length</span>(groups))</span>
+<span id="cb33-67"><a href="#cb33-67" aria-hidden="true" tabindex="-1"></a>  I <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(X), <span class="at">ncol =</span> <span class="fu">nrow</span>(X))</span>
+<span id="cb33-68"><a href="#cb33-68" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> theta[<span class="dv">1</span>] <span class="sc">*</span> (I <span class="sc">+</span> Z <span class="sc">%*%</span> D <span class="sc">%*%</span> <span class="fu">t</span>(Z))</span>
+<span id="cb33-69"><a href="#cb33-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>((c) <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(c))</span>
+<span id="cb33-70"><a href="#cb33-70" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-71"><a href="#cb33-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-72"><a href="#cb33-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the gradient of a function by numerical approximation</span></span>
+<span id="cb33-73"><a href="#cb33-73" aria-hidden="true" tabindex="-1"></a>g_grad<span class="ot">&lt;-</span><span class="fu">as.matrix</span>(<span class="fu">grad</span>(g,theta))</span>
+<span id="cb33-74"><a href="#cb33-74" aria-hidden="true" tabindex="-1"></a>var_S2<span class="ot">&lt;-</span><span class="fu">t</span>(g_grad)<span class="sc">%*%</span>Sigma<span class="sc">%*%</span>g_grad</span>
+<span id="cb33-75"><a href="#cb33-75" aria-hidden="true" tabindex="-1"></a>S2<span class="ot">&lt;-</span><span class="fu">g</span>(theta)</span>
+<span id="cb33-76"><a href="#cb33-76" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> (<span class="dv">2</span> <span class="sc">*</span> S2<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> var_S2</span>
+<span id="cb33-77"><a href="#cb33-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-78"><a href="#cb33-78" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="at">x =</span> theta[<span class="dv">2</span>],<span class="at">ncol =</span> <span class="fu">length</span>(groups),<span class="at">nrow =</span> <span class="fu">length</span>(groups))</span>
+<span id="cb33-79"><a href="#cb33-79" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span>,<span class="at">nrow =</span> <span class="fu">nrow</span>(X),<span class="at">ncol =</span> <span class="fu">nrow</span>(X))</span>
+<span id="cb33-80"><a href="#cb33-80" aria-hidden="true" tabindex="-1"></a>V<span class="ot">&lt;-</span>theta[<span class="dv">1</span>]<span class="sc">*</span>(I<span class="sc">+</span>Z<span class="sc">%*%</span>D<span class="sc">%*%</span><span class="fu">t</span>(Z))</span>
+<span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a>Beta <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> y</span>
+<span id="cb33-82"><a href="#cb33-82" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-83"><a href="#cb33-83" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">data.frame</span>(<span class="at">df=</span>d,<span class="at">t=</span>Beta[<span class="dv">2</span>]<span class="sc">/</span><span class="fu">sqrt</span>(S2),<span class="at">pvalue=</span><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(Beta[<span class="dv">2</span>]<span class="sc">/</span><span class="fu">sqrt</span>(S2),<span class="at">df=</span>d,<span class="at">lower.tail =</span> <span class="cn">FALSE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       df       t      pvalue
+1 36.7423 4.33864 0.000107513</code></pre>
+</div>
+</div>
+<p>Compare this to <code>lmerTest</code> results:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>model<span class="ot">&lt;-</span><span class="fu">lmer</span>(y<span class="sc">~</span>x<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>group),<span class="at">data=</span>data_int,<span class="at">REML =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>trends <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(model, <span class="at">var =</span> <span class="st">"x"</span>, <span class="at">lmer.df =</span> <span class="st">"satterthwaite"</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(trends, <span class="at">infer =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    x x.trend    SE   df lower.CL upper.CL t.ratio p.value
+ 17.1    2.56 0.589 36.7     1.36     3.75   4.339  0.0001
+
+Degrees-of-freedom method: satterthwaite 
+Confidence level used: 0.95 </code></pre>
+</div>
+</div>
+<p>We get similar results and this concludes our chapter on math behind mixed models.</p>
+</section>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>In this section, we went through how mixed models works starting from OLS all the way to GLS and estimation and hypothesis testing. Please note that some of the derivations are very in efficient way of solving the equations in practice there are highly optimized methods to solve the mixed models.</p>
 
 
 </section>

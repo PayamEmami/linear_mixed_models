@@ -1,9 +1,4 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-# Introduction
+# Mixed models (mathematical details) {.unnumbered}
 
 In this section we are going to explain some of the key mathematical properties of mixed model. Before we begin please note that as said before mixed models can become fairly complex, with a variety of parametrization techniques that go beyond the scope and time frame of this chapter. Here I assume that the reader has relatively a good understanding of Ordinary Least Squares regression (OLS) as we are going to use that to build mixed models.  
 
@@ -353,7 +348,7 @@ It is clear that the difference between groups has been removed in the transform
 
 
 
-```{r,message=FALSE,warning=FALSE}
+```{r,message=FALSE,warning=FALSE,cache=TRUE}
 #| code-fold: true
 #| label: fig-scatter-plot-transformed-animation1
 #| fig-cap: "A scatter plot of of transformed X and Y"
@@ -404,7 +399,7 @@ ggplot(animation_data, aes(x = X_transformed, y = y_transformed, color = Group))
 By now it should be clear that as the variance across the group is low that transformation does basically nothing (because there is nothing to correct for) but as we increase this variance we keep rescaling and streching the data so that they are aligned and therefore the differences between the groups are minimized. 
 
 So this transformation ensures that each dimension (principal component) of the space now has equal variance (specifically, variance of 1), removing the effect of the original variances encoded by $V$.
-If the components of the data were correlated (as indicated by the off-diagonal elements of $V$), the transformation effectively decorrelates these components. In the new space, the covariance between any pair of different components of $ V^{-1/2} data$ is zero. Thus, geometrically, $V^{-1/2} data$ transforms the data into a form where the scale differences and correlations introduced by $V$ are neutralized, making the transformed data suitable for analysis under standard assumptions of independence and uniform scale.
+If the components of the data were correlated (as indicated by the off-diagonal elements of $V$), the transformation effectively decorrelates these components. In the new space, the covariance between any pair of different components of $V^{-1/2} data$ is zero. Thus, geometrically, $V^{-1/2} data$ transforms the data into a form where the scale differences and correlations introduced by $V$ are neutralized, making the transformed data suitable for analysis under standard assumptions of independence and uniform scale.
 
 The last thing to note here is that here we are dealing with a random intercept model, the covariance matrix $V$ used for the transformation typically involves scaling and centering the group data without any rotation. This is because the model structure we are using doesn't incorporate random slopes or other types of covariance structures that might induce rotation. Instead, it predominantly influences the scaling and translation of the groups in our dataset.
 
@@ -420,7 +415,7 @@ In terms of matrix operations:
 
 In order to true see what the transformation does, we now incorporate a random slope and show it affects the transformation here.
 
-```{r,message=FALSE,warning=FALSE}
+```{r,message=FALSE,warning=FALSE,cache=TRUE}
 #| code-fold: true
 #| label: fig-scatter-plot-transformed-animation2
 #| fig-cap: "A scatter plot of of transformed X and Y"
@@ -516,13 +511,14 @@ The ICC formula calculates the proportion of total variance ($\sigma_d^2 + \sigm
 
 We can clarify this using a simple example:
 
-```{r}
+```{r,cache=TRUE}
 
 #| code-fold: true
 #| label: fig-scatter-plot-ICC
 #| fig-cap: "A scatter plot of of X and Y showing the effect of ICC"
 # fit the model
-
+library(ggplot2)
+library(gganimate)
 simulate_data <- function(n_groups, n_per_group, slope, icc, sigma_within) {
   # Parameters
   mu <- 0  # Overall intercept (can be set to other values as needed)
@@ -992,68 +988,102 @@ print(VarCorr(lmer(y~x+(1|group),data=data_int,REML = FALSE)))
 
 While Maximum Likelihood Estimators are efficient and consistent under many conditions, they can be biased, particularly in  estimating the variance in a model. 
 
-Consider a random sample $y_1, y_2, \ldots, y_n$ from a normal distribution $N(0, \sigma^2)$. We want to estimate the variance $\sigma^2$ using MLE.
+Consider a random sample $y_1, y_2, \ldots, y_n$ from a normal distribution $N(\mu, \sigma^2)$. We want to estimate the variance $\sigma^2$ using MLE.
 
 
 The probability density function for a single observation $y_i$ given $\sigma^2$ is:
 
 $$
-f(y_i | \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{y_i^2}{2\sigma^2}\right).
+f(y_i | \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right).
 $$
 
 The likelihood function for all observations $y_1, \ldots, y_n$, assuming independence, is the product of individual densities:
+
 $$
-L(\sigma^2 | y_1, \ldots, y_n) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{y_i^2}{2\sigma^2}\right).
+L(\sigma^2 | y_1, \ldots, y_n) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right).
 $$
 
+The log-likelihood function, $\ell(\sigma^2)$, is the natural logarithm of the likelihood function:
 
-The log-likelihood function $\ell(\sigma^2)$ is the natural logarithm of the likelihood function:
 $$
-\ell(\sigma^2) = \sum_{i=1}^n \log\left(\frac{1}{\sqrt{2\pi \sigma^2}}\right) - \sum_{i=1}^n \frac{y_i^2}{2\sigma^2}
-= -\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n y_i^2.
+\ell(\sigma^2) = \sum_{i=1}^n \log\left(\frac{1}{\sqrt{2\pi \sigma^2}}\right) - \sum_{i=1}^n \frac{(y_i - \mu)^2}{2\sigma^2}
+= -\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \mu)^2.
 $$
 
+To find the maximum likelihood estimator (MLE) for $\sigma^2$, differentiate $\ell(\sigma^2)$ with respect to $\sigma^2$ and set this derivative to zero:
 
-To find the MLE, differentiate $\ell(\sigma^2)$ with respect to $\sigma^2$ and set this derivative to zero:
 $$
-\frac{d\ell(\sigma^2)}{d\sigma^2} = -\frac{n}{2\sigma^2} + \frac{\sum_{i=1}^n y_i^2}{2(\sigma^2)^2} = 0.
+\frac{d\ell(\sigma^2)}{d\sigma^2} = -\frac{n}{2\sigma^2} + \frac{\sum_{i=1}^n (y_i - \mu)^2}{2(\sigma^2)^2} = 0.
 $$
 
 Solving for $\sigma^2$, we rearrange and simplify:
-$$
-\frac{n}{2\sigma^2} = \frac{\sum_{i=1}^n y_i^2}{2(\sigma^2)^2}
-\Rightarrow \sigma^2 = \frac{1}{n} \sum_{i=1}^n y_i^2.
-$$
 
+$$
+\frac{n}{2\sigma^2} = \frac{\sum_{i=1}^n (y_i - \mu)^2}{2(\sigma^2)^2}
+\Rightarrow \sigma^2 = \frac{1}{n} \sum_{i=1}^n (y_i - \mu)^2.
+$$
 
 When $\mu$ is estimated from the data, the sample mean $\overline{y}$ is:
+
 $$
 \overline{y} = \frac{1}{n} \sum_{i=1}^n y_i.
 $$
 
-The MLE for $\sigma^2$ when the mean is estimated is:
+The MLE for $\sigma^2$ when the mean is estimated from the data becomes:
+
 $$
-\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2.
+\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2,
 $$
 
+We now need to take the expectation of To find the expectation of $\hat{\sigma}^2$. To do that we express it in terms of $y_i - \mu$ and $\overline{y} - \mu$**
 
-Recall that the variance of the sample mean $\overline{y}$ is $\sigma^2/n$, and the sum of squared deviations about the true mean is:
+First, rewrite the squared term using the identity $a - b = (a - c) + (c - b)$ where $a = y_i$, $b = \overline{y}$, and $c = \mu$:
 $$
-\sum_{i=1}^n (y_i - \mu)^2 \sim \sigma^2 \chi^2_{n}.
+y_i - \overline{y} = (y_i - \mu) - (\overline{y} - \mu).
+$$
+Thus, the squared term becomes:
+
+$$
+(y_i - \overline{y})^2 = [(y_i - \mu) - (\overline{y} - \mu)]^2.
+$$
+Expanding this, we get:
+
+$$
+(y_i - \overline{y})^2 = (y_i - \mu)^2 - 2(y_i - \mu)(\overline{y} - \mu) + (\overline{y} - \mu)^2.
 $$
 
-Since $\sum_{i=1}^n (y_i - \overline{y})^2$ is the sum of squared deviations about the sample mean, it has a different distribution:
+Summing over all $i$ from 1 to $n$, we obtain:
 $$
-\sum_{i=1}^n (y_i - \overline{y})^2 \sim \sigma^2 \chi^2_{n-1},
+\sum_{i=1}^n (y_i - \overline{y})^2 = \sum_{i=1}^n (y_i - \mu)^2 - 2 \sum_{i=1}^n (y_i - \mu)(\overline{y} - \mu) + \sum_{i=1}^n (\overline{y} - \mu)^2.
 $$
-because estimating $\mu$ uses up one degree of freedom.
+Since $\overline{y} - \mu$ does not depend on $i$, it can be factored out of the sums:
 
-The expectation of $\hat{\sigma}^2$ is then:
 $$
-E(\hat{\sigma}^2) = E\left(\frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2\right) = \frac{1}{n} E\left(\sigma^2 \chi^2_{n-1}\right) = \frac{1}{n} \cdot \sigma^2 (n-1) = \frac{n-1}{n} \sigma^2.
+\sum_{i=1}^n (y_i - \overline{y})^2 = \sum_{i=1}^n (y_i - \mu)^2 - 2(\overline{y} - \mu) \sum_{i=1}^n (y_i - \mu) + n(\overline{y} - \mu)^2.
+$$
+Given that $\sum_{i=1}^n (y_i - \mu) = n(\overline{y} - \mu)$, the middle term simplifies to:
+
+$$
+-2n(\overline{y} - \mu)^2,
+$$
+and the equation becomes:
+
+$$
+\sum_{i=1}^n (y_i - \overline{y})^2 = \sum_{i=1}^n (y_i - \mu)^2 - n(\overline{y} - \mu)^2.
+$$
+
+We take the expectation:
+$$
+E\left[\hat{\sigma}^2\right] = E\left[\frac{1}{n} \sum_{i=1}^n (y_i - \overline{y})^2\right] = \frac{1}{n} E\left[\sum_{i=1}^n (y_i - \mu)^2 - n(\overline{y} - \mu)^2\right].
+$$
+Since $E[\sum_{i=1}^n (y_i - \mu)^2] = n\sigma^2$ and $E[n(\overline{y} - \mu)^2] = \sigma^2$ (by the properties of variance), we get:
+
+$$
+E[\hat{\sigma}^2] = \frac{1}{n} [n\sigma^2 - \sigma^2] = \frac{n-1}{n} \sigma^2.
 $$
 
 Thus, the bias $B(\hat{\sigma}^2)$ is:
+
 $$
 B(\hat{\sigma}^2) = E(\hat{\sigma}^2) - \sigma^2 = \frac{n-1}{n} \sigma^2 - \sigma^2 = \frac{n-1-n}{n} \sigma^2 = \frac{-1}{n} \sigma^2.
 $$
@@ -1454,7 +1484,7 @@ print(ranef(lmer(y~x+(1|group),data=data_int,REML = TRUE)))
 
 ```
 
-We get identical results! These values are also called to be Best Linear Unbiased Prediction (BLUP) because Unbiasedness ($ E(E(u | y)) = E(u) = 0$) and minization of the variance of the prediction error $E[(u - \hat{u})^2]$ among all linear unbiased predictors. We are not going to prove them here as we did similar analysis up there fore BLUEs. 
+We get identical results! These values are also called to be Best Linear Unbiased Prediction (BLUP) because Unbiasedness ($E(E(u | y)) = E(u) = 0$) and minization of the variance of the prediction error $E[(u - \hat{u})^2]$ among all linear unbiased predictors. We are not going to prove them here as we did similar analysis up there fore BLUEs. 
 
 
 # Final mixed model form
@@ -1466,11 +1496,12 @@ Putting all together we have
 $$y = X\beta + Zu + e$$
 
 This describes our data model, where:
-  - $y$ is the vector of observed data.
-  - $\beta$ represents fixed effects, which may or may not be of interest for the derivation.
-  - $u$ represents the random effects we wish to predict.
-  - $e$ is the error term.
-  - $X$ and $Z$ are known design matrices.
+
+- $y$ is the vector of observed data.
+- $\beta$ represents fixed effects, which may or may not be of interest for the derivation.
+- $u$ represents the random effects we wish to predict.
+- $e$ is the error term.
+- $X$ and $Z$ are known design matrices.
 
 We also assume:
 - $u \sim N(0, \sigma^2D)$, where $D$ is the covariance matrix of the random effects.
@@ -1479,3 +1510,658 @@ We also assume:
 
 This is the final form of the mixed model which we derived starting from OLS.
 
+
+# p-value for mixed models (Satterthwaite approximation)
+
+This should be clear by now that mixed models are inherently more complex than OLS. This complexity goes also to statistical testing. In this section, I want to write a bit about statistical testing both from the classical perspective but also from linear models and mixed models. Again we are not going to go through all details but just demonstrate some of the key concepts.
+
+## How rare is this value?!
+
+Let's assume we have a specific value from our dataset that we're curious about its rarity. The only way to accurately assess how rare this value is involves understanding where it falls within an overall distribution of data. This compares the value against a bunch of expected values. Ff it deviates significantly from what's typical, then we can consider it rare. To do this, we first need to define the distribution that best describes our dataset. 
+A common assumption to make about a dataset is that it follows a normal distribution. Many natural phenomena and human-made processes tend to distribute their values in a way that can be symmetrically modeled around a central value, with fewer occurrences appearing as one moves further away from this central point. 
+
+If we assume that our data follows a normal distribution, we can use its mathematical properties to check the rarity of specific observations within our dataset. 
+
+In probability, the "density" of a value in a continuous distribution refers to the relative likelihood of this value occurring. For a normal distribution values closer to the mean are more densely packed and so more likely to occur. As we move away from the mean, the density decreases, indicating that these values are less likely and rarer.
+
+The density function doesn't give the probability of the event occurring at exactly a specific point (which in continuous distributions is technically zero), but rather it helps us understand how dense the distribution is around that point, which is indicative of the probability of observing values in a small interval around that point.
+
+The probability density function for a normal distribution is given by:
+
+$$
+f(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+$$
+
+Here:
+- $x$ is the value for which we are calculating the probability density.
+- $\mu$ is the mean of the distribution.
+- $\sigma$ is the standard deviation, which measures the dispersion of the data around the mean.
+- $\sigma^2$ is the variance.
+
+
+To determine how rare or unusual a particular value $x$ is within a normal distribution, we need to calculate the probability of observing $x$ or a value more extreme (larger or smaller, depending on the context). This is typically done using the cumulative distribution function (CDF), which gives the probability that a normally distributed random variable is less than or equal to a certain value.
+
+CDF is represented by the integral of the probability density function from negative infinity to $ x $. Mathematically, it's expressed as:
+
+$$
+F(x | \mu, \sigma^2) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{(t-\mu)^2}{2\sigma^2}} dt
+$$
+
+For instance, if we want to calculate the probability of observing a value less than or equal to 60 from a normal distribution with a mean of 50 and a standard deviation of 10:
+
+
+```{r}
+# Parameters
+mu <- 50
+sigma <- 10
+
+# Value to calculate the cumulative probability for
+x <- 60
+
+# Calculate the probability
+probability <- pnorm(x, mean = mu, sd = sigma)
+print(probability)
+```
+
+I guess you realized that we have an infinite number of normal distributions defined by particular parameters ($\mu$ and $\sigma$). However, it is often nice to have a standard one from which we can derive a table of probabilities. This distribution is called the **standard normal distribution**. 
+
+## Standard normal distribution
+
+The standard normal distribution is a specific instance of the normal distribution where the mean ($\mu$) is 0 and the standard deviation ($\sigma$) is 1. This standardization simplifies many statistical methods and allows us to use a single, universally applicable table (commonly called the Z-table) for finding probabilities
+
+To convert any normal distribution to the standard normal distribution, values are transformed into what are known as Z-scores. This transformation process is called **standardization**. A Z-score tells us how many standard deviations away a point is from the mean of the distribution. 
+
+The formula to calculate the Z-score of a value $x$ is:
+
+$$Z = \frac{(x - \mu)}{\sigma}$$
+
+Where:
+
+- $x$ is the value from the original distribution.
+- $\mu$ is the mean of the original distribution.
+- $\sigma$ is the standard deviation of the original distribution.
+
+Let's consider an example where we calculate the Z-scores:
+
+
+```{r}
+# Sample data values
+data_values <- c(40, 55, 60, 45, 70)
+
+# Mean and standard deviation of the dataset
+mu <- 50
+sigma <- 10
+
+# Calculate Z-scores
+z_scores <- (data_values - mu) / sigma
+
+# Output Z-scores
+print(z_scores)
+```
+
+We can now use a standard normal distribution for finding probabilities. 
+
+
+For any random variable we can write the transformation as 
+
+$$Z = \frac{(X - \mu)}{\sigma}$$
+
+Now suppose that we went and collected a few samples and measured its mean $\bar{X}$ and we want to check how likely is that to get a value larger or smaller than $\bar{X}$. We can do a $z$ transformation but with a small difference.
+
+There is however a small difference here. Eventhough the sample can be used to calculate unbiased estimates of the population property, the sample estimate will not be perfect. The standard deviation of the sampling distribution is called the standard error or $SE$. If each $X_i$ is normally distributed with mean $\mu$ (mean of population) and standard deviation $\sigma$, then:
+
+- **Expected Value**: $E[\overline{X}] = \mu$
+- **Variance**: Since $X_i$ are independent, the variance of the sum is the sum of the variances:
+     $Var(\overline{X}) = Var\left(\frac{1}{n} \sum_{i=1}^n X_i\right) = \frac{1}{n^2} \sum_{i=1}^n Var(X_i) = \frac{1}{n^2} \cdot n \sigma^2 = \frac{\sigma^2}{n}$
+     
+The standard error of the mean is:
+
+$SEM = \frac{\sigma}{\sqrt{n}}$
+
+So we change the definiton of $Z$ for sample mean to
+
+$$Z = \frac{(\bar{X} - \mu)}{\frac{\sigma}{\sqrt{n}}}$$
+Which can be used to derive the probability. However, there is a challenge! So far, we have assumed that we know the variance of the population. In many practical situations $\sigma$ is not known and must be estimated from the sample data we call it $SE$.
+
+
+$$
+SE = \frac{s}{\sqrt{n}}
+$$
+
+Here, $s$ is the sample standard deviation, and $n$ is the sample size. The standard error provides a measure of how much error is expected in the estimate of the mean. As the sample size increases, the standard error decreases, indicating a more accurate estimate of the population mean.
+
+Our standarized value now becomes
+
+$$
+\frac{\bar{X} - \mu}{SE}
+$$
+
+There is again a small little question here: Is this actually normal distribution?
+
+Let's see if we can write $\frac{\bar{X} - \mu}{SE}$ in terms of distributions that we already know such as $Z$. 
+
+We know that
+
+$$
+\frac{\bar{X} - \mu}{SE}=\frac{\overline{X} - \mu}{S / \sqrt{n}}
+$$
+Where $S$ is the standard deviation of samples.
+
+Recall that $Z = \frac{\overline{X} - \mu}{\sigma/\sqrt{n}}$.
+
+So we can write
+
+$$
+\overline{X} - \mu = Z \cdot \frac{\sigma}{\sqrt{n}}
+$$
+
+Plugging this into the expression $\frac{\overline{X} - \mu}{S / \sqrt{n}}$, we have:
+
+$$
+\frac{\overline{X} - \mu}{S / \sqrt{n}} = \frac{Z \cdot \frac{\sigma}{\sqrt{n}}}{S / \sqrt{n}} = Z \cdot \frac{\sigma}{S}
+$$
+
+Now we should work our way around $\frac{\sigma}{S}$ and write it in a form that has know distribution. 
+
+Remember that sample mean $\overline{X}$ and sample variance $S^2$ are defined as follows:
+$$
+\overline{X} = \frac{1}{n} \sum_{i=1}^1 X_i
+$$
+$$
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \overline{X})^2
+$$
+
+First, let's express $X_i - \overline{X}$:
+$$
+X_i - \overline{X} = \left( X_i - \mu \right) - \left( \overline{X} - \mu \right)
+$$
+$$
+= (X_i - \mu) - \left( \frac{1}{n} \sum_{j=1}^n (X_j - \mu) \right)
+$$
+
+Now consider the sum of squared deviations from the mean:
+$$
+\sum_{i=1}^n (X_i - \overline{X})^2 = \sum_{i=1}^n \left[ (X_i - \mu) - (\overline{X} - \mu) \right]^2
+$$
+Using the property of variance and the independence of $X_i$, we know:
+$$
+\sum_{i=1}^n (X_i - \overline{X})^2 = \sum_{i=1}^n (X_i - \mu)^2 - n(\overline{X} - \mu)^2
+$$
+
+Since $X_i$ are i.i.d. $N(\mu, \sigma^2)$, $(X_i - \mu)/\sigma$ are i.i.d. $N(0, 1)$, we know that:
+$$
+\sum_{i=1}^n \left( \frac{X_i - \mu}{\sigma} \right)^2 \sim \chi^2_n
+$$
+
+However, we are interested in $\sum_{i=1}^n (X_i - \overline{X})^2$. Note that $\overline{X}$ itself is $N(\mu, \sigma^2/n)$.
+
+By Cochran's theorem, the sum of squared deviations can be split into independent parts:
+$$
+\sum_{i=1}^n (X_i - \mu)^2 = \sum_{i=1}^n (X_i - \overline{X})^2 + n(\overline{X} - \mu)^2
+$$
+where $\sum_{i=1}^n (X_i - \overline{X})^2$ and $n(\overline{X} - \mu)^2$ are independent.
+
+Now, $\sum_{i=1}^n (X_i - \overline{X})^2$ follows a chi-squared distribution with $n-1$ degrees of freedom:
+$$
+\sum_{i=1}^n (X_i - \overline{X})^2 \sim \sigma^2 \chi^2_{n-1}
+$$
+
+We have:
+$$
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \overline{X})^2
+$$
+So, we can write:
+$$
+(n-1)S^2 = \sum_{i=1}^n (X_i - \overline{X})^2
+$$
+
+So:
+$$
+\frac{(n-1)S^2}{\sigma^2} = \frac{\sum_{i=1}^n (X_i - \overline{X})^2}{\sigma^2} \sim \chi^2_{n-1}
+$$
+
+Thus, we have shown that:
+$$
+\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}
+$$
+Let's call this $U = \frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1}$. 
+
+We can express $\sigma$ in terms of $S$ and $U$ using the relation $\sigma^2 = \frac{(n-1)S^2}{U}$, then:
+
+$$
+\sigma = S \sqrt{\frac{n-1}{U}}
+$$
+Substituting back into the equation, we get:
+
+$$
+Z \cdot \frac{S \sqrt{\frac{n-1}{U}}}{S} = Z \cdot \sqrt{\frac{n-1}{U}} = \frac{Z}{\sqrt{\frac{U}{n-1}}}
+$$
+Therefore:
+
+$$\frac{\overline{X} - \mu}{S / \sqrt{n}} = \frac{Z}{\sqrt{\frac{U}{n-1}}}$$
+
+## Putting it all together (T)
+
+Based on
+
+$$
+\frac{\overline{X} - \mu}{S / \sqrt{n}} = \frac{Z}{\sqrt{\frac{U}{n-1}}}
+$$
+
+Let's just assume we call $n-1=d$ (degrees of freedom) so 
+
+$$
+\frac{Z}{\sqrt{\frac{U}{n-1}}}=\frac{Z}{\sqrt{\frac{U}{d}}}\sim \chi^2_{n}
+$$
+
+We know that a random variable $Z$) that is standard normally distributed, denoted $Z \sim N(0, 1)$, has a probability density function (PDF):
+  $$
+  f_Z(z) = \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}}
+  $$
+
+Also a chi-squared distribution with $d$ degrees of freedom, denoted $U \sim \chi^2_d$, can be expressed as the sum of squares of $d$ independent standard normal variables. Its PDF is given by:
+
+$$
+  f_U(u) = \frac{u^{(d/2)-1} e^{-u/2}}{2^{d/2} \Gamma(d/2)}
+$$
+
+Let's make things a bit tidy here by defining:
+
+$$
+   T = \frac{Z}{\sqrt{\frac{U}{d}}} = \frac{Z}{\sqrt{V}}
+$$
+
+where $V = \frac{U}{d}$.
+
+We now have to find PDF of $T$ which a joint PDF if weassume that $Z$ and $V$ are independent. The joint PDF of $Z$ and $V$, $f_{Z,V}(z,v)$, is the product of their marginal PDFs:
+
+$$
+f_{Z,V}(z,v) = f_Z(z) f_V(v) = \left( \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}} \right) \left( \frac{d^{d/2} v^{d/2 - 1} e^{-dv/2}}{2^{d/2} \Gamma(d/2)} \right)
+$$
+
+Directly working with $f_{Z,V}(z, v)$ to find the PDF of $T$ involves solving an integral where $T$ is a function of both $Z$ and $V$. Instead we are going to write things in terms of $T$ using change variables method.
+
+Let's start with 
+
+$$
+Z = T\sqrt{W}, \quad V = W
+$$
+
+where $W$ is just a placeholder to help in calculation. This is an easier form to work with but the problem is when working with transformation of random variables, the volume that the probability density covers can change. In order to conserve the total probability between the orignal and the transformed space we need to derive how much we have to strech or compress the transformed space. determinant of Jacobian gives us a way to calculate this scaling factor.
+
+Given:
+
+$$
+Z = T\sqrt{W}, \quad V = W
+$$
+
+To find the Jacobian determinant, we compute the partial derivatives:
+
+$$
+\begin{align*}
+\frac{\partial Z}{\partial T} &= \sqrt{W} \\
+\frac{\partial Z}{\partial W} &= \frac{T}{2\sqrt{W}} \\
+\frac{\partial V}{\partial T} &= 0 \\
+\frac{\partial V}{\partial W} &= 1
+\end{align*}
+$$
+
+These partial derivatives form the Jacobian matrix:
+
+$$
+J = \begin{bmatrix}
+\sqrt{W} & \frac{T}{2\sqrt{W}} \\
+0 & 1
+\end{bmatrix}
+$$
+
+The determinant of this matrix is:
+
+$$
+\text{det}(J) = \sqrt{W} \times 1 - 0 \times \frac{T}{2\sqrt{W}} = \sqrt{W}
+$$
+
+Using the Jacobian, we can transform the joint PDF of $Z$ and $V$ into the joint PDF of $T \) and $W$:
+
+$$
+f_{T,W}(t, w) = f_{Z,V}(t\sqrt{w}, w) \times |\text{det}(J)|
+$$
+
+Given $f_{Z,V}(z, v) = f_Z(z) f_V(v)$, we substitute $z = t\sqrt{w}$ and $v = w$, and include the Jacobian:
+
+$$
+f_{T,W}(t, w) = f_Z(t\sqrt{w}) f_V(w) \sqrt{w}
+$$
+
+which becomes 
+
+$$
+f_{T,W}(t, w)  = \left( \frac{1}{\sqrt{2\pi}} e^{-\frac{t^2 w}{2}} \right) \left( \frac{d^{d/2} w^{d/2 - 1} e^{-dw/2}}{2^{d/2} \Gamma(d/2)} \right) \cdot \sqrt{w}
+$$
+
+
+Finally, to find $f_T(t)$, the marginal PDF of $T$, we integrate out $W$:
+
+$$
+f_T(t) = \int_0^\infty f_{T,W}(t, w) \, dw
+$$
+
+I'm not going to solve this here but the results of this integration is
+
+$$
+f_T(t) = \frac{\Gamma\left(\frac{d+1}{2}\right)}{\sqrt{d\pi} \Gamma\left(\frac{d}{2}\right)} \left(1 + \frac{t^2}{d}\right)^{-\frac{d+1}{2}}
+$$
+
+This gives us the Student's t-distribution, matching the formula for the [PDF of the t-distribution](https://en.wikipedia.org/wiki/Student%27s_t-distribution).
+
+We came all the way here to just to prove that 
+
+$$
+   \frac{Z}{\sqrt{\frac{U}{d}}} \sim t_d
+$$
+with $d$ degrees of freedom and $Z \sim N(0,1)$ and $U \sim chi^2_d$. 
+
+## t-statistics for OLS
+
+Consider a linear model given by:
+$$
+Y = X\beta + \epsilon
+$$
+In order to do a t-statistics, we need to first create a hypothesis. To create such a hypothesis we need a **linear contrast** that is a specific linear combination of the estimated regression coefficients. It's typically represented as $c'\beta$
+
+where:
+
+- $c$ is a known $p \times 1$ vector, specifying the coefficients for the linear combination.
+- $\beta$ is the $p \times 1$ vector of true regression coefficients.
+
+The purpose of $c$ is to focus on specific hypotheses about combinations of the parameters $\beta$. For example, if we are interested in testing whether the sum of two coefficients is zero or some other value, $c$ would be constructed accordingly to weight these coefficients. Similarly, if we have a bunch coefficients and we want to test whether one of them is different from zero or not we can construct a $p \times 1$ vector which has all the elements zero except for the coefficient that we want to test.
+
+$c'\beta$ in fact gives us the numerator of the t-statistics. So we have 
+
+$$
+t=\frac{c'\beta}{SE}
+$$
+We still need to figure out what $SE$ is.
+
+Recall that $SE$ is the standard error of $c'\beta$. So we need to derive the variance of the estimated regression coefficients ($\hat{\beta}$). Although we have done that before, let's go through it one more time.
+
+The variance of a linear transformation $A$ of a random vector $b$ (where $A$ is a matrix and $b$ is a vector of random variables with variance-covariance matrix $\Sigma$) is given by:
+$$\text{Var}(Ab) = A \Sigma A'$$
+Applying this to $\hat{\beta}$:
+$$\hat{\beta} = (X'X)^{-1}X'Y$$
+$$Y = X\beta + \epsilon$$
+$$\text{Var}(\hat{\beta}) = \text{Var}((X'X)^{-1}X'Y)$$
+Since $Y = X\beta + \epsilon$ and $X\beta$ is non-random (deterministic), the variance part comes only from $\epsilon$:
+$$\text{Var}(\hat{\beta}) = \text{Var}((X'X)^{-1}X'(X\beta + \epsilon))$$
+$$\text{Var}(\hat{\beta}) = \text{Var}((X'X)^{-1}X'\epsilon)$$
+Given $\text{Var}(\epsilon) = \sigma^2 I$:
+$$\text{Var}(\hat{\beta}) = (X'X)^{-1}X'(\sigma^2 I)X(X'X)^{-1}$$
+$$\text{Var}(\hat{\beta}) = \sigma^2 (X'X)^{-1}X'IX(X'X)^{-1}$$
+$$\text{Var}(\hat{\beta}) = \sigma^2 (X'X)^{-1}$$
+
+The unbiased estimator of $\sigma^2$ (variance of the errors) is given by the Residual Sum of Squares (RSS) divided by the degrees of freedom, which is typically the number of observations minus the number of parameters estimated (including intercept). If $n$ is the number of observations and $p$ is the number of parameters (including the intercept), the degrees of freedom are $n - p$:
+$$\hat{\sigma}^2 = \frac{\text{RSS}}{n - p}$$
+
+$$\text{RSS} = (Y - \hat{Y})'(Y - \hat{Y})$$
+Given:
+$$\hat{Y} = X\hat{\beta} = X(X'X)^{-1}X'Y$$
+The RSS becomes:
+$$\text{RSS} = (Y - X(X'X)^{-1}X'Y)'(Y - X(X'X)^{-1}X'Y)$$
+$$\text{RSS} = Y'Y - Y'X(X'X)^{-1}X'Y$$
+
+Given this the formula for t-statistics for testing coefficients of linear regression will be
+
+$$t=\frac{c'\beta}{\frac{ Y'Y - Y'X(X'X)^{-1}X'Y}{n-p}\sqrt{(X'X)^{-1}}}$$
+```{r}
+calculate_t_statistic <- function(X, Y, c) {
+  # Calculate the OLS estimates for beta
+  beta_hat <- solve(t(X) %*% X) %*% t(X) %*% Y
+  
+  # Calculate RSS
+  Y_hat <- X %*% beta_hat
+  rss <- sum((Y - Y_hat)^2)
+  
+  # Degrees of freedom
+  n <- nrow(X)  # Number of observations
+  p <- ncol(X)  # Number of parameters
+  df <- n - p
+  
+  # Variance estimate
+  sigma_squared_hat <- rss / df
+  
+  # Calculating c'beta
+  c_beta_hat <- as.numeric(c %*% beta_hat)
+  
+  # Calculating the variance of c'beta_hat
+  var_c_beta_hat <- sigma_squared_hat * (c %*% solve(t(X) %*% X) %*% c)
+  
+  # t-statistic
+  t_statistic <- c_beta_hat / sqrt(var_c_beta_hat)
+  
+  return(t_statistic)
+}
+
+
+# Construct the model matrix 'X' for the fixed effect 'x' using data from 'data_int'.
+X <- model.matrix(~x, data=data_int)
+
+y<-data_int$y
+
+print(data.frame(t=calculate_t_statistic(X = X,Y = y,c = c(0,1)),df=nrow(X)-ncol(X),
+      pvalue=2*pt(abs(calculate_t_statistic(X = X,Y = y,c = c(0,1))),df=nrow(X)-ncol(X),lower.tail = FALSE)))
+
+
+```
+
+Compare to `lm` function
+
+```{r}
+print(summary(lm(y~0+X)))
+```
+
+### degrees of freedom of GLS
+
+In mixed models, determining the degrees of freedom (df) is complex due to the presence of both fixed and random effects. Unlike simple linear models where df is straightforward (number of observations minus number of parameters), mixed models must account for the hierarchical structure of the data and correlations within random effects. Methods like Satterthwaite and Kenward-Roger approximations are often used to estimate df. We are again going to just use the definition of GLS and not $y = X\beta + Zb + \epsilon$ and demonstrate how Satterthwaite approximation works.
+
+We know from the very first sections the estimated fixed effects $\hat{\beta}$ are given by:
+
+$$
+\hat{\beta} = (X'V^{-1}X)^{-1}X'V^{-1}y
+$$
+where $V = ZDZ' + \sigma^2$ is the variance-covariance matrix of $y$.
+
+If you remember we also proved that the variance of the $\beta$ is $(X'V^{-1}X)^{-1}$.
+
+But what we are interested is the test of coeffcient $c'\hat{\beta}$. From the OLS part above we can show that
+
+$$
+\text{Var}(c'\hat{\beta}) = c' \text{Var}(\hat{\beta}) c = c' (X'V^{-1}X)^{-1} c
+$$
+
+The test statistic for testing $c'\beta = 0$ is constructed as:
+$$
+T = \frac{c'\hat{\beta}}{\sqrt{\text{Var}(c'\hat{\beta})}}
+$$
+
+Substitute the variance expression:
+
+$$
+\text{Var}(c'\hat{\beta}) = c' (X'V^{-1}X)^{-1} c
+$$
+
+So, the test statistic becomes:
+$$
+T = \frac{c'\hat{\beta}}{\sqrt{c' (X'V^{-1}X)^{-1} c}}
+$$
+
+
+This test statistic follows a t-distribution with degrees of freedom that can be approximated using the Satterthwaite approximation. However unlink OLS we don't want to use $n-p$ as degrees of freedom. We need to estimate it. 
+
+If you remember from the definition of T-stats we derived $\sqrt{c' (X'V^{-1}X)^{-1} c} \sim ch^2_d$ (we still don't know $d$). 
+
+However, just earlier we proved that:
+
+$$
+\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}
+$$
+Let's call the DF here ($n-1$) is $d$ so we have 
+
+$$
+\frac{(d)S^2}{\sigma^2} \sim \chi^2_{d}
+$$
+We know the definition $S^2=c' (X'V^{-1}X)^{-1} c$. But $\sigma^2$ is true but unknow variance of the population. Let's call this $\sigma^2=c' (X'V_p^{-1}X)^{-1} c$
+
+We can now say that $S^2 \approx \frac{\sigma^2}{d} \chi^2_{d}$. Given this we are going to match the first two momnets of $S^2$ and $\frac{\sigma^2}{d} \chi^2_{d}$ to see if we can derive $d$
+
+Let's start with expectation (first moment)
+$$
+\mathbb{E}(S^2) = \mathbb{E}\left(\frac{\sigma^2}{d} \chi^2_{d}\right) = \frac{\sigma^2}{d} \mathbb{E}(\chi^2_{d}) = \frac{\sigma^2}{d} d = \sigma^2
+$$
+Unfortunately $d$ did not stay in this moment. Let's go to the second moment (variance).
+
+$$
+\text{Var}(S^2) = \text{Var}\left(\frac{\sigma^2}{d} \chi^2_{d}\right) = \left(\frac{\sigma^2}{d}\right)^2 \text{Var}(\chi^2_{d}) = \left(\frac{\sigma^2}{d}\right)^2 \cdot 2d = \frac{2\sigma^4}{d}
+$$
+
+This is much better. We have $d$ left in the formula. So we have
+
+$$
+\text{Var}(S^2) =  \frac{2\sigma^4}{d}
+$$
+
+We can write:
+
+$$
+d=\frac{2\sigma^4}{Var(S^2)}
+$$
+We can estimate $\sigma^2$ as $c' (X'V^{-1}X)^{-1} c$ which is $S^2$. so we can write
+
+$$
+d=\frac{2(c' (X'V^{-1}X)^{-1} c)^2}{Var(c' (X'V^{-1}X)^{-1} c)}
+$$
+The numerator is simple to calculate but denominator is more complex.
+
+Remember that $c' (X'V^{-1}X)^{-1} c$ involes estimating $V$ which itself is a function of a parameter $\theta$.
+To fix this we are going to use the delta method. The delta method can be used to approximate the variance of a function of a random variable.
+
+If $g(\theta)$ is a differentiable function of $\theta$, and $\theta$ has an approximate normal distribution $N(\hat{\theta}, \Sigma)$ where $\Sigma$ is the covariance matrix of $\theta$), the variance of $g(\theta)$ can be approximated as:
+
+$$
+\text{Var}(g(\theta)) \approx \nabla g(\hat{\theta})' \Sigma \nabla g(\hat{\theta})
+$$
+where $\nabla g(\hat{\theta})$ is the gradient (vector of first partial derivatives) of $g$ evaluated at $ \hat{\theta}$ and $g(\theta) = c' (X'V^{-1}X)^{-1} c$.
+
+Therefore our final df becomes
+
+$$
+d=\frac{2g(\theta)}{g(\hat{\theta})' \Sigma \nabla g(\hat{\theta})}
+$$
+
+We need to compute $\nabla g(\theta)$, the gradient of $g$ with respect to $\theta$. This involves differentiating $c' (X'V^{-1}X)^{-1} c$ with respect to each element of $\theta$. We are just going to estimate this here but in practice this can be found using Jacobian. and $\Sigma$ is going to be estimated using the Hessian of the log-likelihood. Let's see how we can implement this
+
+
+```{r}
+library(numDeriv)
+
+
+
+simulate_grouped_trend <- function(group_count = 5, points_per_group = 10, global_slope = -10, global_intercept = 30, group_slope = 2, noise_sd = 50,noise_sd2=2) {
+  set.seed(123) # Setting a seed for reproducibility
+  
+  # Initialize an empty data frame to store the simulated data
+  data <- data.frame(x = numeric(), y = numeric())
+  
+  # Loop to create each group
+  for (i in 1:group_count) {
+    x_start <- 12 + (i - 1) * (10 / group_count) # Stagger the start of x for each group
+    x <- runif(points_per_group, min = x_start, max = x_start + (10 / group_count))
+    
+    # Apply a local positive trend within the group, but maintain the global negative trend
+    local_intercept <- global_intercept + global_slope * (x_start + (10 / (2 * group_count))) + rnorm(1, mean = 0, sd = noise_sd)
+    y <- local_intercept + group_slope[i] * (x - x_start) + rnorm(points_per_group, mean = 0, sd = noise_sd2)
+    
+    # Combine this group with the overall dataset
+    group_data <- data.frame(x = x, y = y,group=i)
+    data <- rbind(data, group_data)
+  }
+  
+  return(data)
+}
+
+# generate simulated data
+data_int <- simulate_grouped_trend(group_count = 4,points_per_group = 10,global_slope = -2,global_intercept = 100,group_slope = c(6,4,2,1),noise_sd = 5,noise_sd2=2)
+
+# set group to factor
+data_int$group <- factor(data_int$group)
+
+# Design matrix of random effect
+Z <- model.matrix(~0+data_int$group)
+
+# Construct the model matrix 'X' for the fixed effect 'x' using data from 'data_int'.
+X <- model.matrix(~x, data=data_int)
+
+# get groups (random effects)
+groups <- unique(data_int$group)
+
+y<-data_int$y
+
+c<-matrix(c(0,1),ncol=2)
+
+# Define the log-likelihood function (as negative log-likelihood)
+log_reml <- function(theta) {
+  D <- diag(x = theta[2], ncol = length(groups), nrow = length(groups))
+  I <- diag(1, nrow = nrow(X), ncol = nrow(X))
+  V <- theta[1] * (I + Z %*% D %*% t(Z))
+  Beta <- solve(t(X) %*% solve(V) %*% X) %*% t(X) %*% solve(V) %*% y
+  return(c(log(det(V)) + log(det(t(X) %*% solve(V) %*% X)) + t(y - X %*% Beta) %*% solve(V) %*% (y - X %*% Beta)))
+}
+
+
+theta<-optimization::optim_nm(fun = log_reml, k = 2, start = c(1,1),maximum= FALSE, tol = 0.0000000000001)$par
+
+theta<-matrix(theta,ncol = 2)
+# Compute the Hessian at the estimates
+hessian_matrix <- hessian(log_reml, theta)
+Sigma <- 2*solve(hessian_matrix)
+
+# define g matrix
+g <- function(theta) {
+  D <- diag(x = theta[2], ncol = length(groups), nrow = length(groups))
+  I <- diag(1, nrow = nrow(X), ncol = nrow(X))
+  V <- theta[1] * (I + Z %*% D %*% t(Z))
+  return((c) %*% solve(t(X) %*% solve(V) %*% X) %*% t(c))
+}
+
+# Calculate the gradient of a function by numerical approximation
+g_grad<-as.matrix(grad(g,theta))
+var_S2<-t(g_grad)%*%Sigma%*%g_grad
+S2<-g(theta)
+d <- (2 * S2^2) / var_S2
+
+D <- diag(x = theta[2],ncol = length(groups),nrow = length(groups))
+I <- diag(1,nrow = nrow(X),ncol = nrow(X))
+V<-theta[1]*(I+Z%*%D%*%t(Z))
+Beta <- solve(t(X) %*% solve(V) %*% X) %*% t(X) %*% solve(V) %*% y
+  
+print(data.frame(df=d,t=Beta[2]/sqrt(S2),pvalue=2*pt(Beta[2]/sqrt(S2),df=d,lower.tail = FALSE)))
+
+
+```
+
+Compare this to `lmerTest` results:
+
+```{r}
+
+model<-lmer(y~x+(1|group),data=data_int,REML = TRUE)
+library(emmeans)
+trends <- emtrends(model, var = "x", lmer.df = "satterthwaite")
+print(summary(trends, infer = TRUE))
+
+```
+
+We get similar results and this concludes our chapter on math behind mixed models.
+
+
+# Summary
+
+In this section, we went through how mixed models works starting from OLS all the way to GLS and estimation and hypothesis testing. Please note that some of the derivations are very in efficient way of solving the equations in practice there are highly optimized methods to solve the mixed models. 
