@@ -1,10 +1,14 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Environment {.unnumbered}
 
 ## Packages
 
-In order to run the code in this turorial we will need to install a few packages.
+In order to run the code in this tutorial we will need to install a few packages.
 
 ```{r,eval=FALSE}
 install.packages(c("lme4", "emmeans", "ggplot2","performance"))
 ```
-
