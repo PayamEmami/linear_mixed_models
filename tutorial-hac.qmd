@@ -1,10 +1,223 @@
 ---
-title: "tutorial-hac"
+title: "Linear mixed models: examples in R"
+toc: true
+code-fold: true
+execute: 
+  warning: false
+  message: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 
+This notebook shows fitting some of the common examples of linear mixed models, including models with random intercept, random intercept and slope, nested design, and crossed design. The examples are based on the **simulated data** with a grouped trend, nested trend and crossed trend and implemented in R using the `lme4` package. 
+
+In try it yourself section, you can find instructions to practice the linear mixed models on the data that come along with the `faraway` package. 
+
+# Load libraries
+```{r}
+rm(list=ls())
+library("tidyverse")
+library("lme4")
+library("faraway")
+library("emmeans")
+library("performance")
+```
+
+# Simulate data
+
+```{r}
+# grouped trend
+simulate_grouped_trend <- function(group_count = 5, points_per_group = 10, global_slope = -10, global_intercept = 30, group_slope = 2, noise_sd = 50,noise_sd2=2) {
+  set.seed(123) # Setting a seed for reproducibility
+  
+  # Initialize an empty data frame to store the simulated data
+  data <- data.frame(x = numeric(), y = numeric())
+  
+  # Loop to create each group
+  for (i in 1:group_count) {
+    x_start <- 12 + (i - 1) * (10 / group_count) # Stagger the start of x for each group
+    x <- runif(points_per_group, min = x_start, max = x_start + (10 / group_count))
+    
+    # Apply a local positive trend within the group, but maintain the global negative trend
+    local_intercept <- global_intercept + global_slope * (x_start + (10 / (2 * group_count))) + rnorm(1, mean = 0, sd = noise_sd)
+    y <- local_intercept + group_slope[i] * (x - x_start) + rnorm(points_per_group, mean = 0, sd = noise_sd2)
+    
+    # Combine this group with the overall dataset
+    group_data <- data.frame(x = x, y = y,group=i)
+    data <- rbind(data, group_data)
+  }
+  
+  return(data)
+}
+
+# generate simulated data
+data_int <- simulate_grouped_trend(group_count = 4,points_per_group = 10,global_slope = -2,global_intercept = 100,group_slope = c(6,4,2,1),noise_sd = 5,noise_sd2=2)
+
+# set group to factor
+data_int$group <- factor(data_int$group)
+
+# nested trend
+simulate_grouped_trend_nested <- function(region_count = 3, clinics_per_region = 5, measurements_per_clinic = 10,
+                                                         global_slope = -10, global_intercept = 30, 
+                                                         region_effects = c(), region_slopes = c(),
+                                                         clinic_effects = list(), clinic_slopes = list()) {
+  set.seed(123) # Setting a seed for reproducibility
+  
+  # Initialize an empty data frame to store the simulated data
+  data <- data.frame(x = numeric(), y = numeric(), clinic = integer(), region = integer())
+
+  clinic_id_counter = 1 # Initialize a counter for clinic IDs across regions
+  
+  # Loop to create data for each region
+  for (region in 1:region_count) {
+    # Use the specific region effect and slope
+    region_effect_adj = region_effects[region]
+    region_slope_adj = region_slopes[region]
+    
+    # Loop to create data for each clinic within a region
+    for (clinic in 1:clinics_per_region) {
+      x_start = runif(1, min = 0, max = 10) + 10 * (clinic - 1) # More continuous x values across clinics
+      x = runif(measurements_per_clinic, min = x_start, max = x_start + 10) # Continuous x for measurements
+      
+      # Use the specific clinic effect and slope
+      clinic_effect = clinic_effects[[region]][clinic]
+      clinic_slope = clinic_slopes[[region]][clinic]
+      
+      # Simulate measurements for each clinic
+      for (i in 1:measurements_per_clinic) {
+        # Model y incorporating both global and specific slopes and effects
+        y = (global_intercept + region_effect_adj + clinic_effect) + 
+            (global_slope + region_slope_adj + clinic_slope) * x[i] + 
+            rnorm(1, mean = 0, sd = 1) # Assuming measurement_noise_sd is constant for simplicity
+        
+        # Combine this measurement with the overall dataset
+        data = rbind(data, data.frame(x = x[i], y = y, clinic = clinic_id_counter, region = region))
+      }
+      
+      clinic_id_counter <- clinic_id_counter + 1 # Increment clinic ID for unique identification across regions
+    }
+  }
+  
+  return(data)
+}
+
+
+
+
+set.seed(10)
+data_int_nested <-simulate_grouped_trend_nested(region_count = 4,
+                                                             clinics_per_region = 3,
+                                                             measurements_per_clinic = 20,
+                                                             global_slope = 0,global_intercept = 100,
+                                                             region_effects = rnorm(4,mean = 0,sd = 20),
+                                                             region_slopes=rnorm(4,mean = 0.1,sd = 2),
+       clinic_effects = lapply(1:4,function(i){rnorm(3,mean = 0,sd = 10)}),
+      clinic_slopes = lapply(1:4,function(i){rnorm(3,mean = 0.1,sd = 1)}))
+
+
+# crossed trend
+simulate_grouped_trend_crossed <- function(clinic_count = 3, doctor_count = 5, measurements_per_combination = 10,
+                                           global_slope = -10, global_intercept = 30,
+                                           clinic_effects = c(), clinic_slopes = c(),
+                                           doctor_effects = c(), doctor_slopes = c()) {
+  set.seed(123) # Setting a seed for reproducibility
+
+  # Initialize an empty data frame to store the simulated data
+  data <- data.frame(x = numeric(), y = numeric(), doctor = integer(), clinic = integer())
+
+  # Validate or adjust lengths of effects and slopes arrays to match counts
+  if (length(clinic_effects) != clinic_count) clinic_effects <- rep(clinic_effects[1], clinic_count)
+  if (length(clinic_slopes) != clinic_count) clinic_slopes <- rep(clinic_slopes[1], clinic_count)
+  if (length(doctor_effects) != doctor_count) doctor_effects <- rep(doctor_effects[1], doctor_count)
+  if (length(doctor_slopes) != doctor_count) doctor_slopes <- rep(doctor_slopes[1], doctor_count)
+
+  # Loop to create data for each combination of clinic and doctor
+  for (clinic in 1:clinic_count) {
+    for (doctor in 1:doctor_count) {
+      x_start = runif(1, min = 0, max = 10) # Continuous x values
+      x = runif(measurements_per_combination, min = x_start, max = x_start + 10) # Continuous x for measurements
+
+      # Use the specific effect and slope for the current clinic and doctor
+      clinic_effect_adj = clinic_effects[clinic]
+      clinic_slope_adj = clinic_slopes[clinic]
+      doctor_effect = doctor_effects[doctor]
+      doctor_slope = doctor_slopes[doctor]
+
+      # Simulate measurements for each combination of clinic and doctor
+      for (i in 1:measurements_per_combination) {
+        # Model y incorporating both global and specific slopes and effects
+        y = (global_intercept + clinic_effect_adj + doctor_effect) +
+            (global_slope + clinic_slope_adj + doctor_slope) * x[i] +
+            rnorm(1, mean = 0, sd = 1) # Assuming measurement_noise_sd is constant for simplicity
+
+        # Combine this measurement with the overall dataset
+        data = rbind(data, data.frame(x = x[i], y = y, doctor = doctor, clinic = clinic))
+      }
+    }
+  }
+
+  return(data)
+}
+
+data_int_crossed<-simulate_grouped_trend_crossed(clinic_count = 4,
+                                                             doctor_count = 3,
+                                                             measurements_per_combination = 20,
+                                                             global_slope = 1,global_intercept = 100,
+                                                             clinic_effects =c(1,20,40,60),
+                                                             clinic_slopes=c(1,1.5,0.9,1.1),
+       doctor_effects = c(1.3,1.2,2),
+      doctor_slopes = c(-3,1,2))
+
+
+
+```
+
+
+::: {.panel-tabset}
+
+## grouped trend
+```{r}
+# plot the data
+plot(data_int$x,data_int$y,xlab="Age",ylab="Protein expression",col=data_int$group,pch=as.numeric(data_int$group))
+```
+
+## netested trend
+```{r}
+plot(data_int_nested$x,data_int_nested$y,col=data_int_nested$region,pch=data_int_nested$clinic,xlab = "Age",ylab = "Protein expression")
+legend("top", legend = paste("Region", unique(data_int_nested$region)),
+       fill = unique(data_int_nested$region), cex = 0.8, title = "Regions",horiz=T)
+
+legend("topleft", legend = paste("Clinic", unique(data_int_nested$clinic)),
+       pch = unique(data_int_nested$clinic), col = "black", cex = 0.8, title = "Clinics", inset = c(0.05, 0))
+```
+
+## crossed trend
+```{r}
+  plot(data_int_crossed$x,data_int_crossed$y,col=data_int_crossed$clinic,pch=data_int_crossed$doctor,xlab = "Age",ylab = "Protein expression")
+
+  
+legend("top", legend = paste("Clinic", unique(data_int_crossed$clinic)),
+       fill = unique(data_int_crossed$clinic), cex = 0.8, title = "Clinics",horiz=T)
+
+legend("topleft", legend = paste("Doctor", unique(data_int_crossed$doctor)),
+       pch = unique(data_int_crossed$doctor), col = "black", cex = 0.8, title = "Doctors", inset = c(0.05, 0))
+```
+
+:::
+
+# Simple regression
 ```{r}
 a <- 1
 print(a)
 ```
 
+# Random intercept
+
+# Random intercept and slope
+
+# Nested design
+
+# Crossed design
+
+# Try it yourself
