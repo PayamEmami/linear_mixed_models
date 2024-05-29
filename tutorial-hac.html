@@ -104,7 +104,7 @@ window.Quarto = {
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-  <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="3">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
@@ -125,6 +125,7 @@ window.Quarto = {
   <li><a href="#random-slope" id="toc-random-slope" class="nav-link" data-scroll-target="#random-slope">Random slope</a></li>
   <li><a href="#nested-design" id="toc-nested-design" class="nav-link" data-scroll-target="#nested-design">Nested design</a></li>
   <li><a href="#crossed-design" id="toc-crossed-design" class="nav-link" data-scroll-target="#crossed-design">Crossed design</a></li>
+  <li><a href="#models-with-interaction" id="toc-models-with-interaction" class="nav-link" data-scroll-target="#models-with-interaction">Models with interaction</a></li>
   <li><a href="#model-selection-and-comparisons-using-lrt" id="toc-model-selection-and-comparisons-using-lrt" class="nav-link" data-scroll-target="#model-selection-and-comparisons-using-lrt">Model selection and comparisons using LRT</a></li>
   </ul></li>
   <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link" data-scroll-target="#try-it-yourself">Try it yourself</a></li>
@@ -1098,8 +1099,9 @@ Interpretation
 </div>
 </div>
 </div>
-<section id="models-with-interaction" class="level4">
-<h4 class="anchored" data-anchor-id="models-with-interaction">Models with interaction</h4>
+</section>
+<section id="models-with-interaction" class="level2">
+<h2 class="anchored" data-anchor-id="models-with-interaction">Models with interaction</h2>
 <p>In this example, our aim is to explore how the effectiveness of various treatments may vary with changes in dosage, and whether these effects are consistent across different doctors.</p>
 <div class="cell">
 <details class="code-fold">
@@ -1410,13 +1412,12 @@ Figure&nbsp;12: Scatter plot of treatment vs recovery time vs dosage, fitted lin
 <p>This final model tells that that the three main sources of variation in our data is <code>treatmentC</code>, <code>(Intercept)</code> and <code>treatmentC:dosage</code>. The fit also looks much better than before. This result translates to a scenario in which there is a variability between doctors in how they treat patients, there is a significant variability between then in the way they administrate the treatment C and also how they administrate dosage for treatment C.</p>
 <p>To summarize this section, I want to point out that despite that there are some general terms such as random intercept or random slope models, one might often end up specifically model certain effects as random or fixed depending on the experimental design and characteristic of the samples and population. These effect should have been ideally studied prior to setting up the statistical model to avoid bias. In the next section we will have a look at some automated way of selecting fixed and random effect.</p>
 </section>
-</section>
 <section id="model-selection-and-comparisons-using-lrt" class="level2">
 <h2 class="anchored" data-anchor-id="model-selection-and-comparisons-using-lrt">Model selection and comparisons using LRT</h2>
 <p>A critical step in using mixed models models effectively is determining which model provides the best fit to the data without overcomplicating the structure. ANOVA for mixed models serves as a tool for hypothesis testing between models, specifically testing if a more complex model significantly improves the explanation of data variability over a simpler one. Without going too much into the details (theory is covereted in the math section), what we are going to do is likelyhood ratio test (LRT) between different models. The Likelihood Ratio Test (LRT) is a statistical procedure used to compare the fit of two models to a set of data, where one model (the null model) is a special case of the other model (the alternative model). The LRT evaluates whether the more complex model significantly improves the fit to the data over the simpler model. The LRT is based on the likelihood ratio, which is a measure of how much more likely the data is under one model compared to another. Specifically, it compares the maximum likelihood of the data under the null hypothesis ((H_0), a simpler model with constraints on parameters) against the maximum likelihood under the alternative hypothesis ((H_1), a more complex model without those constraints).</p>
 <p>In the case of mixed models, as you noticed, we have two sets of parameters to consider: fixed effects, which are common to all observations, and random effects, which vary across levels of a grouping factor (e.g., subjects, experiments, clusters). This dual nature adds a layer of complexity to model selection and comparison. Specifically, when conducting an LRT, we’re not only interested in how adding or removing fixed effects influences the model but also in how variations in the random effects structure contribute to explaining the data variability.</p>
 <p>There are different approaches on how to apply model selection on mixed models. Here we are going to use a simple approach.</p>
-<p>First we are going to use LRT to select the random part of the model. With random part of the model chosen, we will proceed with selecting the fixed part. <code>lme4</code> package provides <code>anova</code> function for doing so. As suggested by some authors, we are going to fit the models as complex as we belive they are and see whether a simpler model is prefered.</p>
+<p>First we are going to use LRT to select the random part of the model. With random part of the model chosen, we will proceed with selecting the fixed part. <code>lme4</code> package provides <code>anova</code> function for doing so. As suggested by some authors, we are going to fit the models as complex as we believe they are and see whether a simpler model is preferred.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1427,7 +1428,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When we apply model selection for the random part, all the models must have the same fixed structure. Similar, when working with fixed part, the random stucture of the model must remain the same.</p>
+<p>When we apply model selection for the random part, all the models must have the same fixed structure. Similar, when working with fixed part, the random structure of the model must remain the same.</p>
 </div>
 </div>
 <p>So let’s start with the random part of the model that included the interaction.</p>
@@ -1550,6 +1551,43 @@ Important
 </section>
 <section id="try-it-yourself" class="level1">
 <h1>Try it yourself</h1>
+<p>Data for exercises comes as part of the <code>faraway</code> package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(faraway)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(coagulation)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(broccoli)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(choccake)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="exr-coagulation" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1 (coagulation)</strong></span> The <code>coagulation</code> dataset comes from a study of blood coagulation times. Twenty-four animals were randomly assigned to one of four diets, and the samples were taken in a random order.</p>
+<ol type="a">
+<li>Plot the data and comment</li>
+<li>Fit a fixed effect model and comment</li>
+<li>Construct a prediction for the response of a new animal assigned to diet D</li>
+<li>Fit a random effect model using REML. A new animal is assigned to diet D. Predict the blood coagulation time for this animal.</li>
+<li>Compare the two models using LRT.</li>
+</ol>
+</div>
+<div id="exr-broccoli" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2 (broccoli)</strong></span> A number of growers supply broccoli to a food processing plant. The plant instructs the growers to pack the broccoli into standard-size boxes. There should be 18 clusters of broccoli per box. Because the growers use different varieties and methods of cultivation, there is some variation in the cluster weights. The plant managers selected three growers at random then four boxes at random supplied by these growers. Three clusters were selected from each box. The data may be found in the <code>broccoli</code> dataset. The weight in grams of the cluster is given.</p>
+<ol type="a">
+<li>Plot the data and comment on the nature of variation seen.</li>
+<li>Compute the mean weights within growers. Compute the mean weights withing boxes.</li>
+<li>Fit an appropriate mixed effects model. Comment on how the variation is assigned to the possible sources.</li>
+<li>Test whether there may be no variation attributable to growers.</li>
+<li>Test whether there may be no variation attributable to boxes.</li>
+</ol>
+</div>
+<div id="exr-cake" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3 (chocolate cake)</strong></span> An experiment was conducted to determine the effects of recipe and baking temperature on chocolate cake quality. Fifteen batches of cake mix for each recipe were prepared. Each batch was sufficient for six cakes. Each of the six cakes was baked at different temperature which was randomly assigned. Several measures of cake quality were recorded of which breaking angle was just one. The dataset is called <code>choccake</code>.</p>
+<ol type="a">
+<li>Plot the data and comment</li>
+<li>Fit linear model with an interaction between recipe and temperature as fixed effects and no random effects. Which terms are significant? Why is this analysis unreliable?</li>
+<li>Fit a mixed effects model that takes account of the batch structure, identifying the design type. Compare the temperature effect (minimum to maximum) with the likely difference between batches. How do they compare?</li>
+<li>Test for recipe effect.</li>
+<li>Check the diagnostic plots and comment: i) the residuals vs.&nbsp;fitted values, ii) QQ plot of the residuals, and iii) QQ plot of the batch random effects.</li>
+</ol>
+</div>
 </section>
 
 </main>

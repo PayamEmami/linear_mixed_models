@@ -10,6 +10,7 @@ format:
   html:
     toc: true
     toc-depth: 3
+    toc-expand: 3
 ---
 
 
@@ -887,10 +888,10 @@ In the case of mixed models, as you noticed, we have two sets of parameters to c
 
 There are different approaches on how to apply model selection on mixed models. Here we are going to use a simple approach.
 
-First we are going to use LRT to select the random part of the model. With random part of the model chosen, we will proceed with selecting the fixed part. `lme4` package provides `anova` function for doing so. As suggested by some authors, we are going to fit the models as complex as we belive they are and see whether a simpler model is prefered.
+First we are going to use LRT to select the random part of the model. With random part of the model chosen, we will proceed with selecting the fixed part. `lme4` package provides `anova` function for doing so. As suggested by some authors, we are going to fit the models as complex as we believe they are and see whether a simpler model is preferred.
 
 ::: callout-important
-When we apply model selection for the random part, all the models must have the same fixed structure. Similar, when working with fixed part, the random stucture of the model must remain the same.
+When we apply model selection for the random part, all the models must have the same fixed structure. Similar, when working with fixed part, the random structure of the model must remain the same.
 :::
 
 So let's start with the random part of the model that included the interaction.
@@ -983,3 +984,58 @@ It is always a good practice to design the model based on the population/sample 
 
 
 # Try it yourself
+
+Data for exercises comes as part of the `faraway` package. 
+
+```{r}
+#| code-fold: false
+
+library(faraway)
+data(coagulation)
+data(broccoli)
+data(choccake)
+
+```
+
+
+::: {#exr-coagulation}
+
+## coagulation
+
+The `coagulation` dataset comes from a study of blood coagulation times. Twenty-four animals were randomly assigned to one of four diets, and the samples were taken in a random order. 
+
+a) Plot the data and comment
+b) Fit a fixed effect model and comment
+c) Construct a prediction for the response of a new animal assigned to diet D
+d) Fit a random effect model using REML. A new animal is assigned to diet D. Predict the blood coagulation time for this animal. 
+e) Compare the two models using LRT.
+
+:::
+
+::: {#exr-broccoli}
+
+## broccoli
+
+A number of growers supply broccoli to a food processing plant. The plant instructs the growers to pack the broccoli into standard-size boxes. There should be 18 clusters of broccoli per box. Because the growers use different varieties and methods of cultivation, there is some variation in the cluster weights. The plant managers selected three growers at random then four boxes at random supplied by these growers. Three clusters were selected from each box. The data may be found in the `broccoli` dataset. The weight in grams of the cluster is given. 
+
+a) Plot the data and comment on the nature of variation seen. 
+b) Compute the mean weights within growers. Compute the mean weights withing boxes. 
+c) Fit an appropriate mixed effects model. Comment on how the variation is assigned to the possible sources. 
+d) Test whether there may be no variation attributable to growers. 
+e) Test whether there may be no variation attributable to boxes. 
+
+:::
+
+::: {#exr-cake}
+
+## chocolate cake
+
+An experiment was conducted to determine the effects of recipe and baking temperature on chocolate cake quality. Fifteen batches of cake mix for each recipe were prepared. Each batch was sufficient for six cakes. Each of the six cakes was baked at different temperature which was randomly assigned. Several measures of cake quality were recorded of which breaking angle was just one. The dataset is called `choccake`.
+
+a) Plot the data and comment
+b) Fit linear model with an interaction between recipe and temperature as fixed effects and no random effects. Which terms are significant? Why is this analysis unreliable?
+c) Fit a mixed effects model that takes account of the batch structure, identifying the design type. Compare the temperature effect (minimum to maximum) with the likely difference between batches. How do they compare?
+d) Test for recipe effect. 
+e) Check the diagnostic plots and comment: i) the residuals vs. fitted values, ii) QQ plot of the residuals, and iii) QQ plot of the batch random effects. 
+
+:::

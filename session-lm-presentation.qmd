@@ -58,10 +58,11 @@ data_diabetes <- diabetes %>%
 
 # Outline
 
-- Introduction (ca. 15 min)
-- Mathematical details (15 - 30 min)
-- Examples in R (1h)
-- Q&A session (15 min)
+- A refresher on regression analysis (~10 min)
+- Introduction to linear mixed effect models (~40 min)
+- Examples in R (~45 min)
+- Mathematical details and/or Q&A session
+
 
 ## Introduction
 *Why linear models?*
@@ -710,7 +711,7 @@ $\mathbf{Y}=\begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_{n} \end{bmatrix}$ $\bolds
 
 . . .
 
-The least squares estimates is given by: $$\hat{\mathbf{\beta}}= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}$$
+The least squares estimates are given by: $$\hat{\mathbf{\beta}}= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}$$
 
 ## Linear mixed models
 
@@ -724,6 +725,7 @@ The least squares estimates is given by: $$\hat{\mathbf{\beta}}= (\mathbf{X}^T\m
 
 - Data often come from grouped, hierarchical or nested structures, such as repeated measurements from the same subjects, patients clustered within hospitals, or plants grouped within plots.
 - All such data share the common feature of **correlation of observations within the same group** and linear model analyses assuming independence of the observations become inappropriate. 
+- Failing to account for the correlation structure can lead to **underestimation of standard errors**, **overestimation of statistical significance**, and **biased parameter estimates**.
 
 
 :::
@@ -810,24 +812,26 @@ for (group in unique_groups) {
 ::::
 
 
-## Linear mixed models
+<!-- ## Linear mixed models -->
 
-*mixed: fixed and random effects*
+<!-- *mixed: fixed and random effects* -->
 
-<br>
+<!-- <br> -->
 
-::: incremental
+<!-- ::: incremental -->
 
-- A **fixed effect** is an unknown constant that we try to estimate from the data
-  - These are the direct relationships between your chosen variables and the outcome we are interested in. Fixed effects are the factors you control or are primarily interested in, e.g. when studying the effect of age on protein expression, age is a fixed effect. 
-- A **random effect** is convenient way to model grouping structure. A random effect is a random variable, and we try to **estimate the parameters that describe the distribution of this random effect**. 
-  - For instance, consider an experiment to investigate the effects of several drug treatments on a sample of patients. Typically, we are interested in specific drug treatments and so we would treat the drug effects as fixed. However, it makes sense to treat the patients effects as random. 
+<!-- - A **fixed effect** is an unknown constant that we try to estimate from the data -->
+<!--   - These are the direct relationships between your chosen variables and the outcome we are interested in. Fixed effects are the factors you control or are primarily interested in, e.g. when studying the effect of age on protein expression, age is a fixed effect.  -->
+<!-- - A **random effect** is convenient way to model grouping structure. A random effect is a random variable, and we try to **estimate the parameters that describe the distribution of this random effect**.  -->
+<!--   - For instance, consider an experiment to investigate the effects of several drug treatments on a sample of patients. Typically, we are interested in specific drug treatments and so we would treat the drug effects as fixed. However, it makes sense to treat the patients effects as random.  -->
 
-:::
+<!-- ::: -->
 
-# Mathematical details{.smaller}
+# Introduction to linear mixed models
 
 # Examples in R {.smaller}
+
+# Mathematical details{.smaller}
 
 # Q&A session
 

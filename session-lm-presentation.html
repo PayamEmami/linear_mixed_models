@@ -337,10 +337,10 @@
 <section id="outline" class="title-slide slide level1 center">
 <h1>Outline</h1>
 <ul>
-<li>Introduction (ca. 15 min)</li>
-<li>Mathematical details (15 - 30 min)</li>
-<li>Examples in R (1h)</li>
-<li>Q&amp;A session (15 min)</li>
+<li>A refresher on regression analysis (~10 min)</li>
+<li>Introduction to linear mixed effect models (~40 min)</li>
+<li>Examples in R (~45 min)</li>
+<li>Mathematical details and/or Q&amp;A session</li>
 </ul>
 </section>
 <section id="introduction" class="slide level2">
@@ -635,7 +635,7 @@ Figure&nbsp;2: Scatter plot of the data shows that high plasma volume tends to b
 </div>
 <p><br></p>
 <div class="fragment">
-<p>The least squares estimates is given by: <span class="math display">\[\hat{\mathbf{\beta}}= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}\]</span></p>
+<p>The least squares estimates are given by: <span class="math display">\[\hat{\mathbf{\beta}}= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}\]</span></p>
 </div>
 </section>
 <section id="linear-mixed-models" class="slide level2">
@@ -647,6 +647,7 @@ Figure&nbsp;2: Scatter plot of the data shows that high plasma volume tends to b
 <ul>
 <li>Data often come from grouped, hierarchical or nested structures, such as repeated measurements from the same subjects, patients clustered within hospitals, or plants grouped within plots.</li>
 <li>All such data share the common feature of <strong>correlation of observations within the same group</strong> and linear model analyses assuming independence of the observations become inappropriate.</li>
+<li>Failing to account for the correlation structure can lead to <strong>underestimation of standard errors</strong>, <strong>overestimation of statistical significance</strong>, and <strong>biased parameter estimates</strong>.</li>
 </ul>
 </div><div class="column" style="width:5%;">
 
@@ -662,31 +663,28 @@ Figure&nbsp;2: Scatter plot of the data shows that high plasma volume tends to b
 </div>
 </div>
 </div>
-</section>
-<section id="linear-mixed-models-1" class="slide level2">
-<h2>Linear mixed models</h2>
-<p><em>mixed: fixed and random effects</em></p>
-<p><br></p>
-<div>
-<ul>
-<li class="fragment">A <strong>fixed effect</strong> is an unknown constant that we try to estimate from the data
-<ul>
-<li class="fragment">These are the direct relationships between your chosen variables and the outcome we are interested in. Fixed effects are the factors you control or are primarily interested in, e.g.&nbsp;when studying the effect of age on protein expression, age is a fixed effect.</li>
-</ul></li>
-<li class="fragment">A <strong>random effect</strong> is convenient way to model grouping structure. A random effect is a random variable, and we try to <strong>estimate the parameters that describe the distribution of this random effect</strong>.
-<ul>
-<li class="fragment">For instance, consider an experiment to investigate the effects of several drug treatments on a sample of patients. Typically, we are interested in specific drug treatments and so we would treat the drug effects as fixed. However, it makes sense to treat the patients effects as random.</li>
-</ul></li>
-</ul>
-</div>
+<!-- ## Linear mixed models -->
+<!-- *mixed: fixed and random effects* -->
+<!-- <br> -->
+<!-- ::: incremental -->
+<!-- - A **fixed effect** is an unknown constant that we try to estimate from the data -->
+<!--   - These are the direct relationships between your chosen variables and the outcome we are interested in. Fixed effects are the factors you control or are primarily interested in, e.g. when studying the effect of age on protein expression, age is a fixed effect.  -->
+<!-- - A **random effect** is convenient way to model grouping structure. A random effect is a random variable, and we try to **estimate the parameters that describe the distribution of this random effect**.  -->
+<!--   - For instance, consider an experiment to investigate the effects of several drug treatments on a sample of patients. Typically, we are interested in specific drug treatments and so we would treat the drug effects as fixed. However, it makes sense to treat the patients effects as random.  -->
+<!-- ::: -->
 </section></section>
-<section id="mathematical-details" class="title-slide slide level1 smaller center">
-<h1>Mathematical details</h1>
+<section id="introduction-to-linear-mixed-models" class="title-slide slide level1 center">
+<h1>Introduction to linear mixed models</h1>
 
 </section>
 
 <section id="examples-in-r" class="title-slide slide level1 smaller center">
 <h1>Examples in R</h1>
+
+</section>
+
+<section id="mathematical-details" class="title-slide slide level1 smaller center">
+<h1>Mathematical details</h1>
 
 </section>
 
